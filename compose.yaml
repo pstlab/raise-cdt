@@ -1,0 +1,28 @@
+services:
+  raise-cdt-db: # Database service
+    container_name: raise-cdt-db
+    image: mongo
+    networks:
+      - raise-cdt-net
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  raise-cdt: # CoCo service
+    depends_on:
+      - raise-cdt-db
+    container_name: raise-cdt
+    image: raise-cdt
+    networks:
+      - raise-cdt-net
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    build:
+      context: .
+      args:
+        - MONGODB_HOST=raise-cdt-db
+        - MONGODB_USERS_HOST=raise-cdt-db
+
+networks:
+  raise-cdt-net:
