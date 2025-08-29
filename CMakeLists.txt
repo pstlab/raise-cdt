@@ -9,6 +9,7 @@ option(INTERACTIVE_TEST "Enable interactive test mode" OFF)
 set(COCO_NAME "RAISE-CDT" CACHE STRING "The CoCo Application Name" FORCE)
 set(BUILD_MONGODB ON CACHE BOOL "Build MongoDB connection" FORCE)
 set(BUILD_COCO_SERVER ON CACHE BOOL "Build the CoCo server" FORCE)
+set(BUILD_FCM ON CACHE BOOL "Build Firebase Cloud Messaging" FORCE)
 
 add_executable(raise-cdt src/main.cpp src/raise_cdt.cpp src/raise_cdt_server.cpp src/raise_cdt_db.cpp)
 target_compile_features(raise-cdt PUBLIC cxx_std_17)
