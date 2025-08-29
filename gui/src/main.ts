@@ -2,6 +2,13 @@ import { AppComponent, BrandComponent, Connection } from '@ratiosolver/flick';
 import { coco } from '@ratiosolver/coco';
 import { Offcanvas } from './offcanvas';
 import './style.css'
+import { Buffer } from 'buffer';
+declare global {
+  interface Window {
+    Buffer: typeof Buffer;
+  }
+}
+window.Buffer = Buffer;
 
 const offcanvas_id = 'restart-offcanvas';
 
@@ -11,7 +18,7 @@ class RAISEApp extends AppComponent {
     super();
 
     // Create and add brand element
-    this.navbar.add_child(new BrandComponent('RAISE Citizen Digital Twin', 'logo.jpg', 96, 32, offcanvas_id));
+    this.navbar.add_child(new BrandComponent('Citizen Digital Twin', 'logo.jpg', 300, 32, offcanvas_id));
 
     this.add_child(new Offcanvas(offcanvas_id));
 

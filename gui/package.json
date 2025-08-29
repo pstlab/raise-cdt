@@ -13,6 +13,7 @@
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "@ratiosolver/coco": "^0.0.45"
+    "@ratiosolver/coco": "^0.0.45",
+    "buffer": "^6.0.3"
   }
 }
