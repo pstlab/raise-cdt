@@ -5,12 +5,15 @@
 
 namespace cdt
 {
-  class cdt_server : public coco::coco_server
+  class raise_cdt_server : public coco::server_module
   {
   public:
-    restart_server(coco::coco_server &srv, restart &rst) noexcept;
+    raise_cdt_server(coco::coco_server &srv, raise_cdt &cdt) noexcept;
 
     std::unique_ptr<network::response> get_user(const network::request &req);
     std::unique_ptr<network::response> new_user(const network::request &req);
+
+  private:
+    raise_cdt &cdt;
   };
 } // namespace cdt

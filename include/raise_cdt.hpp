@@ -4,7 +4,9 @@
 
 namespace cdt
 {
-  class cdt : public coco::coco_module
+  class raise_cdt : public coco::coco_module
   {
+  public:
+    raise_cdt(coco::coco &cc) noexcept;
   };
 } // namespace cdt
