@@ -11,7 +11,7 @@ namespace cdt
     raise_cdt_server(coco::coco_server &srv, raise_cdt &cdt) noexcept;
 
     std::unique_ptr<network::response> get_user(const network::request &req);
-    std::unique_ptr<network::response> new_user(const network::request &req);
+    std::unique_ptr<network::response> create_user(const network::request &req);
 
   private:
     raise_cdt &cdt;

@@ -1,6 +1,6 @@
-#include "raise_cdt_db.hpp"
 #include "raise_cdt.hpp"
 #include "coco.hpp"
+#include "mongo_db.hpp"
 #include "raise_cdt_server.hpp"
 #include <mongocxx/instance.hpp>
 #include <thread>
@@ -9,8 +9,6 @@ int main()
 {
     mongocxx::instance inst{}; // This should be done only once.
     coco::mongo_db db;
-    db.add_module<cdt::raise_cdt_db>(db);
-
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
     cc.init();
