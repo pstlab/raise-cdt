@@ -12,7 +12,7 @@ import org.keycloak.events.admin.AdminEvent;
 
 public class UserRegistrationListener implements EventListenerProvider {
 
-    private static final String WEBHOOK_URL = "http://localhost:8080";
+    private static final String WEBHOOK_URL = System.getenv("COCO_API_URL");
 
     @Override
     public void close() {
@@ -20,11 +20,12 @@ public class UserRegistrationListener implements EventListenerProvider {
 
     @Override
     public void onEvent(Event event) {
-        if (event.getType().equals(EventType.REGISTER)) {
+        if (EventType.REGISTER.equals(event.getType())) {
             System.out.println("User registered: " + event.getUserId());
             try (CloseableHttpClient client = HttpClients.createDefault()) {
-                HttpPost post = new HttpPost(WEBHOOK_URL + "/items");
-                post.setEntity(new StringEntity("{\"type\":\"User\"}"));
+                HttpPost post = new HttpPost(WEBHOOK_URL + "/users");
+                post.setHeader("Content-Type", "application/json");
+                post.setEntity(new StringEntity("{\"keycloak_id\": \"" + event.getUserId() + "\"}"));
                 client.execute(post, response -> {
                     if (response.getCode() != 201)
                         throw new RuntimeException("Failed to create user. Response code: " + response.getCode());
