@@ -26,5 +26,12 @@ namespace cdt
      * @throws May throw an exception if the user is not found or retrieval fails.
      */
     coco::item &get_user(std::string_view keycloak_id);
+    /**
+     * @brief Updates the Urban Data Platform data for the user identified by the specified Keycloak ID.
+     *
+     * @param keycloak_id The Keycloak ID of the user whose UDP data is to be updated.
+     * @throws May throw an exception if the update operation fails.
+     */
+    void update_udp_data(std::string_view keycloak_id);
   };
 } // namespace cdt

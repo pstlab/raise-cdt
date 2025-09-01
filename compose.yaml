@@ -1,20 +1,43 @@
 services:
-  raise-cdt-db: # Database service
+  raise-cdt-db: # Citizen Digital Twin Database service
     container_name: raise-cdt-db
     image: mongo
     networks:
-      - raise-cdt-net
+      - raise-net
     ports:
       - "27017:27017"
+    restart: unless-stopped
+
+  raise-udp-db: # Urban Data Platform Database service
+    container_name: raise-udp-db
+    image: postgres
+    networks:
+      - raise-net
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=yourpassword
+
+  raise-mqtt: # MQTT broker service
+    container_name: raise-mqtt
+    image: eclipse-mosquitto
+    networks:
+      - raise-net
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     restart: unless-stopped
 
   raise-cdt: # CoCo service
     depends_on:
       - raise-cdt-db
+      - raise-udp-db
+      - raise-mqtt
     container_name: raise-cdt
     image: raise-cdt
     networks:
-      - raise-cdt-net
+      - raise-net
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -22,10 +45,11 @@ services:
       context: .
       args:
         - MONGODB_HOST=raise-cdt-db
-        - MONGODB_USERS_HOST=raise-cdt-db
+        - POSTGRES_ACCOUNT=account
+        - POSTGRES_HOST=raise-udp-db
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
       - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
 
 networks:
-  raise-cdt-net:
+  raise-net:

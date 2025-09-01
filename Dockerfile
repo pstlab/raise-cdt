@@ -1,19 +1,25 @@
 # Use a base image with common dependencies pre-installed
 FROM pstlab/coco-base:latest
 
+# Install the necessary dependencies
+RUN apt update && apt install -y libpqxx-dev
+
 # Expose the COCO application port
 EXPOSE 8080
 
 # Set environment variables for MongoDB connection
-ARG MONGODB_HOST=coco-db
+ARG MONGODB_HOST=raise-cdt-db
 ARG MONGODB_PORT=27017
+ARG POSTGRES_ACCOUNT=account
+ARG POSTGRES_HOST=raise-udp-db
+ARG POSTGRES_PORT=5432
 ARG CLIENT_DIR=/gui
 
 # Clone and build RAISE-CDT
 RUN git clone --recursive https://github.com/pstlab/raise-cdt \
     && cd raise-cdt \
     && mkdir build && cd build \
-    && cmake -DLOGGING_LEVEL=DEBUG -DMONGODB_HOST=${MONGODB_HOST} -DMONGODB_PORT=${MONGODB_PORT} -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
+    && cmake -DLOGGING_LEVEL=DEBUG -DMONGODB_HOST=${MONGODB_HOST} -DMONGODB_PORT=${MONGODB_PORT} -DPOSTGRES_ACCOUNT=${POSTGRES_ACCOUNT} -DPOSTGRES_HOST=${POSTGRES_HOST} -DPOSTGRES_PORT=${POSTGRES_PORT} -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
     && make -j$(nproc)
 
 # Build the GUI application

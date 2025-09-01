@@ -5,7 +5,7 @@
 
 namespace cdt
 {
-    raise_cdt_db::raise_cdt_db(coco::mongo_db &db) noexcept : mongo_module(db), users_collection(get_db()["users"])
+    raise_cdt_db::raise_cdt_db(coco::mongo_db &db) noexcept : mongo_module(db), users_collection(get_db()["users"]), pg_conn(POSTGRES_URI(POSTGRES_ACCOUNT, POSTGRES_HOST, POSTGRES_PORT))
     {
         assert(users_collection);
         if (users_collection.list_indexes().begin() == users_collection.list_indexes().end())
@@ -13,6 +13,8 @@ namespace cdt
             LOG_DEBUG("Creating indexes for users collection");
             users_collection.create_index(bsoncxx::builder::stream::document{} << "keycloak_id" << 1 << bsoncxx::builder::stream::finalize, mongocxx::options::index{}.unique(true));
         }
+        assert(pg_conn.is_open());
+        LOG_DEBUG("Connected to Urban Data Platform PostgreSQL database");
     }
 
     void raise_cdt_db::create_user(std::string_view keycloak_id, std::string_view id)
@@ -30,5 +32,14 @@ namespace cdt
         if (!result)
             throw std::invalid_argument("User with Keycloak ID not found: " + std::string(keycloak_id));
         return result->view()["_id"].get_oid().value.to_string();
+    }
+
+    json::json raise_cdt_db::get_urban_data_platform_data(std::string_view keycloak_id)
+    {
+        pqxx::work txn{pg_conn};
+        pqxx::result r = txn.exec_params("SELECT udp_data FROM users WHERE keycloak_id = $1", keycloak_id.data());
+        if (r.empty())
+            throw std::invalid_argument("User with Keycloak ID not found: " + std::string(keycloak_id));
+        return json::load(r[0][0].c_str());
     }
 } // namespace cdt

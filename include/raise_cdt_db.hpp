@@ -1,6 +1,9 @@
 #pragma once
 
 #include "mongo_db.hpp"
+#include <pqxx/pqxx>
+
+#define POSTGRES_URI(account, host, port) "postgresql://" account "@ " host ":" port "/raise_udp_db"
 
 namespace cdt
 {
@@ -28,7 +31,20 @@ namespace cdt
      */
     std::string get_user(std::string_view keycloak_id);
 
+    /**
+     * @brief Retrieves the Urban Data Platform data associated with a given Keycloak ID.
+     *
+     * This function queries the database to obtain Urban Data Platform (UDP) data
+     * for the user identified by the provided Keycloak ID. The returned data is
+     * formatted as a JSON object.
+     *
+     * @param keycloak_id The unique identifier of the user in Keycloak.
+     * @return json::json A JSON object containing the user's Urban Data Platform data.
+     */
+    json::json get_urban_data_platform_data(std::string_view keycloak_id);
+
   private:
     mongocxx::collection users_collection;
+    pqxx::connection pg_conn;
   };
 } // namespace cdt

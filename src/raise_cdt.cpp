@@ -23,4 +23,12 @@ namespace cdt
         std::string id = db.get_user(keycloak_id);
         return get_coco().get_item(id);
     }
+
+    void raise_cdt::update_udp_data(std::string_view keycloak_id)
+    {
+        auto &db = get_coco().get_db().get_module<raise_cdt_db>();
+        auto &usr = get_user(keycloak_id);
+        json::json udp_data = db.get_urban_data_platform_data(keycloak_id);
+        get_coco().set_value(usr, std::move(udp_data));
+    }
 } // namespace cdt
