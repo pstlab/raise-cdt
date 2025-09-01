@@ -1,8 +1,10 @@
 #include "raise_cdt.hpp"
 #include "coco.hpp"
 #include "mongo_db.hpp"
+#include "coco_fcm.hpp"
 #include "raise_cdt_server.hpp"
 #include "coco_noauth.hpp"
+#include "fcm_server.hpp"
 #include "logging.hpp"
 #ifdef ENABLE_CORS
 #include "cors.hpp"
@@ -24,6 +26,7 @@ int main()
     coco::mongo_db db;
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
+    auto &fcm = cc.add_module<coco::coco_fcm>(cc);
     cc.init();
 
     try
@@ -142,6 +145,7 @@ int main()
 #endif
     srv.add_module<coco::server_noauth>(srv);
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
+    srv.add_module<coco::fcm_server>(srv, fcm);
     auto srv_ft = std::async(std::launch::async, [&srv]
                              { srv.start(); });
 
