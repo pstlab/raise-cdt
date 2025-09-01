@@ -23,6 +23,9 @@ services:
       args:
         - MONGODB_HOST=raise-cdt-db
         - MONGODB_USERS_HOST=raise-cdt-db
+    environment:
+      - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
+      - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
 
 networks:
   raise-cdt-net:
