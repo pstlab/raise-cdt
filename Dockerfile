@@ -10,7 +10,7 @@ ARG MONGODB_PORT=27017
 ARG CLIENT_DIR=/gui
 
 # Clone and build RAISE-CDT
-RUN git clone --recursive -b uncertainty https://github.com/pstlab/raise-cdt \
+RUN git clone --recursive https://github.com/pstlab/raise-cdt \
     && cd raise-cdt \
     && mkdir build && cd build \
     && cmake -DLOGGING_LEVEL=DEBUG -DMONGODB_HOST=${MONGODB_HOST} -DMONGODB_PORT=${MONGODB_PORT} -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
@@ -26,4 +26,4 @@ RUN mv /raise-cdt/build/raise-cdt /cdt \
     && rm -rf /raise-cdt
 
 # Start the RAISE-CDT application
-CMD ["./raise-cdt"]
+CMD ["/cdt"]
