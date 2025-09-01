@@ -1,14 +1,9 @@
-import { AppComponent, BrandComponent, Connection } from '@ratiosolver/flick';
+import { AppComponent, BrandComponent, Connection, Settings } from '@ratiosolver/flick';
 import { coco } from '@ratiosolver/coco';
 import { Offcanvas } from './offcanvas';
 import './style.css'
-import { Buffer } from 'buffer';
-declare global {
-  interface Window {
-    Buffer: typeof Buffer;
-  }
-}
-window.Buffer = Buffer;
+
+Settings.get_instance().load_settings({ ws_path: '/coco' });
 
 const offcanvas_id = 'restart-offcanvas';
 

@@ -11,13 +11,13 @@ namespace cdt
     raise_cdt(coco::coco &cc) noexcept;
 
     /**
-     * @brief Creates a new user with the specified Keycloak ID.
+     * @brief Creates a new user with the specified Keycloak ID and returns a reference to the corresponding coco::item.
      *
-     * This function initializes a user entity using the provided Keycloak identifier.
-     *
-     * @param keycloak_id The unique identifier from Keycloak for the user.
+     * @param keycloak_id The Keycloak ID for the new user.
+     * @return Reference to the newly created coco::item.
+     * @throws May throw an exception if user creation fails.
      */
-    void create_user(std::string_view keycloak_id);
+    coco::item &create_user(std::string_view keycloak_id);
     /**
      * @brief Retrieves a reference to a coco::item associated with the specified Keycloak ID.
      *

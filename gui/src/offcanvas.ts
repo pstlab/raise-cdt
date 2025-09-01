@@ -1,4 +1,4 @@
-import { APIElement, AsyncElement, coco, ItemElement, TaxonomyElement, TypeList } from "@ratiosolver/coco";
+import { coco, ItemElement, TaxonomyElement, TypeList } from "@ratiosolver/coco";
 import { App, Component, SelectorGroup, UListComponent } from "@ratiosolver/flick";
 
 class ULComponent extends Component<void, HTMLUListElement> {
@@ -8,8 +8,6 @@ class ULComponent extends Component<void, HTMLUListElement> {
     this.element.classList.add('nav', 'nav-pills', 'list-group', 'flex-column');
 
     this.add_child(new TaxonomyElement(group));
-    this.add_child(new APIElement(group));
-    this.add_child(new AsyncElement(group));
   }
 }
 

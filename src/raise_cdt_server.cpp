@@ -25,11 +25,11 @@ namespace cdt
                                {"content", {{"application/json", {{"schema", {{"type", "object"}, {"properties", {{"keycloak_id", {{"type", "string"}, {"format", "uuid"}, {"description", "The Keycloak ID for the new user."}}}}}, {"required", {"keycloak_id"}}}}}}}}}},
                              {"responses",
                               {{"201",
-                                {{"description", "User created successfully."}}},
-                               {"409",
-                                {{"description", "User already exists."}}},
+                                {{"description", "User created successfully."}, {"content", {{"text/plain", {{"schema", {{"type", "string"}, {"pattern", "^[a-fA-F0-9]{24}$"}, {"description", "The ID of the newly created item."}}}}}}}}},
                                {"400",
-                                {{"description", "Invalid request."}}}}}}});
+                                {{"description", "Invalid request."}}},
+                               {"409",
+                                {{"description", "User already exists."}}}}}}});
     }
 
     std::unique_ptr<network::response> raise_cdt_server::get_user(const network::request &req)
@@ -56,8 +56,8 @@ namespace cdt
         std::string keycloak_id = body["keycloak_id"];
         try
         {
-            cdt.create_user(keycloak_id);
-            return std::make_unique<network::response>(network::status_code::created);
+            auto &usr = cdt.create_user(keycloak_id);
+            return std::make_unique<network::string_response>(std::string(usr.get_id()), network::status_code::created);
         }
         catch (const std::exception &e)
         {
