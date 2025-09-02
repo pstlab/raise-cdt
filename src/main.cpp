@@ -26,10 +26,6 @@ int main()
     mongocxx::instance inst{}; // This should be done only once.
     coco::mongo_db db;
     coco::coco cc(db);
-    auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
-    auto &fcm = cc.add_module<coco::coco_fcm>(cc);
-    cc.add_module<cdt::raise_cdt_mqtt>(cc);
-    cc.init();
 
     try
     {
@@ -141,6 +137,11 @@ int main()
         cc.create_reactive_rule("physical_fatigue", read_rule("rules/physical_fatigue.clp"));
         cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
     }
+
+    auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
+    auto &fcm = cc.add_module<coco::coco_fcm>(cc);
+    cc.add_module<cdt::raise_cdt_mqtt>(cc);
+    cc.init();
 
     coco::coco_server srv(cc);
 #ifdef ENABLE_CORS

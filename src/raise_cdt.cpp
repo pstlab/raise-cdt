@@ -16,7 +16,7 @@ namespace cdt
     coco::item &raise_cdt::create_user(std::string_view keycloak_id)
     {
         auto &db = get_coco().get_db().get_module<raise_cdt_db>();
-        auto &usr = get_coco().create_item(get_coco().get_type("User"));
+        auto &usr = get_coco().create_item(get_coco().get_type("User"), {{"keycloak_id", keycloak_id.data()}});
         db.create_user(keycloak_id, usr.get_id());
         CREATED_USER(keycloak_id, usr);
         return usr;
