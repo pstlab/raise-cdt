@@ -4,7 +4,7 @@
 #undef RANGE
 #include <pqxx/pqxx>
 
-#define POSTGRES_URI(account, host, port) "postgresql://" account "@ " host ":" port "/raise_udp_db"
+#define POSTGRES_URI(account, password, host, port) "postgresql://" account ":" password "@" host ":" port "/raise_db"
 
 namespace cdt
 {
@@ -17,7 +17,7 @@ namespace cdt
   class raise_cdt_db : public coco::mongo_module
   {
   public:
-    raise_cdt_db(coco::mongo_db &db) noexcept;
+    raise_cdt_db(coco::mongo_db &db, std::string_view postgresql_uri = POSTGRES_URI(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT)) noexcept;
 
     /**
      * @brief Creates a new user entry in the database.

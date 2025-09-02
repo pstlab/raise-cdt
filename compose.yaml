@@ -1,6 +1,6 @@
 services:
-  raise-cdt-db: # Citizen Digital Twin Database service
-    container_name: raise-cdt-db
+  raise-mongo: # MongoDB service
+    container_name: raise-mongo
     image: mongo
     networks:
       - raise-net
@@ -8,15 +8,31 @@ services:
       - "27017:27017"
     restart: unless-stopped
 
-  raise-udp-db: # Urban Data Platform Database service
-    container_name: raise-udp-db
+  raise-postgres: # PostgreSQL service
+    container_name: raise-postgres
     image: postgres
     networks:
       - raise-net
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_USER=account
       - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=raise_db
+
+  raise-pgadmin: # pgAdmin service
+    depends_on:
+      - raise-postgres
+    container_name: raise-pgadmin
+    image: dpage/pgadmin4
+    networks:
+      - raise-net
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
 
   raise-mqtt: # MQTT broker service
     container_name: raise-mqtt
@@ -31,8 +47,8 @@ services:
 
   raise-cdt: # CoCo service
     depends_on:
-      - raise-cdt-db
-      - raise-udp-db
+      - raise-mongo
+      - raise-postgres
       - raise-mqtt
     container_name: raise-cdt
     image: raise-cdt
@@ -44,9 +60,10 @@ services:
     build:
       context: .
       args:
-        - MONGODB_HOST=raise-cdt-db
-        - POSTGRES_ACCOUNT=account
-        - POSTGRES_HOST=raise-udp-db
+        - MONGODB_HOST=raise-mongo
+        - POSTGRES_USER=account
+        - POSTGRES_PASSWORD=yourpassword
+        - POSTGRES_HOST=raise-postgres
         - MQTT_HOST=raise-mqtt
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}

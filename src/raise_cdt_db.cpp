@@ -5,7 +5,7 @@
 
 namespace cdt
 {
-    raise_cdt_db::raise_cdt_db(coco::mongo_db &db) noexcept : mongo_module(db), users_collection(get_db()["users"]), pg_conn(POSTGRES_URI(POSTGRES_ACCOUNT, POSTGRES_HOST, POSTGRES_PORT))
+    raise_cdt_db::raise_cdt_db(coco::mongo_db &db, std::string_view postgresql_uri) noexcept : mongo_module(db), users_collection(get_db()["users"]), pg_conn(postgresql_uri.data())
     {
         assert(users_collection);
         if (users_collection.list_indexes().begin() == users_collection.list_indexes().end())
