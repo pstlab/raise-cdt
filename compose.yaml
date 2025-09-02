@@ -1,4 +1,25 @@
 services:
+  raise-keycloak: # Keycloak service
+    container_name: raise-keycloak
+    build:
+      context: ./keycloak
+    networks:
+      - raise-net
+    ports:
+      - "8443:8443"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: raise-postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_USERNAME: account
+      KC_DB_PASSWORD: yourpassword
+      KC_DB_URL_DATABASE: raise_db
+      KC_HOSTNAME: localhost
+      COCO_API_URL: http://raise-cdt:8080
+    restart: unless-stopped
+
   raise-mongo: # MongoDB service
     container_name: raise-mongo
     image: mongo
@@ -51,12 +72,6 @@ services:
       - raise-postgres
       - raise-mqtt
     container_name: raise-cdt
-    image: raise-cdt
-    networks:
-      - raise-net
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
     build:
       context: .
       args:
@@ -65,9 +80,14 @@ services:
         - POSTGRES_USER=account
         - POSTGRES_PASSWORD=yourpassword
         - MQTT_HOST=raise-mqtt
+    networks:
+      - raise-net
+    ports:
+      - "8080:8080"
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
       - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
+    restart: unless-stopped
 
 networks:
   raise-net:
