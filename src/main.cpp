@@ -11,6 +11,7 @@
 #include "cors.hpp"
 #endif
 #include <mongocxx/instance.hpp>
+#undef RANGE
 #include <pqxx/pqxx>
 #include <thread>
 
