@@ -24,3 +24,5 @@ This repository provides the foundations for developing **Citizen Digital Twins 
 
 Access the pgAdmin interface at `http://localhost:5050` (default credentials: `admin@local.it` / `admin`).  
 Run `test_db.sql` in pgAdmin to initialize the database schema.
+
+Enable the Keycloak user registration listener by logging into the Keycloak admin console at `https://localhost:8081` (default credentials: `admin` / `admin`), Realm settings -> Events -> Event listeners -> add `user-registration-listener`.
