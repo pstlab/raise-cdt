@@ -11,8 +11,6 @@
 #include "cors.hpp"
 #endif
 #include <mongocxx/instance.hpp>
-#undef RANGE
-#include <pqxx/pqxx>
 #include <thread>
 
 std::string read_rule(const std::string &path)
@@ -25,10 +23,6 @@ std::string read_rule(const std::string &path)
 
 int main()
 {
-    LOG_DEBUG("Connecting to PostgreSQL database");
-    LOG_DEBUG("Connection string: " << "host=" POSTGRES_HOST " port=" POSTGRES_PORT " dbname=raise_db user=" POSTGRES_USER " password=****");
-    pqxx::connection conn("host=" POSTGRES_HOST " port=" POSTGRES_PORT " dbname=raise_db user=" POSTGRES_USER " password=" POSTGRES_PASSWORD);
-
     mongocxx::instance inst{}; // This should be done only once.
     coco::mongo_db db;
     coco::coco cc(db);
