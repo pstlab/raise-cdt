@@ -2,6 +2,7 @@
 #include "coco.hpp"
 #include "mongo_db.hpp"
 #include "coco_fcm.hpp"
+#include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
 #include "coco_noauth.hpp"
 #include "fcm_server.hpp"
@@ -27,6 +28,7 @@ int main()
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
+    cc.add_module<cdt::raise_cdt_mqtt>(cc);
     cc.init();
 
     try
@@ -39,6 +41,7 @@ int main()
 
         json::json static_props = {
             {"name", {{"type", "string"}}},
+            {"keycloak_id", {{"type", "string"}}},
             {"baseline_nutrition", {{"type", "bool"}}},
             {"baseline_fall", {{"type", "int"}, {"min", 0}, {"max", 10}}},
             //    "baseline_rehabilitation_school_load": {"type": "bool"},

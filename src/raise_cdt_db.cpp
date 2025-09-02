@@ -34,6 +34,18 @@ namespace cdt
         return result->view()["_id"].get_oid().value.to_string();
     }
 
+    bool raise_cdt_db::user_exists(std::string_view keycloak_id) { return static_cast<bool>(users_collection.find_one(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("keycloak_id", keycloak_id.data())))); }
+
+    std::vector<raise_user> raise_cdt_db::get_users() noexcept
+    {
+        std::vector<raise_user> users;
+        pqxx::work txn{pg_conn};
+        pqxx::result r = txn.exec("SELECT id, static_props FROM users");
+        for (const auto &row : r)
+            users.emplace_back(raise_user{row[0].c_str(), json::load(row[1].c_str())});
+        return users;
+    }
+
     json::json raise_cdt_db::get_urban_data_platform_data(std::string_view keycloak_id)
     {
         pqxx::work txn{pg_conn};

@@ -7,6 +7,12 @@
 
 namespace cdt
 {
+  struct raise_user
+  {
+    std::string id;
+    json::json static_props;
+  };
+
   class raise_cdt_db : public coco::mongo_module
   {
   public:
@@ -30,6 +36,27 @@ namespace cdt
      * @return std::string The internal user identifier associated with the Keycloak ID.
      */
     std::string get_user(std::string_view keycloak_id);
+
+    /**
+     * @brief Checks if a user exists in the database based on their Keycloak ID.
+     *
+     * This function queries the database to determine if a user with the specified
+     * Keycloak identifier exists. It returns true if the user is found, and false otherwise.
+     *
+     * @param keycloak_id The Keycloak ID used to identify the user.
+     * @return bool True if the user exists, false otherwise.
+     */
+    bool user_exists(std::string_view keycloak_id);
+
+    /**
+     * @brief Retrieves a list of all users from the database.
+     *
+     * This function queries the database to obtain a list of all users, returning
+     * their internal identifiers and static properties as a vector of `raise_user` structures.
+     *
+     * @return std::vector<raise_user> A vector containing all users with their IDs and static properties.
+     */
+    std::vector<raise_user> get_users() noexcept;
 
     /**
      * @brief Retrieves the Urban Data Platform data associated with a given Keycloak ID.

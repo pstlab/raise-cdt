@@ -21,7 +21,7 @@ set(ENABLE_CORS ON CACHE BOOL "Enable CORS middleware" FORCE)
 message(STATUS "Postgres Host: ${POSTGRES_HOST}")
 message(STATUS "Postgres Port: ${POSTGRES_PORT}")
 
-add_executable(raise-cdt src/main.cpp src/raise_cdt.cpp src/raise_cdt_server.cpp src/raise_cdt_db.cpp)
+add_executable(raise-cdt src/main.cpp src/raise_cdt.cpp src/raise_cdt_server.cpp src/raise_cdt_db.cpp src/raise_cdt_mqtt.cpp)
 target_compile_features(raise-cdt PUBLIC cxx_std_17)
 target_include_directories(raise-cdt PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 if(NOT TARGET CoCo)

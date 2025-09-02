@@ -3,10 +3,16 @@
 #include "coco_module.hpp"
 #include "coco_item.hpp"
 
+#define CREATED_USER(keycloak_id, itm) created_user(keycloak_id, itm)
+
 namespace cdt
 {
+  class listener;
+
   class raise_cdt : public coco::coco_module
   {
+    friend class listener;
+
   public:
     raise_cdt(coco::coco &cc) noexcept;
 
@@ -33,5 +39,32 @@ namespace cdt
      * @throws May throw an exception if the update operation fails.
      */
     void update_udp_data(std::string_view keycloak_id);
+
+  private:
+    void created_user(std::string_view keycloak_id, const coco::item &itm);
+
+  private:
+    std::vector<listener *> listeners;
+  };
+
+  class listener
+  {
+    friend class raise_cdt;
+
+  public:
+    listener(raise_cdt &rcdt) noexcept;
+    virtual ~listener();
+
+  private:
+    /**
+     * @brief Notifies when the user item is created.
+     *
+     * @param keycloak_id The Keycloak ID for the new user.
+     * @param itm The created user item.
+     */
+    virtual void created_user([[maybe_unused]] std::string_view keycloak_id, [[maybe_unused]] const coco::item &itm) {}
+
+  private:
+    raise_cdt &rcdt;
   };
 } // namespace cdt
