@@ -61,9 +61,9 @@ services:
       context: .
       args:
         - MONGODB_HOST=raise-mongo
+        - POSTGRES_HOST=raise-postgres
         - POSTGRES_USER=account
         - POSTGRES_PASSWORD=yourpassword
-        - POSTGRES_HOST=raise-postgres
         - MQTT_HOST=raise-mqtt
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}

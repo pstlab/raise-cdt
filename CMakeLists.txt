@@ -18,6 +18,7 @@ set(BUILD_FCM ON CACHE BOOL "Build Firebase Cloud Messaging" FORCE)
 set(BUILD_MQTT ON CACHE BOOL "Build MQTT middleware" FORCE)
 set(BUILD_COCO_SERVER ON CACHE BOOL "Build the CoCo server" FORCE)
 set(ENABLE_CORS ON CACHE BOOL "Enable CORS middleware" FORCE)
+set(LOGGING_LEVEL "DEBUG" CACHE STRING "Logging level (DEBUG, INFO, WARN, ERROR)" FORCE)
 
 message(STATUS "Postgres Host: ${POSTGRES_HOST}")
 message(STATUS "Postgres Port: ${POSTGRES_PORT}")
