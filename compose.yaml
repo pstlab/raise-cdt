@@ -47,6 +47,7 @@ services:
         - MONGODB_HOST=raise-cdt-db
         - POSTGRES_ACCOUNT=account
         - POSTGRES_HOST=raise-udp-db
+        - MQTT_HOST=raise-mqtt
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
       - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mongo_db.hpp"
+#undef RANGE
 #include <pqxx/pqxx>
 
 #define POSTGRES_URI(account, host, port) "postgresql://" account "@ " host ":" port "/raise_udp_db"
