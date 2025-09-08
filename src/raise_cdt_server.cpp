@@ -14,7 +14,7 @@ namespace cdt
                                            {"parameters", {{{"name", "keycloak_id"}, {"in", "path"}, {"required", true}, {"schema", {{"type", "string"}, {"format", "uuid"}}}, {"description", "The Keycloak ID of the user to retrieve."}}}},
                                            {"responses",
                                             {{"200",
-                                              {{"description", "User retrieved successfully."}, {"content", {{"application/json", {{"schema", {{"type", {"$ref", "#/components/schemas/item"}}}}}}}}}},
+                                              {{"description", "User retrieved successfully."}, {"content", {{"application/json", {{"schema", {{"$ref", "#/components/schemas/item"}}}}}}}}},
                                              {"404",
                                               {{"description", "User not found."}}}}}}});
         add_path("/users", {"post",
