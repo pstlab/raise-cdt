@@ -1,5 +1,8 @@
 #include "raise_cdt.hpp"
 #include "raise_cdt_db.hpp"
+#ifdef BUILD_POSTGRESQL
+#include "raise_db.hpp"
+#endif
 #include "coco.hpp"
 #include "logging.hpp"
 
@@ -7,10 +10,13 @@ namespace cdt
 {
     raise_cdt::raise_cdt(coco::coco &cc) noexcept : coco_module(cc)
     {
-        auto &db = get_coco().get_db().add_module<raise_cdt_db>(static_cast<coco::mongo_db &>(get_coco().get_db()));
-        for (auto &usr : db.get_users())
+        [[maybe_unused]] auto &db = get_coco().get_db().add_module<raise_cdt_db>(static_cast<coco::mongo_db &>(get_coco().get_db()));
+#ifdef BUILD_POSTGRESQL
+        auto &r_db = get_coco().get_db().get_module<raise_db>();
+        for (auto &usr : r_db.get_users())
             if (!db.user_exists(usr.id))
                 create_user(usr.id);
+#endif
     }
 
     coco::item &raise_cdt::create_user(std::string_view keycloak_id)
@@ -29,13 +35,15 @@ namespace cdt
         return get_coco().get_item(id);
     }
 
+#ifdef BUILD_POSTGRESQL
     void raise_cdt::update_udp_data(std::string_view keycloak_id)
     {
-        auto &db = get_coco().get_db().get_module<raise_cdt_db>();
+        auto &r_db = get_coco().get_db().get_module<raise_db>();
         auto &usr = get_user(keycloak_id);
-        json::json udp_data = db.get_urban_data_platform_data(keycloak_id);
+        json::json udp_data = r_db.get_urban_data_platform_data(keycloak_id);
         get_coco().set_value(usr, std::move(udp_data));
     }
+#endif
 
     void raise_cdt::created_user(std::string_view keycloak_id, const coco::item &itm)
     {

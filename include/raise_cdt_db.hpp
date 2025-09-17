@@ -1,23 +1,13 @@
 #pragma once
 
 #include "mongo_db.hpp"
-#undef RANGE
-#include <pqxx/pqxx>
-
-#define POSTGRES_URI(account, password, host, port) "postgresql://" account ":" password "@" host ":" port "/raise_db"
 
 namespace cdt
 {
-  struct raise_user
-  {
-    std::string id;
-    json::json static_props;
-  };
-
   class raise_cdt_db : public coco::mongo_module
   {
   public:
-    raise_cdt_db(coco::mongo_db &db, std::string_view postgresql_uri = POSTGRES_URI(POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT)) noexcept;
+    raise_cdt_db(coco::mongo_db &db) noexcept;
 
     /**
      * @brief Creates a new user entry in the database.
@@ -49,30 +39,7 @@ namespace cdt
      */
     bool user_exists(std::string_view keycloak_id);
 
-    /**
-     * @brief Retrieves a list of all users from the database.
-     *
-     * This function queries the database to obtain a list of all users, returning
-     * their internal identifiers and static properties as a vector of `raise_user` structures.
-     *
-     * @return std::vector<raise_user> A vector containing all users with their IDs and static properties.
-     */
-    std::vector<raise_user> get_users() noexcept;
-
-    /**
-     * @brief Retrieves the Urban Data Platform data associated with a given Keycloak ID.
-     *
-     * This function queries the database to obtain Urban Data Platform (UDP) data
-     * for the user identified by the provided Keycloak ID. The returned data is
-     * formatted as a JSON object.
-     *
-     * @param keycloak_id The unique identifier of the user in Keycloak.
-     * @return json::json A JSON object containing the user's Urban Data Platform data.
-     */
-    json::json get_urban_data_platform_data(std::string_view keycloak_id);
-
   private:
     mongocxx::collection users_collection;
-    pqxx::connection pg_conn;
   };
 } // namespace cdt

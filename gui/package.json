@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "typescript": "~5.8.3",
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "@ratiosolver/coco": "^0.0.54"
+    "@ratiosolver/coco": "^0.0.63",
+    "@ratiosolver/flick": "^0.1.12",
+    "@ratiosolver/solver": "^0.0.42",
+    "bootstrap": "^5.3.6"
   }
 }

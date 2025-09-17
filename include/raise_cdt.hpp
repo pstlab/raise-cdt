@@ -32,6 +32,7 @@ namespace cdt
      * @throws May throw an exception if the user is not found or retrieval fails.
      */
     coco::item &get_user(std::string_view keycloak_id);
+#ifdef BUILD_POSTGRESQL
     /**
      * @brief Updates the Urban Data Platform data for the user identified by the specified Keycloak ID.
      *
@@ -39,6 +40,7 @@ namespace cdt
      * @throws May throw an exception if the update operation fails.
      */
     void update_udp_data(std::string_view keycloak_id);
+#endif
 
   private:
     void created_user(std::string_view keycloak_id, const coco::item &itm);

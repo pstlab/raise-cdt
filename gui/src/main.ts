@@ -1,21 +1,32 @@
 import { AppComponent, BrandComponent, Connection, Settings } from '@ratiosolver/flick';
 import { coco } from '@ratiosolver/coco';
-import { Offcanvas } from './offcanvas';
+import { Offcanvas as RAISEOffcanvas } from './offcanvas';
 import './style.css'
+import { Offcanvas } from 'bootstrap';
 
 Settings.get_instance().load_settings({ ws_path: '/coco' });
 
 const offcanvas_id = 'restart-offcanvas';
 
+class RAISEBrandComponent extends BrandComponent {
+
+  constructor() {
+    super('Citizen Digital Twin', 'logo.jpg', 300, 32);
+    this.node.id = 'raise-brand';
+  }
+}
+
 class RAISEApp extends AppComponent {
 
   constructor() {
-    super();
+    super(new RAISEBrandComponent());
 
-    // Create and add brand element
-    this.navbar.add_child(new BrandComponent('Citizen Digital Twin', 'logo.jpg', 300, 32, offcanvas_id));
-
-    this.add_child(new Offcanvas(offcanvas_id));
+    const offcanvas = new RAISEOffcanvas(offcanvas_id);
+    this.add_child(offcanvas);
+    document.getElementById('raise-brand')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      Offcanvas.getOrCreateInstance(document.getElementById(offcanvas_id)!).toggle();
+    });
 
     Connection.get_instance().connect();
   }

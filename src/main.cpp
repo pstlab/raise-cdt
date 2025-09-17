@@ -1,6 +1,9 @@
 #include "raise_cdt.hpp"
 #include "coco.hpp"
 #include "mongo_db.hpp"
+#ifdef BUILD_POSTGRESQL
+#include "raise_db.hpp"
+#endif
 #include "coco_fcm.hpp"
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
@@ -25,6 +28,9 @@ int main()
 {
     mongocxx::instance inst{}; // This should be done only once.
     coco::mongo_db db;
+#ifdef BUILD_POSTGRESQL
+    db.add_module<cdt::raise_db>(db);
+#endif
     coco::coco cc(db);
 
     try
