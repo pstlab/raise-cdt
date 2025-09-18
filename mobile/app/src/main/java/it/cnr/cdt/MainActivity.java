@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 
     public void onCreateUserButtonClick(@NonNull View view) {
         OkHttpClient client = new OkHttpClient();
-        final Request.Builder builder = new Request.Builder().url("http://150.146.65.20:8080/users/")
+        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/users/")
                 .post(RequestBody.create("{\"keycloak_id\": " + tokenEditText.getText().toString() + "}",
                         MediaType.parse("application/json")));
         try (Response response = client.newCall(builder.build()).execute()) {
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 
     public void newToken(@NonNull String id, @NonNull String token) {
         OkHttpClient client = new OkHttpClient();
-        final Request.Builder builder = new Request.Builder().url("http://150.146.65.20:8080/fcm_tokens/")
+        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/fcm_tokens/")
                 .post(RequestBody.create("{\"id\": " + id + ", \"token\": \"" + token + "\"}",
                         MediaType.parse("application/json")));
         try (Response response = client.newCall(builder.build()).execute()) {
