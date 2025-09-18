@@ -1,24 +1,24 @@
 services:
-  raise-keycloak: # Keycloak service
-    container_name: raise-keycloak
-    build:
-      context: ./keycloak
-    networks:
-      - raise-net
-    ports:
-      - "8443:8443"
-    environment:
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL_HOST: raise-postgres
-      KC_DB_URL_PORT: 5432
-      KC_DB_USERNAME: account
-      KC_DB_PASSWORD: yourpassword
-      KC_DB_URL_DATABASE: raise_db
-      KC_HOSTNAME: localhost
-      COCO_API_URL: http://raise-cdt:8080
-    restart: unless-stopped
+  # raise-keycloak: # Keycloak service
+  #   container_name: raise-keycloak
+  #   build:
+  #     context: ./keycloak
+  #   networks:
+  #     - raise-net
+  #   ports:
+  #     - "8443:8443"
+  #   environment:
+  #     KC_BOOTSTRAP_ADMIN_USERNAME: admin
+  #     KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+  #     KC_DB: postgres
+  #     KC_DB_URL_HOST: raise-postgres
+  #     KC_DB_URL_PORT: 5432
+  #     KC_DB_USERNAME: account
+  #     KC_DB_PASSWORD: yourpassword
+  #     KC_DB_URL_DATABASE: raise_db
+  #     KC_HOSTNAME: localhost
+  #     COCO_API_URL: http://raise-cdt:8080
+  #   restart: unless-stopped
 
   raise-swagger-ui: # Swagger UI service
     container_name: raise-swagger-ui
@@ -40,31 +40,31 @@ services:
       - "27017:27017"
     restart: unless-stopped
 
-  raise-postgres: # PostgreSQL service
-    container_name: raise-postgres
-    image: postgres
-    networks:
-      - raise-net
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=account
-      - POSTGRES_PASSWORD=yourpassword
-      - POSTGRES_DB=raise_db
+  # raise-postgres: # PostgreSQL service
+  #   container_name: raise-postgres
+  #   image: postgres
+  #   networks:
+  #     - raise-net
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=account
+  #     - POSTGRES_PASSWORD=yourpassword
+  #     - POSTGRES_DB=raise_db
 
-  raise-pgadmin: # pgAdmin service
-    depends_on:
-      - raise-postgres
-    container_name: raise-pgadmin
-    image: dpage/pgadmin4
-    networks:
-      - raise-net
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@local.it
-      PGADMIN_DEFAULT_PASSWORD: admin
-    restart: unless-stopped
+  # raise-pgadmin: # pgAdmin service
+  #   depends_on:
+  #     - raise-postgres
+  #   container_name: raise-pgadmin
+  #   image: dpage/pgadmin4
+  #   networks:
+  #     - raise-net
+  #   ports:
+  #     - "5050:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@local.it
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   restart: unless-stopped
 
   raise-mqtt: # MQTT broker service
     container_name: raise-mqtt
@@ -80,16 +80,16 @@ services:
   raise-cdt: # CoCo service
     depends_on:
       - raise-mongo
-      - raise-postgres
+      # - raise-postgres
       - raise-mqtt
     container_name: raise-cdt
     build:
       context: .
       args:
         - MONGODB_HOST=raise-mongo
-        - POSTGRES_HOST=raise-postgres
-        - POSTGRES_USER=account
-        - POSTGRES_PASSWORD=yourpassword
+        # - POSTGRES_HOST=raise-postgres
+        # - POSTGRES_USER=account
+        # - POSTGRES_PASSWORD=yourpassword
         - MQTT_HOST=raise-mqtt
     networks:
       - raise-net
