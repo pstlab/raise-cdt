@@ -44,6 +44,8 @@ int main()
         json::json static_props = {
             {"name", {{"type", "string"}}},
             {"keycloak_id", {{"type", "string"}}},
+            {"training", {{"type", "bool"}}},
+            {"unavailable_states", {{"type", "bool"}}},
             {"baseline_nutrition", {{"type", "bool"}}},
             {"baseline_fall", {{"type", "int"}, {"min", 0}, {"max", 10}}},
             //    "baseline_rehabilitation_school_load": {"type": "bool"},
