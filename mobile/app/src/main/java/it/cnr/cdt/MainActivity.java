@@ -1,4 +1,4 @@
-package it.cnr.nanodroid;
+package it.cnr.cdt;
 
 import android.app.Activity;
 import android.os.Bundle;
