@@ -4,3 +4,6 @@ build/
 
 # VS Code settings
 .vscode/
+
+# Local configuration file (sdk path, etc)
+google-services.json
