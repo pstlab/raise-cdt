@@ -1,4 +1,4 @@
-package it.cnr.coco;
+package it.cnr.cdt;
 
 import android.util.Log;
 
