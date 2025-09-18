@@ -32,34 +32,36 @@ public class MainActivity extends Activity {
     }
 
     public void onCreateUserButtonClick(@NonNull View view) {
-        OkHttpClient client = new OkHttpClient();
-        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/users/")
-                .post(RequestBody.create("{\"keycloak_id\": " + tokenEditText.getText().toString() + "}",
-                        MediaType.parse("application/json")));
-        try (Response response = client.newCall(builder.build()).execute()) {
-            if (response.isSuccessful()) {
-                String id = response.body().string();
-                getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("id", id).apply();
-                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "FCM token retrieved successfully");
-                        String fcm_token = task.getResult();
-                        Log.d(TAG, "FCM Token: " + fcm_token);
-                        Executors.newSingleThreadExecutor().execute(() -> newToken(id, fcm_token));
-                    } else
-                        Log.e("Connection", "Failed to get FCM token", task.getException());
-                });
-            } else {
-                Log.e(TAG, "Failed to create user: " + response.code());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+            final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/users")
+                    .post(RequestBody.create("{\"keycloak_id\": " + tokenEditText.getText().toString() + "}",
+                            MediaType.parse("application/json")));
+            try (Response response = client.newCall(builder.build()).execute()) {
+                if (response.isSuccessful()) {
+                    String id = response.body().string();
+                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("id", id).apply();
+                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "FCM token retrieved successfully");
+                            String fcm_token = task.getResult();
+                            Log.d(TAG, "FCM Token: " + fcm_token);
+                            Executors.newSingleThreadExecutor().execute(() -> newToken(id, fcm_token));
+                        } else
+                            Log.e("Connection", "Failed to get FCM token", task.getException());
+                    });
+                } else {
+                    Log.e(TAG, "Failed to create user: " + response.code());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error during user creation", e);
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error during user creation", e);
-        }
+        });
     }
 
     public void newToken(@NonNull String id, @NonNull String token) {
         OkHttpClient client = new OkHttpClient();
-        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/fcm_tokens/")
+        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/fcm_tokens")
                 .post(RequestBody.create("{\"id\": " + id + ", \"token\": \"" + token + "\"}",
                         MediaType.parse("application/json")));
         try (Response response = client.newCall(builder.build()).execute()) {
