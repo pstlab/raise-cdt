@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
     public void newToken(@NonNull String id, @NonNull String token) {
         OkHttpClient client = new OkHttpClient();
         final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/fcm_tokens")
-                .post(RequestBody.create("{\"id\": " + id + ", \"token\": \"" + token + "\"}",
+                .post(RequestBody.create("{\"id\": \"" + id + "\", \"token\": \"" + token + "\"}",
                         MediaType.parse("application/json")));
         try (Response response = client.newCall(builder.build()).execute()) {
             if (response.isSuccessful()) {
