@@ -119,6 +119,13 @@
                     "type": {
                         "description": "The name of the type that this item instantiates.",
                         "type": "string"
+                    },
+                    "value": {
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/data"
+                        },
+                        "description": "Dynamic data of the item defined by its type.",
+                        "type": "object"
                     }
                 },
                 "required": [
@@ -660,6 +667,40 @@
                     }
                 },
                 "summary": "Retrieve a specific RAISE-CDT item."
+            },
+            "patch": {
+                "description": "Endpoint to update a specific item by ID. You can provide partial updates for the item's properties.",
+                "parameters": [
+                    {
+                        "description": "The ID of the specific RAISE-CDT item to update.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^[a-fA-F0-9]{24}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/item"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Item updated successfully."
+                    },
+                    "404": {
+                        "description": "Item not found"
+                    }
+                },
+                "summary": "Update a specific RAISE-CDT item."
             }
         },
         "/reactive_rules": {
