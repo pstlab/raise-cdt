@@ -848,7 +848,6 @@
                                 "properties": {
                                     "keycloak_id": {
                                         "description": "The Keycloak ID for the new user.",
-                                        "format": "uuid",
                                         "type": "string"
                                     }
                                 },
@@ -894,7 +893,6 @@
                         "name": "keycloak_id",
                         "required": true,
                         "schema": {
-                            "format": "uuid",
                             "type": "string"
                         }
                     }
