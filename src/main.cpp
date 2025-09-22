@@ -40,7 +40,7 @@ int main()
     std::string mqtt_uri = "mqtt://" + mqtt_user + ":" + mqtt_password + "@" + mqtt_host + ":" + mqtt_port;
 
     LOG_DEBUG("Connecting to MongoDB: " + db_uri);
-    coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), db_uri);
+    coco::mongo_db db(json::json({{"name", COCO_NAME}}), db_uri);
 #ifdef BUILD_POSTGRESQL
     db.add_module<cdt::raise_db>(db);
 #endif
