@@ -35,7 +35,9 @@ int main()
     std::string db_uri = "mongodb://" + db_user + ":" + db_password + "@" + db_host + ":" + db_port;
     std::string mqtt_host = std::getenv("MQTT_HOST") ? std::getenv("MQTT_HOST") : MQTT_HOST;
     std::string mqtt_port = std::getenv("MQTT_PORT") ? std::getenv("MQTT_PORT") : MQTT_PORT;
-    std::string mqtt_uri = "mqtt://" + mqtt_host + ":" + mqtt_port;
+    std::string mqtt_user = std::getenv("MQTT_USER") ? std::getenv("MQTT_USER") : MQTT_USER;
+    std::string mqtt_password = std::getenv("MQTT_PASSWORD") ? std::getenv("MQTT_PASSWORD") : MQTT_PASSWORD;
+    std::string mqtt_uri = "mqtt://" + mqtt_user + ":" + mqtt_password + "@" + mqtt_host + ":" + mqtt_port;
 
     LOG_DEBUG("Connecting to MongoDB: " + db_uri);
     coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), db_uri);
