@@ -148,7 +148,11 @@ int main()
         cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
     }
 
-    cc.add_module<cdt::raise_cdt_mqtt>(cc);
+    auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
+    do
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(2)); // wait for mqtt to connect
+    } while (!mqtt.is_connected());
     cc.init();
 
     coco::coco_server srv(cc);
