@@ -27,7 +27,7 @@ std::string read_rule(const std::string &path)
 int main()
 {
     mongocxx::instance inst{}; // This should be done only once.
-    coco::mongo_db db;
+    coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), MONGODB_AUTH_URI(MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT));
 #ifdef BUILD_POSTGRESQL
     db.add_module<cdt::raise_db>(db);
 #endif
