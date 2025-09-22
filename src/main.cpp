@@ -27,6 +27,8 @@ std::string read_rule(const std::string &path)
 int main()
 {
     mongocxx::instance inst{}; // This should be done only once.
+    LOG_DEBUG("Starting RAISE CDT...");
+    LOG_DEBUG("Connecting to MongoDB: " MONGODB_AUTH_URI(MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT));
     coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), MONGODB_AUTH_URI(MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT));
 #ifdef BUILD_POSTGRESQL
     db.add_module<cdt::raise_db>(db);
@@ -148,6 +150,7 @@ int main()
         cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
     }
 
+    LOG_DEBUG("Connecting to MQTT broker: " MQTT_URI(MQTT_HOST, MQTT_PORT));
     auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
     do
     {
