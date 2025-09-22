@@ -14,6 +14,6 @@
     (if (and (>= ?fluctuation 2) (<= ?fluctuation 3)) then (add_data ?user (create$ FLUCTUATION) (create$ medium)))
     (if (>= ?fluctuation 4) then
         (add_data ?user (create$ FLUCTUATION) (create$ high))
-        (send_notification (?user "High fluctuation" "Anxiety is contributing to high fluctuation"))
+        (send_notification ?user "High fluctuation" "Anxiety is contributing to high fluctuation")
     )
 )

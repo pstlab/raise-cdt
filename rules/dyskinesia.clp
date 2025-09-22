@@ -14,6 +14,6 @@
     (if (and (>= ?dyskinesia 2) (<= ?dyskinesia 3)) then (add_data ?user (create$ DYSKINESIA) (create$ medium)))
     (if (>= ?dyskinesia 4) then
         (add_data ?user (create$ DYSKINESIA) (create$ high))
-        (send_notification (?user "High dyskinesia" "Anxiety is contributing to high dyskinesia"))
+        (send_notification ?user "High dyskinesia" "Anxiety is contributing to high dyskinesia")
     )
 )

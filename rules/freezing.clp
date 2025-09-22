@@ -29,6 +29,6 @@
     (if (and (>= ?freezing 2) (<= ?freezing 3)) then (add_data ?user (create$ FREEZING freezing_relevant) (create$ medium (to_json ?freezing_relevant))))
     (if (>= ?freezing 4) then
         (add_data ?user (create$ FREEZING freezing_relevant) (create$ high (to_json ?freezing_relevant)))
-        (send_notification (?user "High freezing" "Multiple factors are contributing to high freezing"))
+        (send_notification ?user "High freezing" "Multiple factors are contributing to high freezing")
     )
 )

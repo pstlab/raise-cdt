@@ -37,6 +37,6 @@
     (if (and (>= ?sensory_dysregulation 2) (<= ?sensory_dysregulation 3)) then (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant) (create$ medium (to_json ?sensory_dysregulation_relevant))))
     (if (>= ?sensory_dysregulation 4) then
         (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant) (create$ high (to_json ?sensory_dysregulation_relevant)))
-        (send_notification (?user "High sensory dysregulation" "Multiple factors are contributing to high sensory dysregulation"))
+        (send_notification ?user "High sensory dysregulation" "Multiple factors are contributing to high sensory dysregulation")
     )
 )

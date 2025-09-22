@@ -34,7 +34,6 @@ int main()
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
-    cc.add_module<cdt::raise_cdt_mqtt>(cc);
 
     try
     {
@@ -149,6 +148,7 @@ int main()
         cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
     }
 
+    cc.add_module<cdt::raise_cdt_mqtt>(cc);
     cc.init();
 
     coco::coco_server srv(cc);
