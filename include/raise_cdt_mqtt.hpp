@@ -8,7 +8,7 @@ namespace cdt
   class raise_cdt_mqtt : public coco::coco_mqtt, public listener
   {
   public:
-    raise_cdt_mqtt(coco::coco &cc, std::string_view mqtt_uri = MQTT_URI(MQTT_HOST, MQTT_PORT), std::string_view client_id = COCO_NAME) noexcept;
+    raise_cdt_mqtt(coco::coco &cc, std::string_view mqtt_uri = coco::default_mqtt_uri(), std::string_view client_id = COCO_NAME) noexcept;
 
   private:
     void on_connect(const std::string &cause) override;
