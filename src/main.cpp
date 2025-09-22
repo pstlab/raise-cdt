@@ -28,14 +28,25 @@ int main()
 {
     mongocxx::instance inst{}; // This should be done only once.
     LOG_DEBUG("Starting RAISE CDT...");
-    LOG_DEBUG("Connecting to MongoDB: " MONGODB_AUTH_URI(MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT));
-    coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), MONGODB_AUTH_URI(MONGODB_USER, MONGODB_PASSWORD, MONGODB_HOST, MONGODB_PORT));
+    std::string db_user = std::getenv("MONGODB_USER") ? std::getenv("MONGODB_USER") : MONGODB_USER;
+    std::string db_password = std::getenv("MONGODB_PASSWORD") ? std::getenv("MONGODB_PASSWORD") : MONGODB_PASSWORD;
+    std::string db_host = std::getenv("MONGODB_HOST") ? std::getenv("MONGODB_HOST") : MONGODB_HOST;
+    std::string db_port = std::getenv("MONGODB_PORT") ? std::getenv("MONGODB_PORT") : MONGODB_PORT;
+    std::string db_uri = "mongodb://" + db_user + ":" + db_password + "@" + db_host + ":" + db_port;
+    std::string mqtt_host = std::getenv("MQTT_HOST") ? std::getenv("MQTT_HOST") : MQTT_HOST;
+    std::string mqtt_port = std::getenv("MQTT_PORT") ? std::getenv("MQTT_PORT") : MQTT_PORT;
+    std::string mqtt_uri = "mqtt://" + mqtt_host + ":" + mqtt_port;
+
+    LOG_DEBUG("Connecting to MongoDB: " + db_uri);
+    coco::mongo_db db(json::json({{"name", {{"name", COCO_NAME}}}}), db_uri);
 #ifdef BUILD_POSTGRESQL
     db.add_module<cdt::raise_db>(db);
 #endif
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
+
+    std::getenv("FCM_CLIENT_EMAIL");
 
     try
     {
@@ -150,8 +161,8 @@ int main()
         cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
     }
 
-    LOG_DEBUG("Connecting to MQTT broker: " MQTT_URI(MQTT_HOST, MQTT_PORT));
-    auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
+    LOG_DEBUG("Connecting to MQTT broker: " + mqtt_uri);
+    auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc, mqtt_uri);
     do
     {
         std::this_thread::sleep_for(std::chrono::seconds(2)); // wait for mqtt to connect
