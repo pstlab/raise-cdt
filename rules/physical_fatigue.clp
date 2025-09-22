@@ -66,5 +66,8 @@
 
     (if (and (>= ?physical_fatigue 0) (<= ?physical_fatigue 1)) then (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ low (to_json ?physical_fatigue_relevant))))
     (if (and (>= ?physical_fatigue 2) (<= ?physical_fatigue 3)) then (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ medium (to_json ?physical_fatigue_relevant))))
-    (if (>= ?physical_fatigue 4) then (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ high (to_json ?physical_fatigue_relevant))))
+    (if (>= ?physical_fatigue 4) then
+        (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ high (to_json ?physical_fatigue_relevant)))
+        (send_notification (?user "High physical fatigue" "Multiple factors are contributing to high physical fatigue"))
+    )
 )

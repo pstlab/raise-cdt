@@ -49,5 +49,8 @@
 
     (if (and (>= ?excessive_heat 0) (<= ?excessive_heat 1)) then (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ low (to_json ?excessive_heat_relevant))))
     (if (and (>= ?excessive_heat 2) (<= ?excessive_heat 3)) then (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ medium (to_json ?excessive_heat_relevant))))
-    (if (>= ?excessive_heat 4) then (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ high (to_json ?excessive_heat_relevant))))
+    (if (>= ?excessive_heat 4) then
+        (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ high (to_json ?excessive_heat_relevant)))
+        (send_notification (?user "Excessive heat" "Multiple factors are contributing to excessive heat"))
+    )
 )

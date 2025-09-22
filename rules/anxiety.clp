@@ -75,5 +75,8 @@
 
     (if (and (>= ?anxiety 0) (<= ?anxiety 1)) then (add_data ?user (create$ ANXIETY anxiety_relevant) (create$ low (to_json ?anxiety_relevant))))
     (if (and (>= ?anxiety 2) (<= ?anxiety 3)) then (add_data ?user (create$ ANXIETY anxiety_relevant) (create$ medium (to_json ?anxiety_relevant))))
-    (if (>= ?anxiety 4) then (add_data ?user (create$ ANXIETY anxiety_relevant) (create$ high (to_json ?anxiety_relevant))))
+    (if (>= ?anxiety 4) then
+        (add_data ?user (create$ ANXIETY anxiety_relevant) (create$ high (to_json ?anxiety_relevant)))
+        (send_notification (?user "High anxiety" "Multiple factors are contributing to high anxiety")
+    )
 )

@@ -39,5 +39,8 @@
 
     (if (and (>= ?mental_fatigue 0) (<= ?mental_fatigue 1)) then (add_data ?user (create$ MENTAL_FATIGUE) (create$ low)))
     (if (and (>= ?mental_fatigue 2) (<= ?mental_fatigue 3)) then (add_data ?user (create$ MENTAL_FATIGUE) (create$ medium)))
-    (if (>= ?mental_fatigue 4) then (add_data ?user (create$ MENTAL_FATIGUE) (create$ high)))
+    (if (>= ?mental_fatigue 4) then
+        (add_data ?user (create$ MENTAL_FATIGUE) (create$ high))
+        (send_notification (?user "High mental fatigue" "Multiple factors are contributing to high mental fatigue"))
+    )
 )
