@@ -1,15 +1,8 @@
 (defrule freezing
-    (User_parkinson (item_id ?user) (parkinson ?parkinson))
-    (User_older_adults (item_id ?user) (older_adults ?older_adults))
-    (User_psychiatric_patients (item_id ?user) (psychiatric_patients ?psychiatric_patients))
-    (User_multiple_sclerosis (item_id ?user) (multiple_sclerosis ?multiple_sclerosis))
-    (User_young_pci_autism (item_id ?user) (young_pci_autism ?young_pci_autism))
-
-    (User_has_ANXIETY (item_id ?user) (ANXIETY ?ANXIETY))
-    (User_has_crowding (item_id ?user) (crowding ?crowding))
-    (User_has_architectural_barriers (item_id ?user) (architectural_barriers ?architectural_barriers))
-    (User_has_heart_rate_differential (item_id ?user) (heart_rate_differential ?heart_rate_differential))
-    (User_has_lighting (item_id ?user) (lighting ?lighting))
+    (User (item_id ?user) (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
+          (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
+          (ANXIETY ?ANXIETY) (crowding ?crowding) (architectural_barriers ?architectural_barriers)
+          (heart_rate_differential ?heart_rate_differential) (lighting ?lighting))
 =>
     (bind ?freezing 0)
     (bind ?freezing_relevant (create$))

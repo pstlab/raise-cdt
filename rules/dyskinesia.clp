@@ -1,7 +1,5 @@
 (defrule dyskinesia
-    (User_parkinson (item_id ?user) (parkinson ?parkinson))
-
-    (User_has_ANXIETY (item_id ?user) (ANXIETY ?ANXIETY))
+    (User (item_id ?user) (parkinson ?parkinson) (ANXIETY ?ANXIETY))
 =>
     (bind ?dyskinesia 0)
 

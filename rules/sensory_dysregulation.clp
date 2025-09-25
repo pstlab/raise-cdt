@@ -1,19 +1,9 @@
 (defrule sensory_dysregulation
-    (User_baseline_heart_rate (item_id ?user) (baseline_heart_rate ?baseline_heart_rate))
-    (User_sensory_profile (item_id ?user) (sensory_profile ?sensory_profile))
-
-    (User_parkinson (item_id ?user) (parkinson ?parkinson))
-    (User_older_adults (item_id ?user) (older_adults ?older_adults))
-    (User_psychiatric_patients (item_id ?user) (psychiatric_patients ?psychiatric_patients))
-    (User_multiple_sclerosis (item_id ?user) (multiple_sclerosis ?multiple_sclerosis))
-    (User_young_pci_autism (item_id ?user) (young_pci_autism ?young_pci_autism))
-
-    (User_has_crowding (item_id ?user) (crowding ?crowding))
-    (User_has_heart_rate (item_id ?user) (heart_rate ?heart_rate))
-    (User_has_respiratory_rate (item_id ?user) (respiratory_rate ?respiratory_rate))
-    (User_has_lighting (item_id ?user) (lighting ?lighting))
-    (User_has_noise_pollution (item_id ?user) (noise_pollution ?noise_pollution))
-    (User_has_user_reported_noise_pollution (item_id ?user) (user_reported_noise_pollution ?user_reported_noise_pollution))
+    (User (item_id ?user) (baseline_heart_rate ?baseline_heart_rate) (sensory_profile ?sensory_profile)
+          (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
+          (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
+          (crowding ?crowding) (heart_rate ?heart_rate) (respiratory_rate ?respiratory_rate)
+          (lighting ?lighting) (noise_pollution ?noise_pollution) (user_reported_noise_pollution ?user_reported_noise_pollution))
 =>
     (bind ?sensory_dysregulation 0)
     (bind ?sensory_dysregulation_relevant (create$))

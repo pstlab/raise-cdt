@@ -1,23 +1,11 @@
 (defrule mental_fatigue
-    (User_baseline_nutrition (item_id ?user) (baseline_nutrition ?baseline_nutrition))
-
-    (User_parkinson (item_id ?user) (parkinson ?parkinson))
-    (User_older_adults (item_id ?user) (older_adults ?older_adults))
-    (User_psychiatric_patients (item_id ?user) (psychiatric_patients ?psychiatric_patients))
-    (User_multiple_sclerosis (item_id ?user) (multiple_sclerosis ?multiple_sclerosis))
-    (User_young_pci_autism (item_id ?user) (young_pci_autism ?young_pci_autism))
-
-    (User_has_ANXIETY (item_id ?user) (ANXIETY ?ANXIETY))
-    (User_has_crowding (item_id ?user) (crowding ?crowding))
-    (User_has_altered_nutrition (item_id ?user) (altered_nutrition ?altered_nutrition))
-    (User_has_water_balance (item_id ?user) (water_balance ?water_balance))
-    (User_has_sleep_duration_quality (item_id ?user) (sleep_duration_quality ?sleep_duration_quality))
-    (User_has_lighting (item_id ?user) (lighting ?lighting))
-    (User_has_noise_pollution (item_id ?user) (noise_pollution ?noise_pollution))
-    (User_has_user_reported_noise_pollution (item_id ?user) (user_reported_noise_pollution ?user_reported_noise_pollution))
-    (User_has_air_pollution (item_id ?user) (air_pollution ?air_pollution))
-    (User_has_rough_path (item_id ?user) (rough_path ?rough_path))
-    (User_has_ambient_temperature (item_id ?user) (ambient_temperature ?ambient_temperature))
+    (User (item_id ?user) (baseline_nutrition ?baseline_nutrition)
+          (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
+          (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
+          (ANXIETY ?ANXIETY) (crowding ?crowding) (altered_nutrition ?altered_nutrition)
+          (water_balance ?water_balance) (sleep_duration_quality ?sleep_duration_quality)
+          (lighting ?lighting) (noise_pollution ?noise_pollution) (user_reported_noise_pollution ?user_reported_noise_pollution)
+          (air_pollution ?air_pollution) (rough_path ?rough_path) (ambient_temperature ?ambient_temperature))
 =>
     (bind ?mental_fatigue 0)
 
