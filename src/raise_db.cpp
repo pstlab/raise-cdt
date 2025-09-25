@@ -25,12 +25,12 @@ namespace cdt
         return users;
     }
 
-    json::json raise_db::get_urban_data_platform_data(std::string_view keycloak_id)
+    json::json raise_db::get_urban_data_platform_data(std::string_view google_id)
     {
         pqxx::work txn{pg_conn};
-        pqxx::result r = txn.exec_params("SELECT lighting, noise_pollution FROM users WHERE id = $1", keycloak_id.data());
+        pqxx::result r = txn.exec_params("SELECT lighting, noise_pollution FROM users WHERE id = $1", google_id.data());
         if (r.empty())
-            throw std::invalid_argument("User with Keycloak ID not found: " + std::string(keycloak_id));
+            throw std::invalid_argument("User with Google ID not found: " + std::string(google_id));
         json::json udp_data;
         udp_data["lighting"] = r[0]["lighting"].as<int>();
         udp_data["noise_pollution"] = r[0]["noise_pollution"].as<int>();

@@ -14,6 +14,6 @@ namespace cdt
     void on_connect(const std::string &cause) override;
     void on_message(mqtt::const_message_ptr msg) override;
 
-    void created_user(std::string_view keycloak_id, const coco::item &itm) override;
+    void created_user(std::string_view google_id, const coco::item &itm) override;
   };
 } // namespace cdt

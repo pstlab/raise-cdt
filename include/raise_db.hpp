@@ -29,16 +29,16 @@ namespace cdt
     std::vector<raise_user> get_users() noexcept;
 
     /**
-     * @brief Retrieves the Urban Data Platform data associated with a given Keycloak ID.
+     * @brief Retrieves the Urban Data Platform data associated with a given Google ID.
      *
      * This function queries the database to obtain Urban Data Platform (UDP) data
-     * for the user identified by the provided Keycloak ID. The returned data is
+     * for the user identified by the provided Google ID. The returned data is
      * formatted as a JSON object.
      *
-     * @param keycloak_id The unique identifier of the user in Keycloak.
+     * @param google_id The unique identifier of the user in Google.
      * @return json::json A JSON object containing the user's Urban Data Platform data.
      */
-    json::json get_urban_data_platform_data(std::string_view keycloak_id);
+    json::json get_urban_data_platform_data(std::string_view google_id);
 
   private:
     pqxx::connection pg_conn;

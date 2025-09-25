@@ -840,19 +840,19 @@
         },
         "/users": {
             "post": {
-                "description": "Creates a new user with the specified Keycloak ID.",
+                "description": "Creates a new user with the specified Google ID.",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "keycloak_id": {
-                                        "description": "The Keycloak ID for the new user.",
+                                    "google_id": {
+                                        "description": "The Google ID for the new user.",
                                         "type": "string"
                                     }
                                 },
                                 "required": [
-                                    "keycloak_id"
+                                    "google_id"
                                 ],
                                 "type": "object"
                             }
@@ -883,14 +883,14 @@
                 "summary": "Create User"
             }
         },
-        "/users/{keycloak_id}": {
+        "/users/{google_id}": {
             "get": {
-                "description": "Retrieves a user by their Keycloak ID.",
+                "description": "Retrieves a user by their Google ID.",
                 "parameters": [
                     {
-                        "description": "The Keycloak ID of the user to retrieve.",
+                        "description": "The Google ID of the user to retrieve.",
                         "in": "path",
-                        "name": "keycloak_id",
+                        "name": "google_id",
                         "required": true,
                         "schema": {
                             "type": "string"

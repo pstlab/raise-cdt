@@ -11,9 +11,9 @@ namespace cdt
         coco::coco_mqtt::on_connect(cause);
         for (auto &usr : get_coco().get_items(get_coco().get_type("User")))
         {
-            client.subscribe(COCO_NAME + std::string("/static/") + usr.get().get_properties()["keycloak_id"].get<std::string>(), coco::QOS);
-            client.subscribe(COCO_NAME + std::string("/dynamic/") + usr.get().get_properties()["keycloak_id"].get<std::string>(), coco::QOS);
-            LOG_DEBUG("Subscribed to topics for user with Keycloak ID: " + usr.get().get_properties()["keycloak_id"].get<std::string>());
+            client.subscribe(COCO_NAME + std::string("/static/") + usr.get().get_properties()["google_id"].get<std::string>(), coco::QOS);
+            client.subscribe(COCO_NAME + std::string("/dynamic/") + usr.get().get_properties()["google_id"].get<std::string>(), coco::QOS);
+            LOG_DEBUG("Subscribed to topics for user with Google ID: " + usr.get().get_properties()["google_id"].get<std::string>());
         }
     }
 
@@ -26,9 +26,9 @@ namespace cdt
             get_coco().set_value(static_cast<raise_cdt &>(get_coco().get_module<raise_cdt>()).get_user(msg->get_topic().substr(strlen(COCO_NAME "/dynamic/"))), json::load(msg->to_string()));
     }
 
-    void raise_cdt_mqtt::created_user(std::string_view keycloak_id, const coco::item &)
+    void raise_cdt_mqtt::created_user(std::string_view google_id, const coco::item &)
     {
-        client.subscribe(COCO_NAME + std::string("/static/") + keycloak_id.data(), coco::QOS);
-        client.subscribe(COCO_NAME + std::string("/dynamic/") + keycloak_id.data(), coco::QOS);
+        client.subscribe(COCO_NAME + std::string("/static/") + google_id.data(), coco::QOS);
+        client.subscribe(COCO_NAME + std::string("/dynamic/") + google_id.data(), coco::QOS);
     }
 } // namespace cdt

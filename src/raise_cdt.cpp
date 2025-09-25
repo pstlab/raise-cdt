@@ -19,36 +19,36 @@ namespace cdt
 #endif
     }
 
-    coco::item &raise_cdt::create_user(std::string_view keycloak_id)
+    coco::item &raise_cdt::create_user(std::string_view google_id)
     {
         auto &db = get_coco().get_db().get_module<raise_cdt_db>();
-        auto &usr = get_coco().create_item(get_coco().get_type("User"), {{"keycloak_id", keycloak_id.data()}});
-        db.create_user(keycloak_id, usr.get_id());
-        CREATED_USER(keycloak_id, usr);
+        auto &usr = get_coco().create_item(get_coco().get_type("User"), {{"google_id", google_id.data()}});
+        db.create_user(google_id, usr.get_id());
+        CREATED_USER(google_id, usr);
         return usr;
     }
 
-    coco::item &raise_cdt::get_user(std::string_view keycloak_id)
+    coco::item &raise_cdt::get_user(std::string_view google_id)
     {
         auto &db = get_coco().get_db().get_module<raise_cdt_db>();
-        std::string id = db.get_user(keycloak_id);
+        std::string id = db.get_user(google_id);
         return get_coco().get_item(id);
     }
 
 #ifdef BUILD_POSTGRESQL
-    void raise_cdt::update_udp_data(std::string_view keycloak_id)
+    void raise_cdt::update_udp_data(std::string_view google_id)
     {
         auto &r_db = get_coco().get_db().get_module<raise_db>();
-        auto &usr = get_user(keycloak_id);
-        json::json udp_data = r_db.get_urban_data_platform_data(keycloak_id);
+        auto &usr = get_user(google_id);
+        json::json udp_data = r_db.get_urban_data_platform_data(google_id);
         get_coco().set_value(usr, std::move(udp_data));
     }
 #endif
 
-    void raise_cdt::created_user(std::string_view keycloak_id, const coco::item &itm)
+    void raise_cdt::created_user(std::string_view google_id, const coco::item &itm)
     {
         for (auto *listener : listeners)
-            listener->created_user(keycloak_id, itm);
+            listener->created_user(google_id, itm);
     }
 
     listener::listener(raise_cdt &rcdt) noexcept : rcdt(rcdt) { rcdt.listeners.push_back(this); }

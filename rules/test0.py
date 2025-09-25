@@ -21,7 +21,7 @@ if __name__ == '__main__':
         'type': 'User',
         'properties': {
             'name': first_name,
-            'keycloak_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True)),
+            'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True)),
             'baseline_nutrition': True,  # Assume user has baseline nutrition
             'baseline_fall': 2,  # Example: low fall risk
             'baseline_freezing': 1,  # Example: rare freezing

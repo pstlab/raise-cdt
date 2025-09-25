@@ -11,26 +11,26 @@ namespace cdt
         if (users_collection.list_indexes().begin() == users_collection.list_indexes().end())
         {
             LOG_DEBUG("Creating indexes for users collection");
-            users_collection.create_index(bsoncxx::builder::stream::document{} << "keycloak_id" << 1 << bsoncxx::builder::stream::finalize, mongocxx::options::index{}.unique(true));
+            users_collection.create_index(bsoncxx::builder::stream::document{} << "google_id" << 1 << bsoncxx::builder::stream::finalize, mongocxx::options::index{}.unique(true));
         }
     }
 
-    void raise_cdt_db::create_user(std::string_view keycloak_id, std::string_view id)
+    void raise_cdt_db::create_user(std::string_view google_id, std::string_view id)
     {
         bsoncxx::builder::basic::document doc;
         doc.append(bsoncxx::builder::basic::kvp("_id", bsoncxx::oid{id.data()}));
-        doc.append(bsoncxx::builder::basic::kvp("keycloak_id", keycloak_id.data()));
+        doc.append(bsoncxx::builder::basic::kvp("google_id", google_id.data()));
         if (!users_collection.insert_one(doc.view()))
-            throw std::invalid_argument("Failed to insert user with Keycloak ID: " + std::string(keycloak_id));
+            throw std::invalid_argument("Failed to insert user with Google ID: " + std::string(google_id));
     }
 
-    std::string raise_cdt_db::get_user(std::string_view keycloak_id)
+    std::string raise_cdt_db::get_user(std::string_view google_id)
     {
-        auto result = users_collection.find_one(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("keycloak_id", keycloak_id.data())));
+        auto result = users_collection.find_one(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("google_id", google_id.data())));
         if (!result)
-            throw std::invalid_argument("User with Keycloak ID not found: " + std::string(keycloak_id));
+            throw std::invalid_argument("User with Google ID not found: " + std::string(google_id));
         return result->view()["_id"].get_oid().value.to_string();
     }
 
-    bool raise_cdt_db::user_exists(std::string_view keycloak_id) { return static_cast<bool>(users_collection.find_one(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("keycloak_id", keycloak_id.data())))); }
+    bool raise_cdt_db::user_exists(std::string_view google_id) { return static_cast<bool>(users_collection.find_one(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("google_id", google_id.data())))); }
 } // namespace cdt
