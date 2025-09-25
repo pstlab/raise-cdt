@@ -17,11 +17,17 @@ if __name__ == '__main__':
     session = requests.Session()
 
     first_name = fake.first_name()
-    response = session.post(url + '/items', json={
-        'type': 'User',
+    response = session.post(url + '/users', json={
+        'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True))})
+    if response.status_code != 201:
+        logger.error('Failed to create user')
+        sys.exit(1)
+    user_uid = response.text
+    logger.info(f'Created user {first_name} with uid {user_uid}')
+
+    response = session.patch(url + f'/items/{user_uid}', json={
         'properties': {
             'name': first_name,
-            'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True)),
             'baseline_nutrition': True,  # Assume user has baseline nutrition
             'baseline_fall': 2,  # Example: low fall risk
             'baseline_freezing': 1,  # Example: rare freezing
@@ -37,14 +43,12 @@ if __name__ == '__main__':
             'multiple_sclerosis': False,  # No MS
             'young_pci_autism': False  # No autism
         }})
-    if response.status_code != 201:
-        logger.error('Failed to create item User')
+    if response.status_code != 204:
+        logger.error('Failed to set user properties')
         sys.exit(1)
+    logger.info(f'Set properties for user {user_uid}')
 
-    user_id = response.text
-    logger.info(f'Created User {first_name} with id {user_id}')
-
-    response = session.post(url + f'/data/{user_id}', json={
+    response = session.post(url + f'/data/{user_uid}', json={
         'crowding': 0,
         'altered_nutrition': False,
         'altered_thirst_perception': 0,
