@@ -3,7 +3,7 @@
 =>
     (bind ?fluctuation 0)
 
-    (if (and ?parkinson (neq ?ANXIETY low)) then (bind ?fluctuation (+ ?fluctuation 1)))
+    (if (and (eq ?parkinson TRUE) (neq ?ANXIETY low)) then (bind ?fluctuation (+ ?fluctuation 1)))
 
     (printout t "User: " ?user crlf)
     (printout t "Fluctuation: " ?fluctuation crlf)
