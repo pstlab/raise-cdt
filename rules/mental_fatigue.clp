@@ -12,7 +12,7 @@
     (if (and (or ?parkinson ?older_adults ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?crowding nil) (>= ?crowding 2)) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
     (if (and (or ?parkinson ?young_pci_autism) (neq ?altered_nutrition nil) ?altered_nutrition) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
     (if (and (or ?parkinson ?baseline_nutrition) (neq ?baseline_nutrition nil) ?baseline_nutrition) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
-    (if (and ?parkinson (neq ?ANXIETY nil) ?ANXIETY) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
+    (if (and ?parkinson (neq ?ANXIETY low)) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
     (if (and (or ?parkinson ?psychiatric_patients) (neq ?water_balance nil) (< ?water_balance 1)) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
     (if (and (or ?parkinson ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))
     (if (and (or ?parkinson ?young_pci_autism) (neq ?lighting nil) ?lighting) then (bind ?mental_fatigue (+ ?mental_fatigue 1)))

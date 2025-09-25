@@ -22,7 +22,7 @@
     (if (and (or ?parkinson ?older_adults ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?crowding nil) (>= ?crowding 2)) then (bind ?anxiety (+ ?anxiety 1)))
     (if (and ?parkinson (neq ?baseline_fall nil) (>= ?baseline_fall 6)) then (bind ?anxiety (+ ?anxiety 1)))
     (if (and (or ?parkinson ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then (bind ?anxiety (+ ?anxiety 1)))
-    (if (and ?parkinson (neq ?FREEZING nil) ?FREEZING) then (bind ?anxiety (+ ?anxiety 1)))
+    (if (and ?parkinson (neq ?FREEZING low)) then (bind ?anxiety (+ ?anxiety 1)))
     (if (and ?psychiatric_patients (neq ?public_events_frequency nil) ?public_events_frequency) then (bind ?anxiety (+ ?anxiety 1)))
     (if (and (or ?older_adults ?parkinson ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then (bind ?anxiety (+ ?anxiety 1)))
     (if (and (or ?older_adults ?parkinson ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then (bind ?anxiety (+ ?anxiety 1)))

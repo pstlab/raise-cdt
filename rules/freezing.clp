@@ -8,7 +8,7 @@
     (bind ?freezing_relevant (create$))
 
     (if (and (or ?parkinson ?older_adults ?psychiatric_patients ?multiple_sclerosis ?young_pci_autism) (neq ?crowding nil) (>= ?crowding 2)) then (bind ?freezing (+ ?freezing 1)))
-    (if (and ?parkinson (neq ?ANXIETY nil) ?ANXIETY) then (bind ?freezing (+ ?freezing 1)))
+    (if (and ?parkinson (neq ?ANXIETY low)) then (bind ?freezing (+ ?freezing 1)))
     (if (and ?parkinson (neq ?architectural_barriers nil) ?architectural_barriers) then (bind ?freezing (+ ?freezing 1)))
     (if (and (or ?parkinson ?young_pci_autism) (neq ?lighting nil) ?lighting) then (bind ?freezing (+ ?freezing 1)))
 
