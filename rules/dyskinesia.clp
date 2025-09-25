@@ -3,7 +3,7 @@
 =>
     (bind ?dyskinesia 0)
 
-    (if (and ?parkinson ?ANXIETY) then (bind ?dyskinesia (+ ?dyskinesia 1)))
+    (if (and ?parkinson (neq ?ANXIETY low)) then (bind ?dyskinesia (+ ?dyskinesia 1)))
 
     (printout t "User: " ?user crlf)
     (printout t "Dyskinesia: " ?dyskinesia crlf)

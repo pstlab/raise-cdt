@@ -49,7 +49,7 @@ int main()
             {"keycloak_id", {{"type", "string"}}},
             {"training", {{"type", "bool"}, {"default", false}}},
             {"unavailable_states", {{"type", "bool"}, {"default", false}}},
-            {"baseline_nutrition", {{"type", "bool"}, {"default", false}}},
+            {"baseline_nutrition", {{"type", "bool"}, {"nullable", true}}},
             {"baseline_fall", {{"type", "int"}, {"min", 0}, {"max", 10}, {"nullable", true}}},
             //    "baseline_rehabilitation_school_load": {{"type": "bool"}, {"nullable", true}},
             //    "comorbidities": {{"type": "bool"}, {"nullable", true}},
