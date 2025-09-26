@@ -37,7 +37,7 @@ int main()
 
     try
     {
-        [[maybe_unused]] auto &usr_tp = cc.get_type("RAISE-User");
+        [[maybe_unused]] auto &usr_tp = cc.get_type(cdt::user_kw);
         cc.load_rules();
     }
     catch (const std::exception &e)

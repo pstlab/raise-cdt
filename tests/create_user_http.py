@@ -86,7 +86,7 @@ if __name__ == '__main__':
         'excessive_urbanization': False,
         'green_spaces': True
     })
-    if response.status_code != 201:
+    if response.status_code != 204:
         logger.error('Failed to add data entry')
         sys.exit(1)
     logger.info(f'Added data entry for user {user_uid}')

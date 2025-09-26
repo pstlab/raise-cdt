@@ -22,7 +22,7 @@ namespace cdt
     coco::item &raise_cdt::create_user(std::string_view google_id)
     {
         auto &db = get_coco().get_db().get_module<raise_cdt_db>();
-        auto &usr = get_coco().create_item(get_coco().get_type("User"), {{"google_id", google_id.data()}});
+        auto &usr = get_coco().create_item(get_coco().get_type(user_kw), {{"google_id", google_id.data()}});
         db.create_user(google_id, usr.get_id());
         CREATED_USER(google_id, usr);
         return usr;

@@ -9,6 +9,8 @@ namespace cdt
 {
   class listener;
 
+  constexpr const char *user_kw = "RAISE-User";
+
   class raise_cdt : public coco::coco_module
   {
     friend class listener;
