@@ -39,6 +39,7 @@ int main()
     try
     {
         [[maybe_unused]] auto &usr_tp = cc.get_type("User");
+        cc.load_rules();
     }
     catch (const std::exception &e)
     {
@@ -136,8 +137,10 @@ int main()
             {"ambient_humidity", {{"type", "int"}, {"min", 0}, {"max", 100}, {"nullable", true}}},
             {"excessive_urbanization", {{"type", "bool"}, {"nullable", true}}},
             {"green_spaces", {{"type", "bool"}, {"nullable", true}}}};
+        // Create the 'User' type
         [[maybe_unused]] auto &usr_tp = cc.create_type("User", {}, std::move(static_props), std::move(dynamic_props));
 
+        // Create the reactive rules
         cc.create_reactive_rule("anxiety", read_rule("rules/anxiety.clp"));
         cc.create_reactive_rule("dyskinesia", read_rule("rules/dyskinesia.clp"));
         cc.create_reactive_rule("excessive_heat", read_rule("rules/excessive_heat.clp"));
@@ -150,10 +153,9 @@ int main()
 
     auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
     do
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(2)); // wait for mqtt to connect
+    { // wait for mqtt to connect
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     } while (!mqtt.is_connected());
-    cc.init();
 
     coco::coco_server srv(cc);
 #ifdef ENABLE_CORS
@@ -164,6 +166,16 @@ int main()
     srv.add_module<coco::fcm_server>(srv, fcm);
     auto srv_ft = std::async(std::launch::async, [&srv]
                              { srv.start(); });
+
+#ifdef INTERACTIVE_TEST
+    std::string user_input;
+    std::cin >> user_input;
+    if (user_input == "d")
+    {
+        db.drop();
+        srv.stop();
+    }
+#endif
 
     return 0;
 }

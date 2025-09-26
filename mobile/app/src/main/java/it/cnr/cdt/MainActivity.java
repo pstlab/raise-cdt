@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         Executors.newSingleThreadExecutor().execute(() -> {
             OkHttpClient client = new OkHttpClient();
             final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/users")
-                    .post(RequestBody.create("{\"keycloak_id\": \"" + tokenEditText.getText().toString() + "\"}",
+                    .post(RequestBody.create("{\"google_id\": \"" + tokenEditText.getText().toString() + "\"}",
                             MediaType.parse("application/json")));
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
