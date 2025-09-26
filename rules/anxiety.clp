@@ -1,5 +1,5 @@
 (defrule anxiety
-    (User (item_id ?user) (baseline_fall ?baseline_fall) (baseline_freezing ?baseline_freezing) (baseline_heart_rate ?baseline_heart_rate)
+    (RAISE-User (item_id ?user) (baseline_fall ?baseline_fall) (baseline_freezing ?baseline_freezing) (baseline_heart_rate ?baseline_heart_rate)
           (state_anxiety_presence ?state_anxiety_presence) (stress ?stress) (psychiatric_disorders ?psychiatric_disorders)
           (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
           (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)

@@ -1,5 +1,5 @@
 (defrule excessive_heat
-    (User (item_id ?user) (baseline_heart_rate ?baseline_heart_rate) (baseline_blood_pressure ?baseline_blood_pressure)
+    (RAISE-User (item_id ?user) (baseline_heart_rate ?baseline_heart_rate) (baseline_blood_pressure ?baseline_blood_pressure)
           (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
           (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
           (crowding ?crowding) (altered_thirst_perception ?altered_thirst_perception)

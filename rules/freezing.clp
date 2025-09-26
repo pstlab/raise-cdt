@@ -1,5 +1,5 @@
 (defrule freezing
-    ?f <- (User (item_id ?user) (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
+    ?f <- (RAISE-User (item_id ?user) (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
           (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
           (ANXIETY ?ANXIETY) (crowding ?crowding) (architectural_barriers ?architectural_barriers)
           (heart_rate_differential ?heart_rate_differential) (lighting ?lighting))

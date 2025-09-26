@@ -21,6 +21,8 @@ set(BUILD_FCM ON CACHE BOOL "Build Firebase Cloud Messaging" FORCE)
 set(BUILD_MQTT ON CACHE BOOL "Build MQTT middleware" FORCE)
 set(BUILD_LLM ON CACHE BOOL "Build CoCo LLM" FORCE)
 set(BUILD_COCO_SERVER ON CACHE BOOL "Build the CoCo server" FORCE)
+set(BUILD_SECURE ON CACHE BOOL "Build with HTTPS support" FORCE)
+set(BUILD_AUTH ON CACHE BOOL "Build with authentication support" FORCE)
 set(ENABLE_CORS ON CACHE BOOL "Enable CORS middleware" FORCE)
 set(LOGGING_LEVEL "DEBUG" CACHE STRING "Logging level (DEBUG, INFO, WARN, ERROR)" FORCE)
 

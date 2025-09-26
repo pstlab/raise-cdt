@@ -1,5 +1,5 @@
 (defrule dyskinesia
-    (User (item_id ?user) (parkinson ?parkinson) (ANXIETY ?ANXIETY))
+    (RAISE-User (item_id ?user) (parkinson ?parkinson) (ANXIETY ?ANXIETY))
 =>
     (bind ?dyskinesia 0)
     (bind ?dyskinesia_message "")

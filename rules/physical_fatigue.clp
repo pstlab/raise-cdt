@@ -1,5 +1,5 @@
 (defrule physical_fatigue
-    (User (item_id ?user) (baseline_nutrition ?baseline_nutrition))
+    (RAISE-User (item_id ?user) (baseline_nutrition ?baseline_nutrition))
           (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
           (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
           (ANXIETY ?ANXIETY) (altered_nutrition ?altered_nutrition)

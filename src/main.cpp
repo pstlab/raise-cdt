@@ -7,7 +7,11 @@
 #include "coco_fcm.hpp"
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
+#ifdef BUILD_AUTH
+#include "coco_auth.hpp"
+#else
 #include "coco_noauth.hpp"
+#endif
 #include "fcm_server.hpp"
 #include "logging.hpp"
 #ifdef ENABLE_CORS
@@ -38,7 +42,7 @@ int main()
 
     try
     {
-        [[maybe_unused]] auto &usr_tp = cc.get_type("User");
+        [[maybe_unused]] auto &usr_tp = cc.get_type("RAISE-User");
         cc.load_rules();
     }
     catch (const std::exception &e)
@@ -146,7 +150,7 @@ int main()
             {"excessive_urbanization", {{"type", "bool"}, {"nullable", true}}},
             {"green_spaces", {{"type", "bool"}, {"nullable", true}}}};
         // Create the 'User' type
-        [[maybe_unused]] auto &usr_tp = cc.create_type("User", {}, std::move(static_props), std::move(dynamic_props));
+        [[maybe_unused]] auto &usr_tp = cc.create_type("RAISE-User", {}, std::move(static_props), std::move(dynamic_props));
 
         // Create the reactive rules
         cc.create_reactive_rule("anxiety", read_rule("rules/anxiety.clp"));
@@ -164,12 +168,20 @@ int main()
     { // wait for mqtt to connect
         std::this_thread::sleep_for(std::chrono::seconds(1));
     } while (!mqtt.is_connected());
+#ifdef BUILD_AUTH
+    cc.add_module<coco::coco_auth>(cc);
+#endif
 
     coco::coco_server srv(cc);
 #ifdef ENABLE_CORS
     srv.add_middleware<network::cors>(srv);
 #endif
+#ifdef BUILD_AUTH
+    srv.add_module<coco::server_auth>(srv);
+    srv.add_middleware<coco::auth_middleware>(srv);
+#else
     srv.add_module<coco::server_noauth>(srv);
+#endif
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
     srv.add_module<coco::fcm_server>(srv, fcm);
     auto srv_ft = std::async(std::launch::async, [&srv]

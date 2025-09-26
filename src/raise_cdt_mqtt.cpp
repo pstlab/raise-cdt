@@ -9,7 +9,7 @@ namespace cdt
     void raise_cdt_mqtt::on_connect(const std::string &cause)
     {
         coco::coco_mqtt::on_connect(cause);
-        for (auto &usr : get_coco().get_items(get_coco().get_type("User")))
+        for (auto &usr : get_coco().get_items(get_coco().get_type("RAISE-User")))
         {
             client.subscribe(COCO_NAME + std::string("/static/") + usr.get().get_properties()["google_id"].get<std::string>(), coco::QOS);
             client.subscribe(COCO_NAME + std::string("/dynamic/") + usr.get().get_properties()["google_id"].get<std::string>(), coco::QOS);

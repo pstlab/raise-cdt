@@ -1,5 +1,5 @@
 (defrule sensory_dysregulation
-    (User (item_id ?user) (baseline_heart_rate ?baseline_heart_rate) (sensory_profile ?sensory_profile)
+    (RAISE-User (item_id ?user) (baseline_heart_rate ?baseline_heart_rate) (sensory_profile ?sensory_profile)
           (parkinson ?parkinson) (older_adults ?older_adults) (psychiatric_patients ?psychiatric_patients)
           (multiple_sclerosis ?multiple_sclerosis) (young_pci_autism ?young_pci_autism)
           (crowding ?crowding) (heart_rate ?heart_rate) (respiratory_rate ?respiratory_rate)

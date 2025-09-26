@@ -1,5 +1,5 @@
 (defrule fluctuation
-    (User (item_id ?user) (parkinson ?parkinson) (ANXIETY ?ANXIETY))
+    (RAISE-User (item_id ?user) (parkinson ?parkinson) (ANXIETY ?ANXIETY))
 =>
     (bind ?fluctuation 0)
     (bind ?fluctuation_message "")
