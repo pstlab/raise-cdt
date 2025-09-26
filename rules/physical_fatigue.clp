@@ -16,24 +16,76 @@
 =>
     (bind ?physical_fatigue 0)
     (bind ?physical_fatigue_relevant (create$))
+    (bind ?physical_fatigue_message "")
 
-    (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?altered_nutrition nil) ?altered_nutrition) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?parkinson TRUE) ?baseline_nutrition) (neq ?baseline_nutrition nil) ?baseline_nutrition) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?parkinson TRUE) (neq ?ANXIETY nil) ?ANXIETY) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?parkinson TRUE) (neq ?architectural_barriers nil) ?architectural_barriers) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE)) (neq ?baseline_heart_rate nil) (>= ?baseline_heart_rate 100)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE) (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE)) (neq ?heart_rate_differential nil) (>= ?heart_rate_differential 50)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?older_adults TRUE) (neq ?air_pollution nil) (> ?air_pollution 5)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?multiple_sclerosis TRUE) (neq ?path_slope nil) ?path_slope) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?older_adults TRUE) (neq ?rough_path nil) ?rough_path) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?parkinson TRUE) (neq ?baseline_blood_pressure nil) (>= ?baseline_blood_pressure 100)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (eq ?parkinson TRUE) (neq ?low_blood_pressure nil) (< ?low_blood_pressure 90)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?ambient_temperature nil) (> ?ambient_temperature 27)) then (bind ?physical_fatigue (+ ?physical_fatigue 1)))
+    (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?altered_nutrition nil) ?altered_nutrition) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Altered nutrition increases physical fatigue. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) ?baseline_nutrition) (neq ?baseline_nutrition nil) ?baseline_nutrition) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Poor baseline nutrition increases physical fatigue. "))
+    )
+    (if (and (eq ?parkinson TRUE) (neq ?ANXIETY nil) ?ANXIETY) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Anxiety increases physical fatigue. "))
+    )
+    (if (and (eq ?parkinson TRUE) (neq ?architectural_barriers nil) ?architectural_barriers) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Architectural barriers increase physical fatigue. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Low water balance increases physical fatigue. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Poor sleep quality increases physical fatigue. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High heart rate increases physical fatigue. "))
+    )
+    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE)) (neq ?baseline_heart_rate nil) (>= ?baseline_heart_rate 100)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High baseline heart rate increases physical fatigue. "))
+    )
+    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE) (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE)) (neq ?heart_rate_differential nil) (>= ?heart_rate_differential 50)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High heart rate differential increases physical fatigue. "))
+    )
+    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High noise pollution increases physical fatigue. "))
+    )
+    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "User-reported high noise pollution increases physical fatigue. "))
+    )
+    (if (and (eq ?older_adults TRUE) (neq ?air_pollution nil) (> ?air_pollution 5)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High air pollution increases physical fatigue. "))
+    )
+    (if (and (eq ?multiple_sclerosis TRUE) (neq ?path_slope nil) ?path_slope) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Path slope increases physical fatigue. "))
+    )
+    (if (and (eq ?older_adults TRUE) (neq ?rough_path nil) ?rough_path) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Rough paths increase physical fatigue. "))
+    )
+    (if (and (eq ?parkinson TRUE) (neq ?baseline_blood_pressure nil) (>= ?baseline_blood_pressure 100)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High baseline blood pressure increases physical fatigue. "))
+    )
+    (if (and (eq ?parkinson TRUE) (neq ?low_blood_pressure nil) (< ?low_blood_pressure 90)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Low blood pressure increases physical fatigue. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?ambient_temperature nil) (> ?ambient_temperature 27)) then
+        (bind ?physical_fatigue (+ ?physical_fatigue 1))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High ambient temperature increases physical fatigue. "))
+    )
 
     (if (and (eq ?psychiatric_patients TRUE) ?bar_restaurant) then (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 bar_restaurant)))
     (if (and (eq ?psychiatric_patients TRUE) ?water_fountains) then (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 water_fountains)))
@@ -51,7 +103,7 @@
     (if (and (>= ?physical_fatigue 0) (<= ?physical_fatigue 1)) then (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ low (to_json ?physical_fatigue_relevant))))
     (if (and (>= ?physical_fatigue 2) (<= ?physical_fatigue 3)) then (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ medium (to_json ?physical_fatigue_relevant))))
     (if (>= ?physical_fatigue 4) then
-        (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant) (create$ high (to_json ?physical_fatigue_relevant)))
+        (add_data ?user (create$ PHYSICAL_FATIGUE physical_fatigue_relevant physical_fatigue_message) (create$ high (to_json ?physical_fatigue_relevant) ?physical_fatigue_message))
         (send_notification ?user "High physical fatigue" "Multiple factors are contributing to high physical fatigue")
     )
 )

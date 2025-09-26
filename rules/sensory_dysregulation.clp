@@ -7,12 +7,28 @@
 =>
     (bind ?sensory_dysregulation 0)
     (bind ?sensory_dysregulation_relevant (create$))
+    (bind ?sensory_dysregulation_message "")
 
-    (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?lighting nil) ?lighting) then (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1)))
-    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1)))
-    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1)))
+    (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then
+        (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Crowding increases sensory dysregulation. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then
+        (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "High heart rate increases sensory dysregulation. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?lighting nil) ?lighting) then
+        (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Poor lighting increases sensory dysregulation. "))
+    )
+    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then
+        (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "High noise pollution increases sensory dysregulation. "))
+    )
+    (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then
+        (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "User-reported high noise pollution increases sensory dysregulation. "))
+    )
 
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then (bind ?sensory_dysregulation_relevant (insert$ ?sensory_dysregulation_relevant 1 heart_rate)))
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE)) (neq ?baseline_heart_rate nil) (>= ?baseline_heart_rate 100)) then (bind ?sensory_dysregulation_relevant (insert$ ?sensory_dysregulation_relevant 1 baseline_heart_rate)))
@@ -26,7 +42,7 @@
     (if (and (>= ?sensory_dysregulation 0) (<= ?sensory_dysregulation 1)) then (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant) (create$ low (to_json ?sensory_dysregulation_relevant))))
     (if (and (>= ?sensory_dysregulation 2) (<= ?sensory_dysregulation 3)) then (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant) (create$ medium (to_json ?sensory_dysregulation_relevant))))
     (if (>= ?sensory_dysregulation 4) then
-        (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant) (create$ high (to_json ?sensory_dysregulation_relevant)))
+        (add_data ?user (create$ SENSORY_DYSREGULATION sensory_dysregulation_relevant sensory_dysregulation_message) (create$ high (to_json ?sensory_dysregulation_relevant) ?sensory_dysregulation_message))
         (send_notification ?user "High sensory dysregulation" "Multiple factors are contributing to high sensory dysregulation")
     )
 )

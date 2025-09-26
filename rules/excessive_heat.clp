@@ -12,14 +12,36 @@
 =>
     (bind ?excessive_heat 0)
     (bind ?excessive_heat_relevant (create$))
+    (bind ?excessive_heat_message "")
 
-    (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (eq ?psychiatric_patients TRUE) (neq ?altered_thirst_perception nil) (>= ?altered_thirst_perception 3)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?ambient_temperature nil) (> ?ambient_temperature 27)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE)) (neq ?ambient_humidity nil) (> ?ambient_humidity 60)) then (bind ?excessive_heat (+ ?excessive_heat 1)))
-    (if (and (eq ?older_adults TRUE) (neq ?excessive_urbanization nil) ?excessive_urbanization) then (bind ?excessive_heat (+ ?excessive_heat 1)))
+    (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Crowding increases heat stress. "))
+    )
+    (if (and (eq ?psychiatric_patients TRUE) (neq ?altered_thirst_perception nil) (>= ?altered_thirst_perception 3)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Altered thirst perception increases heat stress. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Low water balance increases heat stress. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Poor sleep quality increases heat stress. "))
+    )
+    (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?ambient_temperature nil) (> ?ambient_temperature 27)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "High ambient temperature increases heat stress. "))
+    )
+    (if (and (or (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE)) (neq ?ambient_humidity nil) (> ?ambient_humidity 60)) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "High ambient humidity increases heat stress. "))
+    )
+    (if (and (eq ?older_adults TRUE) (neq ?excessive_urbanization nil) ?excessive_urbanization) then
+        (bind ?excessive_heat (+ ?excessive_heat 1))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Excessive urbanization increases heat stress. "))
+    )
 
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 water_balance)))
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 heart_rate)))
@@ -34,11 +56,12 @@
     (printout t "User: " ?user crlf)
     (printout t "Excessive Heat: " ?excessive_heat crlf)
     (printout t "Excessive Heat Relevant Factors: " ?excessive_heat_relevant crlf)
+    (printout t "Excessive Heat Message: " ?excessive_heat_message crlf)
 
     (if (and (>= ?excessive_heat 0) (<= ?excessive_heat 1)) then (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ low (to_json ?excessive_heat_relevant))))
     (if (and (>= ?excessive_heat 2) (<= ?excessive_heat 3)) then (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ medium (to_json ?excessive_heat_relevant))))
     (if (>= ?excessive_heat 4) then
-        (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant) (create$ high (to_json ?excessive_heat_relevant)))
+        (add_data ?user (create$ EXCESSIVE_HEAT excessive_heat_relevant excessive_heat_message) (create$ high (to_json ?excessive_heat_relevant) ?excessive_heat_message))
         (send_notification ?user "Excessive heat" "Multiple factors are contributing to excessive heat")
     )
 )
