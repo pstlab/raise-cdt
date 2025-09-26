@@ -29,7 +29,7 @@ if __name__ == '__main__':
     token = login_response.json()['token']
 
     first_name = fake.first_name()
-    response = session.post(url + '/users', headers={'Authorization': 'Bearer ' + token}, json={
+    response = session.post(url + '/raise-users', headers={'Authorization': 'Bearer ' + token}, json={
         'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True))}, verify=False)
     if response.status_code != 201:
         logger.error('Failed to create user')

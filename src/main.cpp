@@ -7,11 +7,6 @@
 #include "coco_fcm.hpp"
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
-#ifdef BUILD_AUTH
-#include "coco_auth.hpp"
-#else
-#include "coco_noauth.hpp"
-#endif
 #include "fcm_server.hpp"
 #include "logging.hpp"
 #ifdef ENABLE_CORS
@@ -168,9 +163,6 @@ int main()
     { // wait for mqtt to connect
         std::this_thread::sleep_for(std::chrono::seconds(1));
     } while (!mqtt.is_connected());
-#ifdef BUILD_AUTH
-    cc.add_module<coco::coco_auth>(cc);
-#endif
 
     coco::coco_server srv(cc);
 #ifdef ENABLE_SSL
@@ -180,12 +172,6 @@ int main()
 #endif
 #ifdef ENABLE_CORS
     srv.add_middleware<network::cors>(srv);
-#endif
-#ifdef BUILD_AUTH
-    srv.add_module<coco::server_auth>(srv);
-    srv.add_middleware<coco::auth_middleware>(srv);
-#else
-    srv.add_module<coco::server_noauth>(srv);
 #endif
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
     srv.add_module<coco::fcm_server>(srv, fcm);

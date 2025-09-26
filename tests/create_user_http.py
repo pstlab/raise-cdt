@@ -17,7 +17,7 @@ if __name__ == '__main__':
     session = requests.Session()
 
     first_name = fake.first_name()
-    response = session.post(url + '/users', json={
+    response = session.post(url + '/raise-users', json={
         'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True))})
     if response.status_code != 201:
         logger.error('Failed to create user')

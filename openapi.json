@@ -1,5 +1,10 @@
 {
     "components": {
+        "responses": {
+            "UnauthorizedError": {
+                "description": "Access token is missing or invalid"
+            }
+        },
         "schemas": {
             "data": {
                 "description": "A data entry containing dynamic values and associated metadata for an item.",
@@ -352,6 +357,39 @@
                     "name"
                 ],
                 "type": "object"
+            },
+            "user": {
+                "description": "A user item with authentication capabilities.",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the user.",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Password of the user.",
+                        "type": "string"
+                    },
+                    "personal_data": {
+                        "description": "Personal data of the user.",
+                        "type": "object"
+                    },
+                    "username": {
+                        "description": "Username of the user.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "username",
+                    "password"
+                ],
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "scheme": "bearer",
+                "type": "http"
             }
         }
     },
@@ -409,10 +447,18 @@
                         },
                         "description": "Successful response with the item data."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "Item not found."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Retrieve data for a specific RAISE-CDT item."
             },
             "post": {
@@ -452,10 +498,18 @@
                     "204": {
                         "description": "Data added successfully."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "Item not found."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Add data to a specific RAISE-CDT item."
             }
         },
@@ -498,6 +552,11 @@
                         "description": "Successful response with the generated fake data."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Generate fake data for testing."
             }
         },
@@ -532,6 +591,11 @@
                         "description": "Invalid request."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Add a new FCM token."
             }
         },
@@ -577,10 +641,18 @@
                         },
                         "description": "Successful response containing an array of all managed items with their properties and metadata."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "Type not found"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Retrieve all the RAISE-CDT items."
             },
             "post": {
@@ -607,8 +679,16 @@
                             }
                         },
                         "description": "Item created successfully."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Create a new RAISE-CDT item."
             }
         },
@@ -631,10 +711,18 @@
                     "204": {
                         "description": "Item deleted successfully"
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "Item not found"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Delete a specific RAISE-CDT item."
             },
             "get": {
@@ -661,6 +749,9 @@
                             }
                         },
                         "description": "Successful response with the item details."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
                     },
                     "404": {
                         "description": "Item not found"
@@ -696,149 +787,72 @@
                     "204": {
                         "description": "Item updated successfully."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "Item not found"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Update a specific RAISE-CDT item."
             }
         },
-        "/reactive_rules": {
-            "get": {
-                "description": "Endpoint to fetch all the reactive rules.",
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "items": {
-                                        "$ref": "#/components/schemas/reactive_rule"
-                                    },
-                                    "type": "array"
-                                }
-                            }
-                        },
-                        "description": "Successful response with the stored reactive rules."
-                    }
-                },
-                "summary": "Retrieve all the RAISE-CDT reactive rules."
-            },
+        "/login": {
             "post": {
-                "description": "Endpoint to create a new reactive rule.",
+                "description": "Endpoint to authenticate a user and obtain a token.",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/reactive_rule"
+                                "properties": {
+                                    "password": {
+                                        "description": "Password of the user",
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "description": "Username of the user",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     },
                     "required": true
                 },
                 "responses": {
-                    "204": {
-                        "description": "Reactive rule created successfully."
-                    }
-                },
-                "summary": "Create a new RAISE-CDT reactive rule."
-            }
-        },
-        "/types": {
-            "get": {
-                "description": "Endpoint to fetch all the managed types.",
-                "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "items": {
-                                        "$ref": "#/components/schemas/type"
+                                    "properties": {
+                                        "token": {
+                                            "description": "Authentication token",
+                                            "type": "string"
+                                        }
                                     },
-                                    "type": "array"
+                                    "type": "object"
                                 }
                             }
                         },
-                        "description": "Successful response containing an array of all managed types with their complete definitions."
-                    }
-                },
-                "summary": "Retrieve all the RAISE-CDT types."
-            },
-            "post": {
-                "description": "Endpoint to create a new type.",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/type"
-                            }
-                        }
+                        "description": "Token generated successfully."
                     },
-                    "required": true
-                },
-                "responses": {
-                    "204": {
-                        "description": "Type created successfully."
+                    "400": {
+                        "description": "Invalid request."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
                     }
                 },
-                "summary": "Create a new RAISE-CDT type."
+                "summary": "User login."
             }
         },
-        "/types/{name}": {
-            "delete": {
-                "description": "Endpoint to delete a specific type by name.",
-                "parameters": [
-                    {
-                        "description": "The name of the specific RAISE-CDT type to delete.",
-                        "in": "path",
-                        "name": "name",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Type deleted successfully"
-                    },
-                    "404": {
-                        "description": "Type not found"
-                    }
-                },
-                "summary": "Delete a specific RAISE-CDT type."
-            },
-            "get": {
-                "description": "Endpoint to fetch a specific type by name.",
-                "parameters": [
-                    {
-                        "description": "The name of the specific RAISE-CDT type to get.",
-                        "in": "path",
-                        "name": "name",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/type"
-                                }
-                            }
-                        },
-                        "description": "Successful response with the type details."
-                    },
-                    "404": {
-                        "description": "Type not found"
-                    }
-                },
-                "summary": "Retrieve a specific RAISE-CDT type."
-            }
-        },
-        "/users": {
+        "/raise-users": {
             "post": {
                 "description": "Creates a new user with the specified Google ID.",
                 "requestBody": {
@@ -876,14 +890,22 @@
                     "400": {
                         "description": "Invalid request."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "409": {
                         "description": "User already exists."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Create User"
             }
         },
-        "/users/{google_id}": {
+        "/raise-users/{google_id}": {
             "get": {
                 "description": "Retrieves a user by their Google ID.",
                 "parameters": [
@@ -908,11 +930,271 @@
                         },
                         "description": "User retrieved successfully."
                     },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
                     "404": {
                         "description": "User not found."
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "summary": "Get User"
+            }
+        },
+        "/reactive_rules": {
+            "get": {
+                "description": "Endpoint to fetch all the reactive rules.",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/reactive_rule"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Successful response with the stored reactive rules."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Retrieve all the RAISE-CDT reactive rules."
+            },
+            "post": {
+                "description": "Endpoint to create a new reactive rule.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/reactive_rule"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Reactive rule created successfully."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Create a new RAISE-CDT reactive rule."
+            }
+        },
+        "/types": {
+            "get": {
+                "description": "Endpoint to fetch all the managed types.",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/type"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Successful response containing an array of all managed types with their complete definitions."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Retrieve all the RAISE-CDT types."
+            },
+            "post": {
+                "description": "Endpoint to create a new type.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/type"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Type created successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Create a new RAISE-CDT type."
+            }
+        },
+        "/types/{name}": {
+            "delete": {
+                "description": "Endpoint to delete a specific type by name.",
+                "parameters": [
+                    {
+                        "description": "The name of the specific RAISE-CDT type to delete.",
+                        "in": "path",
+                        "name": "name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Type deleted successfully"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "description": "Type not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Delete a specific RAISE-CDT type."
+            },
+            "get": {
+                "description": "Endpoint to fetch a specific type by name.",
+                "parameters": [
+                    {
+                        "description": "The name of the specific RAISE-CDT type to get.",
+                        "in": "path",
+                        "name": "name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type"
+                                }
+                            }
+                        },
+                        "description": "Successful response with the type details."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "description": "Type not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Retrieve a specific RAISE-CDT type."
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Endpoint to retrieve a list of all users.",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/item"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "List of users retrieved successfully."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Get all users."
+            },
+            "post": {
+                "description": "Endpoint to create a new user.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "description": "Authentication token",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "User created successfully."
+                    },
+                    "400": {
+                        "description": "Invalid request."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "summary": "Create a new user."
             }
         }
     }
