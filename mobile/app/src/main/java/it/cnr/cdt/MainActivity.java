@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -21,7 +22,9 @@ import okhttp3.Response;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
-    private EditText tokenEditText;
+    private final EditText idEditText;
+    private final Button createUserButton;
+    private final OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +32,91 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main); // Set the layout for this activity
 
         tokenEditText = findViewById(R.id.token);
+        createUserButton = findViewById(R.id.publish_button);
+
+        checkToken();
     }
 
     public void onCreateUserButtonClick(@NonNull View view) {
+        newUser(tokenEditText.getText().toString());
+    }
+
+    private void checkToken() {
+        String token = getSharedPreferences("cdt", MODE_PRIVATE).getString("token", null);
+        if (token == null) {
+            Log.d(TAG, "No token found, performing login");
+            Executors.newSingleThreadExecutor().execute(() -> {
+                final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/login")
+                        .post(RequestBody.create("{\"username\": \"admin\", \"password\": \"admin\"}",
+                                MediaType.parse("application/json")));
+                try (Response response = client.newCall(builder.build()).execute()) {
+                    if (response.isSuccessful()) {
+                        token = response.body().string();
+                        Log.d(TAG, "Login successful, token: " + token);
+                        getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("token", token).apply();
+                        checkGoogleId();
+                    } else {
+                        Log.e(TAG, "Login failed: " + response.code());
+                        return;
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error during login", e);
+                    return;
+                }
+            });
+        } else {
+            Log.d(TAG, "Token found in SharedPreferences: " + token);
+            checkGoogleId();
+            return;
+        }
+    }
+
+    private void checkGoogleId() {
+        String google_id = getSharedPreferences("cdt", MODE_PRIVATE).getString("google_id", null);
+        if (google_id == null) {
+            Log.d(TAG, "No Google ID found, please enter it.");
+            createUserButton.setEnabled(true);
+        } else {
+            Log.d(TAG, "Google ID found in SharedPreferences: " + google_id);
+            idEditText.setText(google_id);
+            createUserButton.setEnabled(false);
+            getUser(google_id);
+        }
+    }
+
+    private void getUser(@NonNull String google_id) {
+        final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users/" + google_id)
+                .get();
         Executors.newSingleThreadExecutor().execute(() -> {
-            OkHttpClient client = new OkHttpClient();
-            final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/users")
-                    .post(RequestBody.create("{\"google_id\": \"" + tokenEditText.getText().toString() + "\"}",
-                            MediaType.parse("application/json")));
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
-                    String id = response.body().string();
-                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("id", id).apply();
-                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "FCM token retrieved successfully");
-                            String fcm_token = task.getResult();
-                            Log.d(TAG, "FCM Token: " + fcm_token);
-                            Executors.newSingleThreadExecutor().execute(() -> newToken(id, fcm_token));
-                        } else
-                            Log.e("Connection", "Failed to get FCM token", task.getException());
-                    });
+                    String item_id = response.body().string();
+                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("item_id", id).apply();
+                    checkFCMToken(item_id);
+                } else if (response.code() == 404) {
+                    Log.d(TAG, "User not found, creating new user");
+                    newUser(google_id);
+                } else {
+                    Log.e(TAG, "Failed to get user: " + response.code());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error during user retrieval", e);
+            }
+        });
+    }
+
+    private void newUser(@NonNull String google_id) {
+        final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users")
+                .post(RequestBody.create("{\"google_id\": \"" + google_id + "\"}",
+                        MediaType.parse("application/json")));
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try (Response response = client.newCall(builder.build()).execute()) {
+                if (response.isSuccessful()) {
+                    String item_id = response.body().string();
+                    getSharedPreferences("cdt", MODE_PRIVATE).edit()
+                            .putString("google_id", google_id)
+                            .putString("item_id", item_id).apply();
+                    checkFCMToken(item_id);
                 } else {
                     Log.e(TAG, "Failed to create user: " + response.code());
                 }
@@ -59,10 +126,21 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void newToken(@NonNull String id, @NonNull String token) {
-        OkHttpClient client = new OkHttpClient();
-        final Request.Builder builder = new Request.Builder().url("http://10.0.2.2:8080/fcm_tokens")
-                .post(RequestBody.create("{\"id\": \"" + id + "\", \"token\": \"" + token + "\"}",
+    private void checkFCMToken(@NonNull String item_id) {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "FCM token retrieved successfully");
+                String fcm_token = task.getResult();
+                Log.d(TAG, "FCM Token: " + fcm_token);
+                Executors.newSingleThreadExecutor().execute(() -> newFCMToken(item_id, fcm_token));
+            } else
+                Log.e("Connection", "Failed to get FCM token", task.getException());
+        });
+    }
+
+    private void newFCMToken(@NonNull String item_id, @NonNull String fcm_token) {
+        final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/fcm_tokens")
+                .post(RequestBody.create("{\"id\": \"" + item_id + "\", \"token\": \"" + fcm_token + "\"}",
                         MediaType.parse("application/json")));
         try (Response response = client.newCall(builder.build()).execute()) {
             if (response.isSuccessful()) {
