@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.JsonObject;
 
 import java.util.concurrent.Executors;
 
@@ -51,7 +52,8 @@ public class MainActivity extends Activity {
                                 MediaType.parse("application/json")));
                 try (Response response = client.newCall(builder.build()).execute()) {
                     if (response.isSuccessful()) {
-                        String new_token = response.body().string();
+                        JsonObject responseBody = gson.fromJson(response.body().charStream(), JsonObject.class);
+                        String new_token = responseBody.getAsJsonPrimitive("token").getAsString();
                         Log.d(TAG, "Login successful, token: " + new_token);
                         getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("token", new_token).apply();
                         checkGoogleId();

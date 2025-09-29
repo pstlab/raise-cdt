@@ -13,6 +13,13 @@ This repository provides the foundations for developing **Citizen Digital Twins 
 2. **Set up the environment**:
   - Create a `.env` file from `.env.example` and configure your environment variables.
   - Adjust the `compose.yaml` file to customize service settings as needed.
+  - Create a self-signed SSL certificate for secure communication:
+    ```bash
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout key.pem -out cert.pem \
+    -subj "/CN=10.0.2.2" \
+    -addext "subjectAltName=IP:10.0.2.2"
+    ```
 3. **Start the services**:
   ```bash
   docker compose up -d
