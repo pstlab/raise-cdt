@@ -87,7 +87,8 @@ public class MainActivity extends Activity {
     private void getUser(@NonNull String google_id) {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users/" + google_id)
                 .get();
-        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
+        builder.addHeader("Authorization",
+                "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token", null));
         Executors.newSingleThreadExecutor().execute(() -> {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
@@ -109,7 +110,8 @@ public class MainActivity extends Activity {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users")
                 .post(RequestBody.create("{\"google_id\": \"" + google_id + "\"}",
                         MediaType.parse("application/json")));
-        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
+        builder.addHeader("Authorization",
+                "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token", null));
         Executors.newSingleThreadExecutor().execute(() -> {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
@@ -142,7 +144,8 @@ public class MainActivity extends Activity {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/fcm_tokens")
                 .post(RequestBody.create("{\"id\": \"" + item_id + "\", \"token\": \"" + fcm_token + "\"}",
                         MediaType.parse("application/json")));
-        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
+        builder.addHeader("Authorization",
+                "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token", null));
         try (Response response = client.newCall(builder.build()).execute()) {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
