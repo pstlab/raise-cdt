@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
     private static final Gson gson = new Gson();
     private EditText googleIdEditText;
-    private Button connectUserButton, createUserButton;
+    private Button connectUserButton, createUserButton, logoutButton;
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
         googleIdEditText = findViewById(R.id.google_id);
         connectUserButton = findViewById(R.id.connect_button);
         createUserButton = findViewById(R.id.create_button);
+        logoutButton = findViewById(R.id.logout_button);
 
         checkToken();
     }
@@ -51,6 +52,16 @@ public class MainActivity extends Activity {
 
     public void onCreateUserButtonClick(@NonNull View view) {
         newRaiseUser(googleIdEditText.getText().toString());
+    }
+
+    public void onLogoutButtonClick(@NonNull View view) {
+        getSharedPreferences("cdt", MODE_PRIVATE).edit().remove("token").remove("google_id").remove("item_id").apply();
+        googleIdEditText.setText("");
+        googleIdEditText.setEnabled(true);
+        connectUserButton.setEnabled(true);
+        createUserButton.setEnabled(true);
+        logoutButton.setEnabled(false);
+        checkToken();
     }
 
     /**
@@ -107,12 +118,18 @@ public class MainActivity extends Activity {
         String google_id = getSharedPreferences("cdt", MODE_PRIVATE).getString("google_id", null);
         if (google_id == null) {
             Log.d(TAG, "No Google ID found, please enter it.");
+            googleIdEditText.setText("");
+            googleIdEditText.setEnabled(true);
             connectUserButton.setEnabled(true);
             createUserButton.setEnabled(true);
+            logoutButton.setEnabled(false);
         } else {
             Log.d(TAG, "Google ID found in SharedPreferences: " + google_id);
             googleIdEditText.setText(google_id);
+            googleIdEditText.setEnabled(false);
+            connectUserButton.setEnabled(false);
             createUserButton.setEnabled(false);
+            logoutButton.setEnabled(true);
             getRaiseUser(google_id);
         }
     }
@@ -140,6 +157,10 @@ public class MainActivity extends Activity {
                     getSharedPreferences("cdt", MODE_PRIVATE).edit()
                             .putString("google_id", google_id)
                             .putString("item_id", item_id).apply();
+                    googleIdEditText.setEnabled(false);
+                    connectUserButton.setEnabled(false);
+                    createUserButton.setEnabled(false);
+                    logoutButton.setEnabled(true);
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
@@ -176,6 +197,10 @@ public class MainActivity extends Activity {
                     getSharedPreferences("cdt", MODE_PRIVATE).edit()
                             .putString("google_id", google_id)
                             .putString("item_id", item_id).apply();
+                    googleIdEditText.setEnabled(false);
+                    connectUserButton.setEnabled(false);
+                    createUserButton.setEnabled(false);
+                    logoutButton.setEnabled(true);
                     checkFCMToken(item_id);
                 } else
                     Log.e(TAG, "Failed to create user: " + response.code());

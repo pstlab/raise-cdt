@@ -25,4 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onCreateUserButtonClick" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:text="@string/logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onLogoutButtonClick" />
 </LinearLayout>
