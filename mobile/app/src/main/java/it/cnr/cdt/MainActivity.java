@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     }
 
     public void onCreateUserButtonClick(@NonNull View view) {
-        newUser(idEditText.getText().toString());
+        newRaiseUser(idEditText.getText().toString());
     }
 
     private void checkToken() {
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
             Log.d(TAG, "Google ID found in SharedPreferences: " + google_id);
             idEditText.setText(google_id);
             createUserButton.setEnabled(false);
-            getUser(google_id);
+            getRaiseUser(google_id);
         }
     }
 
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
-                    newUser(google_id);
+                    newRaiseUser(google_id);
                 } else
                     Log.e(TAG, "Failed to get user: " + response.code());
             } catch (Exception e) {
