@@ -135,7 +135,8 @@ public class MainActivity extends Activity {
         Executors.newSingleThreadExecutor().execute(() -> {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
-                    String item_id = response.body().string();
+                    JsonObject responseBody = gson.fromJson(response.body().charStream(), JsonObject.class);
+                    String item_id = responseBody.getAsJsonPrimitive("id").getAsString();
                     getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("item_id", item_id).apply();
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
