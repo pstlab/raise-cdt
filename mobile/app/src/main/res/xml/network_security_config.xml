@@ -3,5 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain>10.0.2.2</domain>
         <domain>150.146.65.20</domain>
+        <trust-anchors>
+            <certificates src="@raw/cert" />
+        </trust-anchors>
     </domain-config>
 </network-security-config>
