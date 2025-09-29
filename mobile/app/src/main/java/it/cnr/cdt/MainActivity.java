@@ -51,9 +51,9 @@ public class MainActivity extends Activity {
                                 MediaType.parse("application/json")));
                 try (Response response = client.newCall(builder.build()).execute()) {
                     if (response.isSuccessful()) {
-                        token = response.body().string();
-                        Log.d(TAG, "Login successful, token: " + token);
-                        getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("token", token).apply();
+                        String new_token = response.body().string();
+                        Log.d(TAG, "Login successful, token: " + new_token);
+                        getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("token", new_token).apply();
                         checkGoogleId();
                     } else {
                         Log.e(TAG, "Login failed: " + response.code());
