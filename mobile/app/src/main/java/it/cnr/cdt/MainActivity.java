@@ -55,19 +55,15 @@ public class MainActivity extends Activity {
                         Log.d(TAG, "Login successful, token: " + new_token);
                         getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("token", new_token).apply();
                         checkGoogleId();
-                    } else {
+                    } else
                         Log.e(TAG, "Login failed: " + response.code());
-                        return;
-                    }
                 } catch (Exception e) {
                     Log.e(TAG, "Error during login", e);
-                    return;
                 }
             });
         } else {
             Log.d(TAG, "Token found in SharedPreferences: " + token);
             checkGoogleId();
-            return;
         }
     }
 
@@ -91,7 +87,7 @@ public class MainActivity extends Activity {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
                     String item_id = response.body().string();
-                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("item_id", id).apply();
+                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("item_id", item_id).apply();
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
