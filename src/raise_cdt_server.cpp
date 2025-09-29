@@ -2,6 +2,7 @@
 #ifdef BUILD_AUTH
 #include "coco_auth.hpp"
 #endif
+#include "logging.hpp"
 
 namespace cdt
 {
@@ -57,12 +58,12 @@ namespace cdt
     {
         try
         {
-            auto &user = cdt.get_user(req.get_target().substr(7));
+            auto &user = cdt.get_user(req.get_target().substr(13)); // 13 is the length of "/raise-users/"
             auto j_user = user.to_json();
             j_user["id"] = user.get_id();
             return std::make_unique<network::json_response>(std::move(j_user));
         }
-        catch (const std::exception &)
+        catch (const std::exception &ex)
         {
             return std::make_unique<network::json_response>(json::json({{"message", "User not found"}}), network::status_code::not_found);
         }
@@ -80,9 +81,9 @@ namespace cdt
             auto &usr = cdt.create_user(google_id);
             return std::make_unique<network::string_response>(std::string(usr.get_id()), network::status_code::created);
         }
-        catch (const std::exception &e)
+        catch (const std::exception &ex)
         {
-            return std::make_unique<network::json_response>(json::json({{"message", e.what()}}), network::status_code::conflict);
+            return std::make_unique<network::json_response>(json::json({{"message", ex.what()}}), network::status_code::conflict);
         }
     }
 } // namespace cdt
