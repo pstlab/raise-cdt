@@ -14,8 +14,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String fcm_token) {
         super.onNewToken(fcm_token);
-        Log.d(TAG, "New token: " + fcm_token);
-        String token = getSharedPreferences("cdt", MODE_PRIVATE).getString("id", null);
+        Log.d(TAG, "New FCM token: " + fcm_token);
     }
 
     @Override
