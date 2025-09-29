@@ -87,6 +87,7 @@ public class MainActivity extends Activity {
     private void getUser(@NonNull String google_id) {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users/" + google_id)
                 .get();
+        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
         Executors.newSingleThreadExecutor().execute(() -> {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
@@ -96,9 +97,8 @@ public class MainActivity extends Activity {
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
                     newUser(google_id);
-                } else {
+                } else
                     Log.e(TAG, "Failed to get user: " + response.code());
-                }
             } catch (Exception e) {
                 Log.e(TAG, "Error during user retrieval", e);
             }
@@ -109,6 +109,7 @@ public class MainActivity extends Activity {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/users")
                 .post(RequestBody.create("{\"google_id\": \"" + google_id + "\"}",
                         MediaType.parse("application/json")));
+        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
         Executors.newSingleThreadExecutor().execute(() -> {
             try (Response response = client.newCall(builder.build()).execute()) {
                 if (response.isSuccessful()) {
@@ -117,9 +118,8 @@ public class MainActivity extends Activity {
                             .putString("google_id", google_id)
                             .putString("item_id", item_id).apply();
                     checkFCMToken(item_id);
-                } else {
+                } else
                     Log.e(TAG, "Failed to create user: " + response.code());
-                }
             } catch (Exception e) {
                 Log.e(TAG, "Error during user creation", e);
             }
@@ -142,13 +142,13 @@ public class MainActivity extends Activity {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/fcm_tokens")
                 .post(RequestBody.create("{\"id\": \"" + item_id + "\", \"token\": \"" + fcm_token + "\"}",
                         MediaType.parse("application/json")));
+        builder.addHeader("Authorization", "Bearer " + getSharedPreferences("cdt", MODE_PRIVATE).getString("token"));
         try (Response response = client.newCall(builder.build()).execute()) {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 Log.d(TAG, "Token registered successfully: " + responseBody);
-            } else {
+            } else
                 Log.e(TAG, "Failed to register token: " + response.code());
-            }
         } catch (Exception e) {
             Log.e(TAG, "Error during token registration", e);
         }
