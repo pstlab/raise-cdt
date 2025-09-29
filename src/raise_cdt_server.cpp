@@ -1,4 +1,7 @@
 #include "raise_cdt_server.hpp"
+#ifdef BUILD_AUTH
+#include "coco_auth.hpp"
+#endif
 
 namespace cdt
 {
@@ -42,6 +45,12 @@ namespace cdt
 #endif
                                      {"409",
                                       {{"description", "User already exists."}}}}}}});
+
+#ifdef BUILD_AUTH
+        auto &auth = static_cast<coco::auth_middleware &>(srv.get_middleware<coco::auth_middleware>());
+        auth.add_authorized_path(network::Get, "^/raise-users/.*$", {0, 1});
+        auth.add_authorized_path(network::Post, "^/raise-users$", {0});
+#endif
     }
 
     std::unique_ptr<network::response> raise_cdt_server::get_user(const network::request &req)
