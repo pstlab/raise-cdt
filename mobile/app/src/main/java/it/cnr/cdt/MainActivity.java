@@ -137,7 +137,9 @@ public class MainActivity extends Activity {
                 if (response.isSuccessful()) {
                     JsonObject responseBody = gson.fromJson(response.body().charStream(), JsonObject.class);
                     String item_id = responseBody.getAsJsonPrimitive("id").getAsString();
-                    getSharedPreferences("cdt", MODE_PRIVATE).edit().putString("item_id", item_id).apply();
+                    getSharedPreferences("cdt", MODE_PRIVATE).edit()
+                            .putString("google_id", google_id)
+                            .putString("item_id", item_id).apply();
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
