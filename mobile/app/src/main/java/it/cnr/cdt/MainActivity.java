@@ -157,10 +157,12 @@ public class MainActivity extends Activity {
                     getSharedPreferences("cdt", MODE_PRIVATE).edit()
                             .putString("google_id", google_id)
                             .putString("item_id", item_id).apply();
-                    googleIdEditText.setEnabled(false);
-                    connectUserButton.setEnabled(false);
-                    createUserButton.setEnabled(false);
-                    logoutButton.setEnabled(true);
+                    runOnUiThread(() -> {
+                        googleIdEditText.setEnabled(false);
+                        connectUserButton.setEnabled(false);
+                        createUserButton.setEnabled(false);
+                        logoutButton.setEnabled(true);
+                    });
                     checkFCMToken(item_id);
                 } else if (response.code() == 404) {
                     Log.d(TAG, "User not found, creating new user");
@@ -197,10 +199,12 @@ public class MainActivity extends Activity {
                     getSharedPreferences("cdt", MODE_PRIVATE).edit()
                             .putString("google_id", google_id)
                             .putString("item_id", item_id).apply();
-                    googleIdEditText.setEnabled(false);
-                    connectUserButton.setEnabled(false);
-                    createUserButton.setEnabled(false);
-                    logoutButton.setEnabled(true);
+                    runOnUiThread(() -> {
+                        googleIdEditText.setEnabled(false);
+                        connectUserButton.setEnabled(false);
+                        createUserButton.setEnabled(false);
+                        logoutButton.setEnabled(true);
+                    });
                     checkFCMToken(item_id);
                 } else
                     Log.e(TAG, "Failed to create user: " + response.code());
