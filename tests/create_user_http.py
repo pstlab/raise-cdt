@@ -17,13 +17,15 @@ if __name__ == '__main__':
     session = requests.Session()
 
     first_name = fake.first_name()
-    response = session.post(url + '/raise-users', json={
-        'google_id': first_name.lower() + str(fake.random_number(digits=5, fix_len=True))})
+    google_id = first_name.lower() + str(fake.random_number(digits=5, fix_len=True))
+    response = session.post(url + '/raise-users',
+                            json={'google_id': google_id})
     if response.status_code != 201:
         logger.error('Failed to create user')
         sys.exit(1)
     user_uid = response.text
-    logger.info(f'Created user {first_name} with uid {user_uid}')
+    logger.info(
+        f'Created user {first_name} with google_id {google_id} and uid {user_uid}')
 
     response = session.patch(url + f'/items/{user_uid}', json={
         'properties': {

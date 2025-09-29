@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="token_hint">Token</string>
-    <string name="publish">Publish</string>
+    <string name="google_id_hint">Google ID</string>
+    <string name="connect">Connect</string>
+    <string name="create">Create</string>
 </resources>

@@ -25,8 +25,8 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
     private static final Gson gson = new Gson();
-    private EditText idEditText;
-    private Button createUserButton;
+    private EditText googleIdEditText;
+    private Button connectUserButton, createUserButton;
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
@@ -38,16 +38,33 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Set the layout for this activity
 
-        idEditText = findViewById(R.id.token);
-        createUserButton = findViewById(R.id.publish_button);
+        googleIdEditText = findViewById(R.id.google_id);
+        connectUserButton = findViewById(R.id.connect_button);
+        createUserButton = findViewById(R.id.create_button);
 
         checkToken();
     }
 
-    public void onCreateUserButtonClick(@NonNull View view) {
-        newRaiseUser(idEditText.getText().toString());
+    public void onConnectUserButtonClick(@NonNull View view) {
+        getRaiseUser(googleIdEditText.getText().toString());
     }
 
+    public void onCreateUserButtonClick(@NonNull View view) {
+        newRaiseUser(googleIdEditText.getText().toString());
+    }
+
+    /**
+     * Checks for the presence of an authentication token in SharedPreferences.
+     *
+     * If the token is not found, performs a login request to the server using
+     * hardcoded credentials, retrieves the token from the response, saves it in
+     * SharedPreferences, and proceeds to check the Google ID.
+     * If the token is already present, logs its value and proceeds to check the
+     * Google ID.
+     *
+     * Network operations are performed on a background thread.
+     * Logs relevant information and errors for debugging purposes.
+     */
     private void checkToken() {
         String token = getSharedPreferences("cdt", MODE_PRIVATE).getString("token", null);
         if (token == null) {
@@ -75,19 +92,41 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Checks for the presence of a Google ID in SharedPreferences.
+     *
+     * If the Google ID is not found, enables the buttons for user connection
+     * and creation, allowing the user to input their Google ID.
+     * If the Google ID is found, populates the corresponding EditText field,
+     * disables the user creation button, and initiates a request to retrieve
+     * the associated user data from the server.
+     *
+     * Logs relevant information for debugging purposes.
+     */
     private void checkGoogleId() {
         String google_id = getSharedPreferences("cdt", MODE_PRIVATE).getString("google_id", null);
         if (google_id == null) {
             Log.d(TAG, "No Google ID found, please enter it.");
+            connectUserButton.setEnabled(true);
             createUserButton.setEnabled(true);
         } else {
             Log.d(TAG, "Google ID found in SharedPreferences: " + google_id);
-            idEditText.setText(google_id);
+            googleIdEditText.setText(google_id);
             createUserButton.setEnabled(false);
             getRaiseUser(google_id);
         }
     }
 
+    /**
+     * Retrieves a user from the server using their Google ID.
+     * 
+     * If the user is found, their item ID is saved in SharedPreferences,
+     * and the FCM token is checked and potentially registered.
+     * If the user is not found (404 response), a new user is created.
+     * 
+     * Network operations are performed on a background thread.
+     * Logs relevant information and errors for debugging purposes.
+     */
     private void getRaiseUser(@NonNull String google_id) {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/raise-users/" + google_id)
                 .get();
@@ -110,6 +149,16 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Creates a new user on the server with the provided Google ID.
+     * 
+     * If the user is successfully created, their Google ID and item ID
+     * are saved in SharedPreferences, and the FCM token is checked and
+     * potentially registered.
+     * 
+     * Network operations are performed on a background thread.
+     * Logs relevant information and errors for debugging purposes.
+     */
     private void newRaiseUser(@NonNull String google_id) {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/raise-users")
                 .post(RequestBody.create("{\"google_id\": \"" + google_id + "\"}",
@@ -132,6 +181,15 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Checks and registers the FCM token for the user with the given item ID.
+     * 
+     * Retrieves the current FCM token and sends it to the server to be
+     * associated with the user's item ID.
+     * 
+     * Network operations are performed on a background thread.
+     * Logs relevant information and errors for debugging purposes.
+     */
     private void checkFCMToken(@NonNull String item_id) {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -144,6 +202,15 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * Registers a new FCM token for the user with the given item ID.
+     * 
+     * Sends the FCM token to the server to be associated with the user's
+     * item ID.
+     * 
+     * Network operations are performed on a background thread.
+     * Logs relevant information and errors for debugging purposes.
+     */
     private void newFCMToken(@NonNull String item_id, @NonNull String fcm_token) {
         final Request.Builder builder = new Request.Builder().url("https://10.0.2.2:8443/fcm_tokens")
                 .post(RequestBody.create("{\"id\": \"" + item_id + "\", \"token\": \"" + fcm_token + "\"}",

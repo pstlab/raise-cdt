@@ -6,15 +6,22 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/token"
-        android:hint="@string/token_hint"
+        android:id="@+id/google_id"
+        android:hint="@string/google_id_hint"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/publish_button"
-        android:text="@string/publish"
+        android:id="@+id/connect_button"
+        android:text="@string/connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onConnectUserButtonClick" />
+
+    <Button
+        android:id="@+id/create_button"
+        android:text="@string/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onCreateUserButtonClick" />
