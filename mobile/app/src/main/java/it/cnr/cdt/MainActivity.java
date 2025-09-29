@@ -22,8 +22,8 @@ import okhttp3.Response;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
-    private final EditText idEditText;
-    private final Button createUserButton;
+    private EditText idEditText;
+    private Button createUserButton;
     private final OkHttpClient client = new OkHttpClient();
 
     @Override
@@ -31,14 +31,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Set the layout for this activity
 
-        tokenEditText = findViewById(R.id.token);
+        idEditText = findViewById(R.id.token);
         createUserButton = findViewById(R.id.publish_button);
 
         checkToken();
     }
 
     public void onCreateUserButtonClick(@NonNull View view) {
-        newUser(tokenEditText.getText().toString());
+        newUser(idEditText.getText().toString());
     }
 
     private void checkToken() {
