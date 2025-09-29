@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.Executors;
@@ -23,6 +24,7 @@ import okhttp3.Response;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
+    private static final Gson gson = new Gson();
     private EditText idEditText;
     private Button createUserButton;
     private final OkHttpClient client = new OkHttpClient();
