@@ -3,7 +3,6 @@ package it.cnr.cdt;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,16 +40,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Set the layout for this activity
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    "default_channel", // must match manifest value
-                    "Default Channel", // visible name in settings
-                    NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("Channel for FCM notifications");
+        NotificationChannel channel = new NotificationChannel("default_channel", "Default Channel",
+                NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription("Channel for FCM notifications");
 
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
 
         googleIdEditText = findViewById(R.id.google_id);
         connectUserButton = findViewById(R.id.connect_button);
