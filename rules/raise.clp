@@ -369,16 +369,12 @@
     (if (and (>= ?sensory_dysregulation 2) (<= ?sensory_dysregulation 3)) then (bind ?final_sensory_dysregulation medium))
     (if (>= ?sensory_dysregulation 4) then (bind ?final_sensory_dysregulation high))
 
-    ; Generate supportive messages
-    (if (or (neq ?anxiety_message "") (neq ?dyskinesia_message "") (neq ?excessive_heat_message "") (neq ?fluctuation_message "") (neq ?freezing_message "") (neq ?mental_fatigue_message "") (neq ?physical_fatigue_message "") (neq ?sensory_dysregulation_message "")) then
-        (printout t (understand (str-cat "You are a support system for citizens. Based on the following analysis, provide a brief message in italian, a few sentences, to help reduce the identified issues. No comments, just the message. " ?anxiety_message ?dyskinesia_message ?excessive_heat_message ?fluctuation_message ?freezing_message ?mental_fatigue_message ?physical_fatigue_message ?sensory_dysregulation_message)) crlf)
-    )
-
     (add_data ?user
         (create$ ANXIETY anxiety_relevant anxiety_message DYSKINESIA dyskinesia_message EXCESSIVE_HEAT excessive_heat_relevant excessive_heat_message FLUCTUATION fluctuation_message FREEZING freezing_relevant freezing_message MENTAL_FATIGUE mental_fatigue_message PHYSICAL_FATIGUE physical_fatigue_relevant physical_fatigue_message SENSORY_DYSREGULATION sensory_dysregulation_relevant sensory_dysregulation_message)
         (create$ ?final_anxiety (to_json ?anxiety_relevant) ?anxiety_message ?final_dyskinesia ?dyskinesia_message ?final_excessive_heat (to_json ?excessive_heat_relevant) ?excessive_heat_message ?final_fluctuation ?fluctuation_message ?final_freezing (to_json ?freezing_relevant) ?freezing_message ?final_mental_fatigue ?mental_fatigue_message ?final_physical_fatigue (to_json ?physical_fatigue_relevant) ?physical_fatigue_message ?final_sensory_dysregulation (to_json ?sensory_dysregulation_relevant) ?sensory_dysregulation_message)
     )
-    (if (or (eq ?final_anxiety high) (eq ?final_dyskinesia high) (eq ?final_excessive_heat high) (eq ?final_fluctuation high) (eq ?final_freezing high) (eq ?final_mental_fatigue high) (eq ?final_physical_fatigue high) (eq ?final_sensory_dysregulation high)) then
-        (send_notification ?user "High Risk Alert" "High risk detected in one or more categories. Please take necessary precautions.")
+
+    (if (and (or (eq ?ANXIETY high) (eq ?DYSKINESIA high) (eq ?EXCESSIVE_HEAT high) (eq ?FLUCTUATION high) (eq ?FREEZING high) (eq ?MENTAL_FATIGUE high) (eq ?PHYSICAL_FATIGUE high) (eq ?SENSORY_DYSREGULATION high)) (empty_agenda)) then
+        (send_notification ?user "Attenzione!" (understand (str-cat "You are a support system for citizens. Based on the following analysis, provide a brief message in italian, a few sentences, to help reduce the identified issues. No comments, just the message. " ?anxiety_message ?dyskinesia_message ?excessive_heat_message ?fluctuation_message ?freezing_message ?mental_fatigue_message ?physical_fatigue_message ?sensory_dysregulation_message)))
     )
 )
