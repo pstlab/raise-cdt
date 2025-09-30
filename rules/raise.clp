@@ -375,6 +375,15 @@
     )
 
     (if (and (or (eq ?ANXIETY high) (eq ?DYSKINESIA high) (eq ?EXCESSIVE_HEAT high) (eq ?FLUCTUATION high) (eq ?FREEZING high) (eq ?MENTAL_FATIGUE high) (eq ?PHYSICAL_FATIGUE high) (eq ?SENSORY_DYSREGULATION high)) (empty_agenda)) then
-        (send_notification ?user "Attenzione!" (understand (str-cat "You are a support system for citizens. Based on the following analysis, provide a brief message in italian, a few sentences, to help reduce the identified issues. No comments, just the message. " ?anxiety_message ?dyskinesia_message ?excessive_heat_message ?fluctuation_message ?freezing_message ?mental_fatigue_message ?physical_fatigue_message ?sensory_dysregulation_message)))
+        (bind ?prompt "You are a support system for citizens. Based on the following analysis, provide a brief message in italian, a few sentences, to help reduce the identified issues. No comments, just the message.")
+        (if (and (eq ?ANXIETY high) (not (eq ?anxiety_message ""))) then (bind ?prompt (str-cat ?prompt " " ?anxiety_message)))
+        (if (and (eq ?DYSKINESIA high) (not (eq ?dyskinesia_message ""))) then (bind ?prompt (str-cat ?prompt " " ?dyskinesia_message)))
+        (if (and (eq ?EXCESSIVE_HEAT high) (not (eq ?excessive_heat_message ""))) then (bind ?prompt (str-cat ?prompt " " ?excessive_heat_message)))
+        (if (and (eq ?FLUCTUATION high) (not (eq ?fluctuation_message ""))) then (bind ?prompt (str-cat ?prompt " " ?fluctuation_message)))
+        (if (and (eq ?FREEZING high) (not (eq ?freezing_message ""))) then (bind ?prompt (str-cat ?prompt " " ?freezing_message)))
+        (if (and (eq ?MENTAL_FATIGUE high) (not (eq ?mental_fatigue_message ""))) then (bind ?prompt (str-cat ?prompt " " ?mental_fatigue_message)))
+        (if (and (eq ?PHYSICAL_FATIGUE high) (not (eq ?physical_fatigue_message ""))) then (bind ?prompt (str-cat ?prompt " " ?physical_fatigue_message)))
+        (if (and (eq ?SENSORY_DYSREGULATION high) (not (eq ?sensory_dysregulation_message ""))) then (bind ?prompt (str-cat ?prompt " " ?sensory_dysregulation_message)))
+        (send_notification ?user "Attenzione!" (understand ?prompt))
     )
 )
