@@ -16,6 +16,8 @@ import com.google.gson.JsonObject;
 import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -46,6 +48,22 @@ public class MainActivity extends Activity {
 
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.createNotificationChannel(channel);
+
+        if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            // Show dialog to user
+            new AlertDialog.Builder(this)
+                    .setTitle("Enable Notifications")
+                    .setMessage(
+                            "Notifications are disabled. Please enable them in settings to receive important updates.")
+                    .setPositiveButton("Open Settings", (dialog, which) -> {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        }
 
         googleIdEditText = findViewById(R.id.google_id);
         connectUserButton = findViewById(R.id.connect_button);
@@ -127,18 +145,22 @@ public class MainActivity extends Activity {
         String google_id = getSharedPreferences("cdt", MODE_PRIVATE).getString("google_id", null);
         if (google_id == null) {
             Log.d(TAG, "No Google ID found, please enter it.");
-            googleIdEditText.setText("");
-            googleIdEditText.setEnabled(true);
-            connectUserButton.setEnabled(true);
-            createUserButton.setEnabled(true);
-            logoutButton.setEnabled(false);
+            runOnUiThread(() -> {
+                googleIdEditText.setText("");
+                googleIdEditText.setEnabled(true);
+                connectUserButton.setEnabled(true);
+                createUserButton.setEnabled(true);
+                logoutButton.setEnabled(false);
+            });
         } else {
             Log.d(TAG, "Google ID found in SharedPreferences: " + google_id);
-            googleIdEditText.setText(google_id);
-            googleIdEditText.setEnabled(false);
-            connectUserButton.setEnabled(false);
-            createUserButton.setEnabled(false);
-            logoutButton.setEnabled(true);
+            runOnUiThread(() -> {
+                googleIdEditText.setText(google_id);
+                googleIdEditText.setEnabled(false);
+                connectUserButton.setEnabled(false);
+                createUserButton.setEnabled(false);
+                logoutButton.setEnabled(true);
+            });
             getRaiseUser(google_id);
         }
     }
