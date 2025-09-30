@@ -4,6 +4,7 @@
 #ifdef BUILD_POSTGRESQL
 #include "raise_db.hpp"
 #endif
+#include "coco_llm.hpp"
 #include "coco_fcm.hpp"
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
@@ -33,6 +34,7 @@ int main()
 #endif
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
+    cc.add_module<coco::coco_llm>(cc);
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 
     try
@@ -148,14 +150,7 @@ int main()
         [[maybe_unused]] auto &usr_tp = cc.create_type("RAISE-User", {}, std::move(static_props), std::move(dynamic_props));
 
         // Create the reactive rules
-        cc.create_reactive_rule("anxiety", read_rule("rules/anxiety.clp"));
-        cc.create_reactive_rule("dyskinesia", read_rule("rules/dyskinesia.clp"));
-        cc.create_reactive_rule("excessive_heat", read_rule("rules/excessive_heat.clp"));
-        cc.create_reactive_rule("fluctuation", read_rule("rules/fluctuation.clp"));
-        cc.create_reactive_rule("freezing", read_rule("rules/freezing.clp"));
-        cc.create_reactive_rule("mental_fatigue", read_rule("rules/mental_fatigue.clp"));
-        cc.create_reactive_rule("physical_fatigue", read_rule("rules/physical_fatigue.clp"));
-        cc.create_reactive_rule("sensory_dysregulation", read_rule("rules/sensory_dysregulation.clp"));
+        cc.create_reactive_rule("raise", read_rule("rules/raise.clp"));
     }
 
     auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
