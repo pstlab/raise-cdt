@@ -52,7 +52,7 @@
     (bind ?sensory_dysregulation_message "")
 
     ; ANXIETY
-    (if (and (eq ?parkinson TRUE) (neq ?ANXIETY low)) then
+    (if (and (eq ?parkinson TRUE) (neq ?ANXIETY nil) (neq ?ANXIETY low)) then
         (bind ?dyskinesia (+ ?dyskinesia 1))
         (bind ?dyskinesia_message (str-cat ?dyskinesia_message "Anxiety contributes to dyskinesia. "))
         (bind ?fluctuation (+ ?fluctuation 1))
@@ -65,7 +65,7 @@
         (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Anxiety increases physical fatigue. "))
     )
     ; FREEZING
-    (if (and (eq ?parkinson TRUE) (neq ?FREEZING low)) then
+    (if (and (eq ?parkinson TRUE) (neq ?FREEZING nil) (neq ?FREEZING low)) then
         (bind ?anxiety (+ ?anxiety 1))
         (bind ?anxiety_message (str-cat ?anxiety_message "Freezing of gait increases anxiety. "))
     )
@@ -241,7 +241,7 @@
     )
 
     ; Bar/restaurant
-    (if (and (eq ?psychiatric_patients TRUE) ?bar_restaurant) then
+    (if (and (eq ?psychiatric_patients TRUE) (neq ?bar_restaurant nil) ?bar_restaurant) then
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 bar_restaurant))
         (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Might go to a bar/restaurant to relax and have a drink, which can help reduce physical fatigue. "))
     )
