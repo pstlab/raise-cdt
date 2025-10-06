@@ -4,11 +4,17 @@
 #ifdef BUILD_POSTGRESQL
 #include "raise_db.hpp"
 #endif
+#ifdef BUILD_LLM
 #include "coco_llm.hpp"
+#endif
+#ifdef BUILD_FCM
 #include "coco_fcm.hpp"
+#endif
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
+#ifdef BUILD_FCM
 #include "fcm_server.hpp"
+#endif
 #include "logging.hpp"
 #ifdef ENABLE_CORS
 #include "cors.hpp"
@@ -34,8 +40,12 @@ int main()
 #endif
     coco::coco cc(db);
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
+#ifdef BUILD_LLM
     cc.add_module<coco::coco_llm>(cc);
+#endif
+#ifdef BUILD_FCM
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
+#endif
 
     try
     {
@@ -169,7 +179,9 @@ int main()
     srv.add_middleware<network::cors>(srv);
 #endif
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
+#ifdef BUILD_FCM
     srv.add_module<coco::fcm_server>(srv, fcm);
+#endif
     auto srv_ft = std::async(std::launch::async, [&srv]
                              { srv.start(); });
 
