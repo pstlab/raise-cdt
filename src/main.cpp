@@ -160,7 +160,7 @@ int main()
     } while (!mqtt.is_connected());
 
     coco::coco_server srv(cc);
-#ifdef ENABLE_SSL
+#ifdef BUILD_SECURE
     const char *cert = std::getenv("RAISE_CDT_CERT");
     const char *key = std::getenv("RAISE_CDT_KEY");
     srv.load_certificate(cert, key);
