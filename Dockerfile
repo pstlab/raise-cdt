@@ -5,10 +5,10 @@ FROM pstlab/coco-base:latest
 RUN apt update && apt install -y libpqxx-dev
 
 # Expose the COCO application port
-EXPOSE 8443
+EXPOSE 8080
 
 # Set environment variables for MongoDB connection
-ARG SERVER_PORT=8443
+ARG SERVER_PORT=8080
 ARG MONGODB_HOST=raise-cdt-db
 ARG MONGODB_PORT=27017
 ARG MONGODB_USER=root

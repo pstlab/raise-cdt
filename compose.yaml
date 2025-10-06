@@ -94,7 +94,7 @@ services:
     networks:
       - raise-net
     ports:
-      - "8443:8443"
+      - "8080:8080"
     environment:
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
       - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
