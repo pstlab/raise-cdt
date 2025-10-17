@@ -44,6 +44,12 @@ int main()
     cc.add_module<coco::coco_llm>(cc);
 #endif
 #ifdef BUILD_FCM
+    if (std::string_view fcm_project_id = std::getenv("FCM_PROJECT_ID"); !fcm_project_id.empty())
+        LOG_DEBUG("FCM Project ID: " << fcm_project_id);
+    if (std::string_view client_email = std::getenv("FCM_CLIENT_EMAIL"); !client_email.empty())
+        LOG_DEBUG("FCM Client Email: " << client_email);
+    if (std::string_view private_key = std::getenv("FCM_PRIVATE_KEY"); !private_key.empty())
+        LOG_DEBUG("FCM Private Key: " << std::string(private_key).substr(0, 10) << "...");
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 #endif
 
