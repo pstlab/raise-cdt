@@ -10,7 +10,10 @@ namespace cdt
 {
     raise_cdt::raise_cdt(coco::coco &cc) noexcept : coco_module(cc)
     {
+        LOG_DEBUG("Initializing RAISE CDT module");
+        LOG_DEBUG("Adding RAISE CDT database module");
         [[maybe_unused]] auto &db = get_coco().get_db().add_module<raise_cdt_db>(static_cast<coco::mongo_db &>(get_coco().get_db()));
+        LOG_DEBUG("RAISE CDT module initialized");
 #ifdef BUILD_POSTGRESQL
         auto &r_db = get_coco().get_db().add_module<raise_db>(db);
         for (auto &usr : r_db.get_users())
