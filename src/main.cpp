@@ -42,18 +42,22 @@ int main()
     cc.add_module<coco::coco_llm>(cc);
 #endif
 #ifdef BUILD_FCM
-    if (std::string_view fcm_project_id = std::getenv("FCM_PROJECT_ID"); !fcm_project_id.empty())
-        LOG_DEBUG("FCM Project ID: " << fcm_project_id);
+    LOG_DEBUG("Adding CoCo FCM module");
+    auto fcm_project_id = std::getenv("FCM_PROJECT_ID");
+    if (fcm_project_id)
+        LOG_DEBUG("FCM Project ID: " + std::string(fcm_project_id));
     else
-        LOG_WARN("FCM_PROJECT_ID environment variable is not set");
-    if (std::string_view client_email = std::getenv("FCM_CLIENT_EMAIL"); !client_email.empty())
-        LOG_DEBUG("FCM Client Email: " << client_email);
+        LOG_WARN("FCM Project ID not set");
+    auto client_email = std::getenv("FCM_CLIENT_EMAIL");
+    if (client_email)
+        LOG_DEBUG("FCM Client Email: " + std::string(client_email));
     else
-        LOG_WARN("FCM_CLIENT_EMAIL environment variable is not set");
-    if (std::string_view private_key = std::getenv("FCM_PRIVATE_KEY"); !private_key.empty())
-        LOG_DEBUG("FCM Private Key: " << std::string(private_key).substr(0, 10) << "...");
+        LOG_WARN("FCM Client Email not set");
+    auto private_key = std::getenv("FCM_PRIVATE_KEY");
+    if (private_key)
+        LOG_DEBUG("FCM Private Key is set");
     else
-        LOG_WARN("FCM_PRIVATE_KEY environment variable is not set");
+        LOG_WARN("FCM Private Key not set");
     std::this_thread::sleep_for(std::chrono::seconds(1));
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 #endif
