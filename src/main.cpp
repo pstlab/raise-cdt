@@ -50,6 +50,7 @@ int main()
         LOG_DEBUG("FCM Client Email: " << client_email);
     if (std::string_view private_key = std::getenv("FCM_PRIVATE_KEY"); !private_key.empty())
         LOG_DEBUG("FCM Private Key: " << std::string(private_key).substr(0, 10) << "...");
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 #endif
 
