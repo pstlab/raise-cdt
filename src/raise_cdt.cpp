@@ -12,7 +12,7 @@ namespace cdt
     {
         [[maybe_unused]] auto &db = get_coco().get_db().add_module<raise_cdt_db>(static_cast<coco::mongo_db &>(get_coco().get_db()));
 #ifdef BUILD_POSTGRESQL
-        auto &r_db = get_coco().get_db().get_module<raise_db>();
+        auto &r_db = get_coco().get_db().add_module<raise_db>(db);
         for (auto &usr : r_db.get_users())
             if (!db.user_exists(usr.id))
                 create_user(usr.id);

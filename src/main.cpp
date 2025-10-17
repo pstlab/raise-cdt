@@ -1,9 +1,6 @@
 #include "raise_cdt.hpp"
 #include "coco.hpp"
 #include "mongo_db.hpp"
-#ifdef BUILD_POSTGRESQL
-#include "raise_db.hpp"
-#endif
 #ifdef BUILD_LLM
 #include "coco_llm.hpp"
 #endif
@@ -35,12 +32,13 @@ int main()
     mongocxx::instance inst{}; // This should be done only once.
     LOG_INFO("Starting RAISE CDT...");
     coco::mongo_db db;
-#ifdef BUILD_POSTGRESQL
-    db.add_module<cdt::raise_db>(db);
-#endif
+    LOG_DEBUG("Connected to MongoDB database");
+    LOG_DEBUG("Initializing CoCo framework");
     coco::coco cc(db);
+    LOG_DEBUG("Adding RAISE CDT module");
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
 #ifdef BUILD_LLM
+    LOG_DEBUG("Adding CoCo LLM module");
     cc.add_module<coco::coco_llm>(cc);
 #endif
 #ifdef BUILD_FCM
