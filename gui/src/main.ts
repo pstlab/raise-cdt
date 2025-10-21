@@ -4,7 +4,7 @@ import { Offcanvas as RAISEOffcanvas } from './offcanvas';
 import './style.css'
 import { Offcanvas } from 'bootstrap';
 
-Settings.get_instance().load_settings({ ws_path: '/coco', secure: true });
+Settings.get_instance().load_settings({ ws_path: '/coco' });
 
 const offcanvas_id = 'restart-offcanvas';
 
@@ -28,11 +28,7 @@ class RAISEApp extends AppComponent {
       Offcanvas.getOrCreateInstance(document.getElementById(offcanvas_id)!).toggle();
     });
 
-    const token = localStorage.getItem('token');
-    if (token)
-      Connection.get_instance().connect(token);
-    else
-      Connection.get_instance().login('admin', 'admin');
+    Connection.get_instance().connect();
   }
 
   override received_message(message: any): void { coco.CoCo.get_instance().update_coco(message); }

@@ -5,6 +5,7 @@ include(CTest)
 enable_testing()
 
 set(COCO_NAME "RAISE-CDT" CACHE STRING "The CoCo Application Name" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "Build tests" FORCE)
 set(BUILD_MONGODB ON CACHE BOOL "Build MongoDB connection" FORCE)
 option(BUILD_POSTGRESQL "Build PostgreSQL connection" OFF)
 if(BUILD_POSTGRESQL)

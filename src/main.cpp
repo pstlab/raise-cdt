@@ -175,7 +175,7 @@ int main()
         [[maybe_unused]] auto &usr_tp = cc.create_type("RAISE-User", {}, std::move(static_props), std::move(dynamic_props));
 
         // Create the reactive rules
-        cc.create_reactive_rule("raise", read_rule("rules/raise.clp"));
+        [[maybe_unused]] auto &raise_rule = cc.create_reactive_rule("raise", read_rule("rules/raise.clp"));
     }
 
     auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
