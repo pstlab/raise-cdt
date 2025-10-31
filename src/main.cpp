@@ -126,6 +126,7 @@ int main()
             {"fluctuation_message", {{"type", "string"}, {"nullable", true}}},
             {"DYSKINESIA", {{"type", "symbol"}, {"values", {"low", "medium", "high"}}, {"default", "low"}}},
             {"dyskinesia_message", {{"type", "string"}, {"nullable", true}}},
+            {"warning_message", {{"type", "string"}, {"nullable", true}}},
             {"crowding", {{"type", "int"}, {"min", 0}, {"max", 100}, {"nullable", true}}},
             {"altered_nutrition", {{"type", "bool"}, {"nullable", true}}},
             {"altered_thirst_perception", {{"type", "int"}, {"min", 0}, {"max", 10}, {"nullable", true}}},

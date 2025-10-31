@@ -384,6 +384,11 @@
         (if (and (eq ?MENTAL_FATIGUE high) (not (eq ?mental_fatigue_message ""))) then (bind ?prompt (str-cat ?prompt " " ?mental_fatigue_message)))
         (if (and (eq ?PHYSICAL_FATIGUE high) (not (eq ?physical_fatigue_message ""))) then (bind ?prompt (str-cat ?prompt " " ?physical_fatigue_message)))
         (if (and (eq ?SENSORY_DYSREGULATION high) (not (eq ?sensory_dysregulation_message ""))) then (bind ?prompt (str-cat ?prompt " " ?sensory_dysregulation_message)))
-        (send_notification ?user "Attenzione!" (understand ?prompt))
+        (bind ?warning_message (understand ?prompt))
+        (add_data ?user
+            (create$ warning_message)
+            (create$ ?warning_message)
+        )
+        (send_notification ?user "Attenzione!" ?warning_message)
     )
 )
