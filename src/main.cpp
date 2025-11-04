@@ -173,7 +173,7 @@ int main()
             {"excessive_urbanization", {{"type", "bool"}, {"nullable", true}}},
             {"green_spaces", {{"type", "bool"}, {"nullable", true}}}};
         // Create the 'User' type
-        [[maybe_unused]] auto &usr_tp = cc.create_type("RAISE-User", {}, std::move(static_props), std::move(dynamic_props));
+        [[maybe_unused]] auto &usr_tp = cc.create_type("RAISE-User", std::move(static_props), std::move(dynamic_props), {});
 
         // Create the reactive rules
         [[maybe_unused]] auto &raise_rule = cc.create_reactive_rule("raise", read_rule("rules/raise.clp"));
