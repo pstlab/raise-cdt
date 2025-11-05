@@ -32,13 +32,16 @@ if(BUILD_POSTGRESQL)
     message(STATUS "PostgreSQL Port: ${POSTGRESQL_PORT}")
 endif()
 
+add_subdirectory(extern/coco)
+
+set(RAISE_CDT_CONFIG_TYPES types/RAISE-User.json)
+set(RAISE_CDT_CONFIG_RULES rules/raise.clp)
+coco_config(RAISE_CDT "${RAISE_CDT_CONFIG_TYPES}" "${RAISE_CDT_CONFIG_RULES}")
+
 add_executable(raise-cdt src/main.cpp src/raise_cdt.cpp src/raise_cdt_server.cpp src/raise_cdt_db.cpp src/raise_cdt_mqtt.cpp)
 target_compile_features(raise-cdt PUBLIC cxx_std_17)
-target_include_directories(raise-cdt PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-if(NOT TARGET CoCo)
-    add_subdirectory(extern/coco)
-endif()
-add_dependencies(raise-cdt CoCo)
+target_include_directories(raise-cdt PUBLIC "${RAISE_CDT_CONFIG_INCLUDE_DIR}" $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+add_dependencies(raise-cdt CoCo RAISE_CDT)
 target_link_libraries(raise-cdt PUBLIC CoCo)
 
 if(BUILD_POSTGRESQL)
