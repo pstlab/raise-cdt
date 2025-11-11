@@ -14,9 +14,6 @@
 #include "fcm_server.hpp"
 #endif
 #include "logging.hpp"
-#ifdef ENABLE_CORS
-#include "cors.hpp"
-#endif
 #include <mongocxx/instance.hpp>
 #include <thread>
 
@@ -71,10 +68,6 @@ int main()
     const char *cert = std::getenv("RAISE_CDT_CERT");
     const char *key = std::getenv("RAISE_CDT_KEY");
     srv.load_certificate(cert, key);
-#endif
-#ifdef ENABLE_CORS
-    LOG_DEBUG("Enabling CORS middleware");
-    srv.add_middleware<network::cors>(srv);
 #endif
     LOG_DEBUG("Adding RAISE CDT server module");
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
