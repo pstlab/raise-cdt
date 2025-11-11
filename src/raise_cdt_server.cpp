@@ -56,7 +56,6 @@ namespace cdt
 
     std::unique_ptr<network::response> raise_cdt_server::get_user(const network::request &req)
     {
-        LOG_TRACE(req);
         try
         {
             auto &user = cdt.get_user(req.get_target().substr(13)); // 13 is the length of "/raise-users/"
@@ -72,7 +71,6 @@ namespace cdt
 
     std::unique_ptr<network::response> raise_cdt_server::create_user(const network::request &req)
     {
-        LOG_TRACE(req);
         auto &body = static_cast<const network::json_request &>(req).get_body();
         if (!body.is_object() || !body.contains("google_id") || !body["google_id"].is_string())
             return std::make_unique<network::json_response>(json::json({{"message", "Invalid request"}}), network::status_code::bad_request);
