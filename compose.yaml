@@ -38,33 +38,10 @@ services:
       - raise-net
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     restart: unless-stopped
-
-  # raise-postgres: # PostgreSQL service
-  #   container_name: raise-postgres
-  #   image: postgres
-  #   networks:
-  #     - raise-net
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_USER=account
-  #     - POSTGRES_PASSWORD=yourpassword
-  #     - POSTGRES_DB=raise_db
-
-  # raise-pgadmin: # pgAdmin service
-  #   depends_on:
-  #     - raise-postgres
-  #   container_name: raise-pgadmin
-  #   image: dpage/pgadmin4
-  #   networks:
-  #     - raise-net
-  #   ports:
-  #     - "5050:80"
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@local.it
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   restart: unless-stopped
 
   raise-mqtt: # MQTT broker service
     container_name: raise-mqtt
@@ -80,26 +57,22 @@ services:
   raise-cdt: # CoCo service
     depends_on:
       - raise-mongo
-      # - raise-postgres
       - raise-mqtt
     container_name: raise-cdt
     build:
       context: .
       args:
         - MONGODB_HOST=raise-mongo
-        # - POSTGRES_HOST=raise-postgres
-        # - POSTGRES_USER=account
-        # - POSTGRES_PASSWORD=yourpassword
         - MQTT_HOST=raise-mqtt
     networks:
       - raise-net
     ports:
       - "8080:8080"
     environment:
+      - FCM_PROJECT_ID=${FCM_PROJECT_ID}
       - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
       - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
-      - RAISE_CDT_CERT=${RAISE_CDT_CERT}
-      - RAISE_CDT_KEY=${RAISE_CDT_KEY}
+      - LLM_API_KEY=${LLM_API_KEY}
     restart: unless-stopped
 
 networks:

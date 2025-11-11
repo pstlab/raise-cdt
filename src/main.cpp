@@ -10,8 +10,6 @@
 #endif
 #include "raise_cdt_mqtt.hpp"
 #include "raise_cdt_server.hpp"
-#include "cors.hpp"
-#include "log.hpp"
 #ifdef BUILD_FCM
 #include "fcm_server.hpp"
 #endif
@@ -71,10 +69,6 @@ int main()
     const char *key = std::getenv("RAISE_CDT_KEY");
     srv.load_certificate(cert, key);
 #endif
-    LOG_DEBUG("Adding CORS middleware");
-    srv.add_middleware<network::cors>(srv);
-    LOG_DEBUG("Adding logging middleware");
-    srv.add_middleware<network::log>(srv);
     LOG_DEBUG("Adding RAISE CDT server module");
     srv.add_module<cdt::raise_cdt_server>(srv, cdt);
 #ifdef BUILD_FCM
