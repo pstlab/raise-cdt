@@ -34,7 +34,7 @@ endif()
 
 add_subdirectory(extern/coco)
 
-set(RAISE_CDT_CONFIG_TYPES types/RAISE-User.json)
+set(RAISE_CDT_CONFIG_TYPES types/RAISE-Warning.json types/RAISE-User.json)
 set(RAISE_CDT_CONFIG_RULES rules/raise.clp)
 coco_config(RAISE_CDT "${RAISE_CDT_CONFIG_TYPES}" "${RAISE_CDT_CONFIG_RULES}")
 

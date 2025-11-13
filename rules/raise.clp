@@ -1,5 +1,6 @@
 (defrule raise
     (RAISE-User (item_id ?user)
+        (warning_device ?warning_device)
         (baseline_fall ?baseline_fall) (baseline_freezing ?baseline_freezing) (baseline_heart_rate ?baseline_heart_rate)
         (state_anxiety_presence ?state_anxiety_presence) (baseline_blood_pressure ?baseline_blood_pressure)
         (sensory_profile ?sensory_profile) (stress ?stress) (psychiatric_disorders ?psychiatric_disorders)
@@ -385,7 +386,7 @@
         (if (and (eq ?PHYSICAL_FATIGUE high) (not (eq ?physical_fatigue_message ""))) then (bind ?prompt (str-cat ?prompt " " ?physical_fatigue_message)))
         (if (and (eq ?SENSORY_DYSREGULATION high) (not (eq ?sensory_dysregulation_message ""))) then (bind ?prompt (str-cat ?prompt " " ?sensory_dysregulation_message)))
         (bind ?warning_message (understand ?prompt))
-        (add_data ?user
+        (add_data ?warning_device
             (create$ warning_message)
             (create$ ?warning_message)
         )

@@ -10,6 +10,7 @@ namespace cdt
   class listener;
 
   constexpr const char *user_kw = "RAISE-User";
+  constexpr const char *warning_kw = "RAISE-Warning";
 
   class raise_cdt : public coco::coco_module
   {

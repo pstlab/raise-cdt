@@ -25,7 +25,8 @@ namespace cdt
     coco::item &raise_cdt::create_user(std::string_view google_id)
     {
         auto &db = get_coco().get_db().get_module<raise_cdt_db>();
-        auto &usr = get_coco().create_item({get_coco().get_type(user_kw)}, {{"google_id", google_id.data()}});
+        auto &wrn = get_coco().create_item({get_coco().get_type(warning_kw)});
+        auto &usr = get_coco().create_item({get_coco().get_type(user_kw)}, {{"google_id", google_id.data()}, {"warning_device", wrn.get_id()}});
         db.create_user(google_id, usr.get_id());
         CREATED_USER(google_id, usr);
         return usr;

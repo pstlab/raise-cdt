@@ -55,12 +55,12 @@ int main()
     LOG_DEBUG("Loading RAISE CDT configuration");
     load_config(cc);
 
-    LOG_DEBUG("Adding RAISE CDT MQTT module");
-    auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
-    do
-    { // wait for mqtt to connect
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    } while (!mqtt.is_connected());
+    // LOG_DEBUG("Adding RAISE CDT MQTT module");
+    // auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);
+    // do
+    // { // wait for mqtt to connect
+    //     std::this_thread::sleep_for(std::chrono::seconds(1));
+    // } while (!mqtt.is_connected());
 
     LOG_INFO("Starting RAISE CDT server...");
     coco::coco_server srv(cc);

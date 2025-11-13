@@ -1,0 +1,6 @@
+{
+  "name": "RAISE-Warning",
+  "dynamic_properties": {
+    "warning_message": { "type": "string", "nullable": true }
+  }
+}
