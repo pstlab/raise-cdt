@@ -1,79 +1,41 @@
+version: "3.9"
+
 services:
-  # raise-keycloak: # Keycloak service
-  #   container_name: raise-keycloak
-  #   build:
-  #     context: ./keycloak
-  #   networks:
-  #     - raise-net
-  #   ports:
-  #     - "8443:8443"
-  #   environment:
-  #     KC_BOOTSTRAP_ADMIN_USERNAME: admin
-  #     KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-  #     KC_DB: postgres
-  #     KC_DB_URL_HOST: raise-postgres
-  #     KC_DB_URL_PORT: 5432
-  #     KC_DB_USERNAME: account
-  #     KC_DB_PASSWORD: yourpassword
-  #     KC_DB_URL_DATABASE: raise_db
-  #     KC_HOSTNAME: localhost
-  #     COCO_API_URL: http://raise-cdt:8080
-  #   restart: unless-stopped
-
-  raise-swagger-ui: # Swagger UI service
-    container_name: raise-swagger-ui
-    image: swaggerapi/swagger-ui
-    networks:
-      - raise-net
+  raise_cdt:
+    image: istc_raisecdt:latest
+    container_name: istc_coco_cdt
     ports:
-      - "8081:8080"
+      - "18080:8080"
+    secrets:
+      - fcm_json
+      - llm_api_key
     environment:
-      SWAGGER_JSON_URL: http://localhost:8080/openapi
-    restart: unless-stopped
-
-  raise-mongo: # MongoDB service
-    container_name: raise-mongo
-    image: mongo
+      - SERVER_PORT=${SERVER_PORT}
+      - MONGODB_HOST=${MONGODB_HOST}
+      - MONGODB_USER=${MONGODB_USER}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MQTT_HOST=${MQTT_HOST}
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
     networks:
-      - raise-net
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
-    restart: unless-stopped
-
-  raise-mqtt: # MQTT broker service
-    container_name: raise-mqtt
-    image: eclipse-mosquitto
-    networks:
-      - raise-net
-    ports:
-      - "1883:1883"
-    volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
-    restart: unless-stopped
-
-  raise-cdt: # CoCo service
-    depends_on:
-      - raise-mongo
-      - raise-mqtt
-    container_name: raise-cdt
-    build:
-      context: .
-      args:
-        - MONGODB_HOST=raise-mongo
-        - MQTT_HOST=raise-mqtt
-    networks:
-      - raise-net
-    ports:
-      - "8080:8080"
-    environment:
-      - FCM_PROJECT_ID=${FCM_PROJECT_ID}
-      - FCM_CLIENT_EMAIL=${FCM_CLIENT_EMAIL}
-      - FCM_PRIVATE_KEY=${FCM_PRIVATE_KEY}
-      - LLM_API_KEY=${LLM_API_KEY}
+      - mongodb_single_network
+      - mosquitto_net
+      - postgis_net
+      - gravitee_net
     restart: unless-stopped
 
 networks:
-  raise-net:
+  mongodb_single_network:
+    external: true
+  mosquitto_net:
+    external: true
+  postgis_net:
+    external: true
+  gravitee_net:
+    external: true
+
+secrets:
+  fcm_json:
+    external: true
+  llm_api_key:
+    external: true

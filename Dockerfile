@@ -3,31 +3,19 @@ FROM pstlab/coco-base:latest
 
 # Install the necessary dependencies
 RUN apt update && apt install -y libpqxx-dev
+RUN apt install -y net-tools telnet
 
 # Expose the COCO application port
 EXPOSE 8080
 
-# Set environment variables for MongoDB connection
-ARG SERVER_PORT=8080
-ARG MONGODB_HOST=raise-cdt-db
-ARG MONGODB_PORT=27017
-ARG MONGODB_USER=root
-ARG MONGODB_PASSWORD=password
-ARG POSTGRES_HOST=raise-udp-db
-ARG POSTGRES_PORT=5432
-ARG POSTGRES_USER=account
-ARG POSTGRES_PASSWORD=yourpassword
-ARG MQTT_HOST=raise-mqtt
-ARG MQTT_PORT=1883
-ARG MQTT_USER=mqtt_user
-ARG MQTT_PASSWORD=mqtt_password
+# Set build arguments
 ARG CLIENT_DIR=/gui
 
 # Clone and build RAISE-CDT
 RUN git clone --recursive https://github.com/pstlab/raise-cdt \
     && cd raise-cdt \
     && mkdir build && cd build \
-    && cmake -DSERVER_PORT=${SERVER_PORT} -DMONGODB_HOST=${MONGODB_HOST} -DMONGODB_PORT=${MONGODB_PORT} -DMONGODB_AUTH=ON -DMONGODB_USER=${MONGODB_USER} -DMONGODB_PASSWORD=${MONGODB_PASSWORD} -DPOSTGRES_HOST=${POSTGRES_HOST} -DPOSTGRES_PORT=${POSTGRES_PORT} -DPOSTGRES_USER=${POSTGRES_USER} -DPOSTGRES_PASSWORD=${POSTGRES_PASSWORD} -DMQTT_HOST=${MQTT_HOST} -DMQTT_PORT=${MQTT_PORT} -DMQTT_AUTH=ON -DMQTT_USER=${MQTT_USER} -DMQTT_PASSWORD=${MQTT_PASSWORD} -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
+    && cmake -DMONGODB_AUTH=ON -DMQTT_AUTH=ON -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
     && make -j$(nproc)
 
 # Build the GUI application
