@@ -35,15 +35,6 @@ namespace cdt
      * @throws May throw an exception if the user is not found or retrieval fails.
      */
     coco::item &get_user(std::string_view google_id);
-#ifdef BUILD_POSTGRESQL
-    /**
-     * @brief Updates the Urban Data Platform data for the user identified by the specified Google ID.
-     *
-     * @param google_id The Google ID of the user whose UDP data is to be updated.
-     * @throws May throw an exception if the update operation fails.
-     */
-    void update_udp_data(std::string_view google_id);
-#endif
 
   private:
     void created_user(std::string_view google_id, const coco::item &itm);
