@@ -33,6 +33,7 @@ int main()
 #endif
 #ifdef BUILD_FCM
     LOG_DEBUG("Adding CoCo FCM module");
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 #endif
 
