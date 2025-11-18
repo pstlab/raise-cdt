@@ -33,22 +33,6 @@ int main()
 #endif
 #ifdef BUILD_FCM
     LOG_DEBUG("Adding CoCo FCM module");
-    auto fcm_project_id = std::getenv("FCM_PROJECT_ID");
-    if (fcm_project_id)
-        LOG_DEBUG("FCM Project ID: " + std::string(fcm_project_id));
-    else
-        LOG_WARN("FCM Project ID not set");
-    auto client_email = std::getenv("FCM_CLIENT_EMAIL");
-    if (client_email)
-        LOG_DEBUG("FCM Client Email: " + std::string(client_email));
-    else
-        LOG_WARN("FCM Client Email not set");
-    auto private_key = std::getenv("FCM_PRIVATE_KEY");
-    if (private_key)
-        LOG_DEBUG("FCM Private Key is set");
-    else
-        LOG_WARN("FCM Private Key not set");
-    std::this_thread::sleep_for(std::chrono::seconds(1));
     auto &fcm = cc.add_module<coco::coco_fcm>(cc);
 #endif
 
