@@ -39,7 +39,6 @@ namespace cdt
      */
     bool user_exists(std::string_view google_id);
 
-  private:
-    mongocxx::collection users_collection;
+    static constexpr const char *users_collection_name = "users";
   };
 } // namespace cdt
