@@ -1,9 +1,12 @@
-#include "RAISE_CDT_config.hpp"
 #include "raise_cdt.hpp"
 #include "coco.hpp"
 #include "mongo_db.hpp"
 #ifdef BUILD_LLM
-#include "coco_llm.hpp"
+#ifdef LLM_PROVIDER_OLLAMA
+#include "coco_ollama.hpp"
+#elif defined(LLM_PROVIDER_HUGGINGFACE)
+#include "coco_huggingface.hpp"
+#endif
 #endif
 #ifdef BUILD_FCM
 #include "coco_fcm.hpp"
@@ -29,7 +32,11 @@ int main()
     auto &cdt = cc.add_module<cdt::raise_cdt>(cc);
 #ifdef BUILD_LLM
     LOG_DEBUG("Adding CoCo LLM module");
-    cc.add_module<coco::coco_llm>(cc);
+#ifdef LLM_PROVIDER_OLLAMA
+    cc.add_module<coco::coco_ollama>(cc);
+#elif defined(LLM_PROVIDER_HUGGINGFACE)
+    cc.add_module<coco::coco_huggingface>(cc);
+#endif
 #endif
 #ifdef BUILD_FCM
     LOG_DEBUG("Adding CoCo FCM module");
@@ -38,7 +45,11 @@ int main()
 #endif
 
     LOG_DEBUG("Loading RAISE CDT configuration");
-    coco::config(cc);
+    const std::filesystem::path config_root = PROJECT_ROOT;
+    coco::set_types(cc, config_root / "types");
+    cc.load_rules();
+    coco::set_rules(cc, config_root / "rules");
+    LOG_INFO("Configuration loaded successfully");
 
     LOG_DEBUG("Adding RAISE CDT MQTT module");
     auto &mqtt = cc.add_module<cdt::raise_cdt_mqtt>(cc);

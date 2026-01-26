@@ -68,9 +68,6 @@ class ItemList extends UListComponent<coco.taxonomy.Item> implements coco.CoCoLi
 
   override unmounting(): void { coco.CoCo.get_instance().remove_coco_listener(this); }
 
-  new_slot(_: coco.llm.Slot): void { }
   new_type(_: coco.taxonomy.Type): void { }
   new_item(item: coco.taxonomy.Item): void { this.add_child(new ItemElement(this.group, item)); }
-  new_intent(_: coco.llm.Intent): void { }
-  new_entity(_: coco.llm.Entity): void { }
 }
