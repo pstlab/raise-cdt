@@ -73,112 +73,112 @@
     ; Crowding
     (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Crowding increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Choose less crowded times or places, and keep a personal buffer space when possible. "))
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Crowding increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Move to a less crowded space (use optimalPath app!), do breathing exercises. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Crowding increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Move to a less crowded space (use optimalPath app!), take slow nasal breaths. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Crowding increases sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Move to a less crowded space (use optimalPath app!), focus on a single grounding point (e.g., a fixed object or your breath) to reduce sensory overload. "))
     )
     ; Altered nutrition
     (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?altered_nutrition nil) ?altered_nutrition) then
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Altered nutrition increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Eat regular, balanced meals; avoid sugar spikes and heavy lunches. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Altered nutrition increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Eat small, familiar meals at regular times; avoid experimenting with new or heavy foods when active. "))
     )
     ; Altered thirst perception
     (if (and (eq ?psychiatric_patients TRUE) (neq ?altered_thirst_perception nil) (>= ?altered_thirst_perception 3)) then
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Altered thirst perception increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Look for water sources, set reminders to drink water regularly. "))
     )
     ; Architectural barriers
     (if (and (eq ?parkinson TRUE) (neq ?architectural_barriers nil) ?architectural_barriers) then
         (bind ?freezing (+ ?freezing 1))
         (bind ?freezing_message (str-cat ?freezing_message "Architectural barriers increase freezing of gait. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Architectural barriers increase physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Choose barrier-free routes (ramps, elevators); plan entrances in advance (use optimalPath app!). "))
     )
     ; Water balance
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Low water balance increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Monitor hydration levels, increase water intake. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Low water balance increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Sip water consistently; set gentle reminders, avoid excess caffeine. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Low water balance increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Sip water frequently instead of large amounts at once; set hydration reminders. "))
     )
     ; Sleep duration/quality
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?sleep_duration_quality nil) (< ?sleep_duration_quality 6)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Poor sleep quality increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Keep a regular sleep schedule and reduce screen use before bed. "))
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Poor sleep quality increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Rest in a cool environment, adjust sleep schedule for recovery. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Poor sleep quality increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Keep a consistent bedtime; reduce screens 1h before sleep. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Poor sleep quality increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Rest in a cool environment. "))
     )
     ; Heart rate
     (if (and (or (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High heart rate increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Slow down or pause when HR rises; use paced breathing. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "High heart rate increases sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Practice slow, paced breathing (inhale 4 seconds, exhale 6 seconds), sit or lean against a stable surface, and consciously relax your shoulders and jaw to help the body return to baseline. "))
     )
     ; Heart rate differential
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE) (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE)) (neq ?heart_rate_differential nil) (>= ?heart_rate_differential 50)) then
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High heart rate differential increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Practice slow, paced breathing (inhale 4 seconds, exhale 6 seconds), sit or lean against a stable surface, and consciously relax your shoulders and jaw to help the body return to baseline. "))
     )
     ; Public events frequency
     (if (and (eq ?psychiatric_patients TRUE) (neq ?public_events_frequency nil) ?public_events_frequency) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Frequent public events increase anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Avoid event areas or check schedules in advance to reroute. "))
     )
     ; Lighting
     (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?lighting nil) ?lighting) then
         (bind ?freezing (+ ?freezing 1))
         (bind ?freezing_message (str-cat ?freezing_message "Poor lighting increases freezing of gait. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Poor lighting increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Prefer natural light; reduce glare and harsh artificial lighting. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Poor lighting increases sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Move to softer or natural light, reduce screen brightness, use sunglasses or a cap indoors if needed, and orient your gaze downward to minimize visual stimulation."))
     )
     ; Noise pollution
     (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?noise_pollution nil) (> ?noise_pollution 45)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "High noise pollution increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Seek quieter routes. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "High noise pollution increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Move to quieter streets or calm indoor areas. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High noise pollution increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Move to quieter streets or indoor areas. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "High noise pollution increases sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Use noise-reducing headphones or earplugs, play consistent neutral sounds (white noise), or relocate to a quieter environment while focusing on steady breathing."))
     )
     ; User-reported noise pollution
     (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?user_reported_noise_pollution nil) (> ?user_reported_noise_pollution 45)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "User-reported high noise pollution increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Seek quieter routes. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "User-reported high noise pollution increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Move to quieter streets or calm indoor areas. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "User-reported high noise pollution increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Move to quieter streets or indoor areas. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "User-reported high noise pollution increases sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Use noise-reducing headphones or earplugs, play consistent neutral sounds (white noise), or relocate to a quieter environment while focusing on steady breathing."))
     )
     ; Air pollution
     (if (and (eq ?older_adults TRUE) (neq ?air_pollution nil) (> ?air_pollution 5)) then
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "High air pollution increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Ventilate rooms if inside; avoid outdoor activity during peak pollution hours. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High air pollution increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Avoid peak traffic hours; prefer green areas or indoor alternatives. "))
     )
     ; Traffic levels
     (if (and (eq ?psychiatric_patients TRUE) (neq ?traffic_levels nil) (> ?traffic_levels 50)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "High traffic levels increase anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Plan travel during off-peak hours or choose calmer side streets. "))
     )
     ; Lack of ventilation
     (if (and (eq ?psychiatric_patients TRUE) (neq ?lack_of_ventilation nil) (> ?lack_of_ventilation 1000)) then
@@ -188,7 +188,7 @@
     ; Path slope
     (if (and (eq ?multiple_sclerosis TRUE) (neq ?path_slope nil) ?path_slope) then
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Path slope increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Select flatter routes even if longer (use optimalPath app!); use public transport for uphill sections . "))
     )
     ; Safety perception
     (if (and (eq ?older_adults TRUE) (neq ?safety_perception nil) ?safety_perception) then
@@ -207,38 +207,38 @@
     ; Public events presence
     (if (and (eq ?older_adults TRUE) (neq ?public_events_presence nil) ?public_events_presence) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Presence of public events increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Avoid event areas or check schedules in advance to reroute. "))
     )
     ; Low blood pressure
     (if (and (eq ?parkinson TRUE) (neq ?low_blood_pressure nil) (< ?low_blood_pressure 90)) then
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Low blood pressure increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Stand up slowly; stay hydrated and include light salty snacks if appropriate. "))
     )
     ; Social pressure
     (if (and (eq ?multiple_sclerosis TRUE) (neq ?social_pressure nil) ?social_pressure) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Social pressure increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Set clear personal limits and allow yourself to step away when overwhelmed. "))
     )
     ; Ambient temperature
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?ambient_temperature nil) (> ?ambient_temperature 27)) then
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "High ambient temperature increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Wear light clothing, avoid direct sunlight. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "High ambient temperature increases mental fatigue. "))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Keep a moderate temperature. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "High ambient temperature increases physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Plan activities during cooler hours; use layered, breathable clothing. "))
     )
     ; Ambient humidity
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE)) (neq ?ambient_humidity nil) (> ?ambient_humidity 60)) then
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "High ambient humidity increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Stay in dry, ventilated environments, use dehumidifiers if available. "))
     )
     ; Excessive urbanization
     (if (and (eq ?older_adults TRUE) (neq ?excessive_urbanization nil) ?excessive_urbanization) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Excessive urbanization increases anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Spend time in green or open spaces to mentally decompress. "))
         (bind ?excessive_heat (+ ?excessive_heat 1))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Excessive urbanization increases heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Seek green or shaded areas, avoid asphalted zones during peak heat. "))
     )
 
     ; Bar/restaurant
@@ -249,7 +249,7 @@
     ; Water balance
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 water_balance))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Increase water intake to improve water balance and reduce heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Monitor hydration levels, increase water intake. "))
     )
     ; Water fountains
     (if (and (eq ?psychiatric_patients TRUE) (neq ?water_fountains nil) ?water_fountains) then
@@ -264,14 +264,14 @@
     ; Heart rate
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 heart_rate))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Reduce activities that increase heart rate to help reduce anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Use slow breathing to gently lower and stabilize your pulse. "))
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 heart_rate))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Reduce activities that increase heart rate to help reduce physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Slow down or pause when HR rises; use paced breathing. "))
     )
     ; Heart rate differential
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE) (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE)) (neq ?heart_rate_differential nil) (>= ?heart_rate_differential 50)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 heart_rate_differential))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Engage in relaxing activities to help reduce heart rate differential and anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Use slow breathing to gently lower and stabilize your pulse. "))
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 heart_rate_differential))
         (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Engage in relaxing activities to help reduce heart rate differential and heat stress. "))
         (bind ?freezing_relevant (insert$ ?freezing_relevant 1 heart_rate_differential))
@@ -280,28 +280,28 @@
     ; Respiratory rate
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?respiratory_rate nil) (>= ?respiratory_rate 30)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 respiratory_rate))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Practice deep breathing exercises to help reduce respiratory rate and anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Breathe slowly through the nose, extending the exhale. "))
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 respiratory_rate))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Practice deep breathing exercises to help reduce respiratory rate and physical fatigue. "))
+        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Reduce walking speed; stop and focus on slow, controlled breaths. "))
         (bind ?sensory_dysregulation_relevant (insert$ ?sensory_dysregulation_relevant 1 respiratory_rate))
-        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Practice deep breathing exercises to help reduce respiratory rate and sensory dysregulation. "))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message "Use diaphragmatic breathing (hand on belly, slow nasal inhale, longer mouth exhale) and pause briefly after each exhale to stabilize breathing rhythm. "))
     )
     ; Galvanic skin response
     (if (and (eq ?psychiatric_patients TRUE) (neq ?galvanic_skin_response nil) (>= ?galvanic_skin_response 50)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 galvanic_skin_response))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Engage in relaxing activities to help reduce galvanic skin response and anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Relax muscles and use calming imagery to reduce stress reactions. "))
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 galvanic_skin_response))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Engage in relaxing activities to help reduce galvanic skin response and heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Use relaxation techniques, cool down if stress or overheating signs appear. "))
     )
     ; High blood pressure
     (if (and (eq ?older_adults TRUE) (neq ?high_blood_pressure nil) (>= ?high_blood_pressure 100)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 high_blood_pressure))
-        (bind ?anxiety_message (str-cat ?anxiety_message "High blood pressure can increase anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Pause regularly, breathe deeply, and avoid stimulants like excess caffeine. "))
     )
     ; Low blood pressure
     (if (and (eq ?parkinson TRUE) (neq ?low_blood_pressure nil) (< ?low_blood_pressure 90)) then
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 low_blood_pressure))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Improve blood pressure to help reduce heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Rise slowly from sitting/lying positions, stay hydrated. "))
     )
     ; Sittings
     (if (and (eq ?psychiatric_patients TRUE) (neq ?sittings nil) ?sittings) then
@@ -321,16 +321,16 @@
     ; Sweating
     (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE)) (neq ?sweating nil) (>= ?sweating 10)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 sweating))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Excessive sweating can increase anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Wear breathable clothing and use cooling strategies to stay comfortable. "))
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 sweating))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Excessive sweating can increase heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Replace fluids and electrolytes, wear breathable clothing. "))
     )
     ; Body temperature
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE) (eq ?parkinson TRUE)) (neq ?body_temperature nil) (> ?body_temperature 37.3)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 body_temperature))
-        (bind ?anxiety_message (str-cat ?anxiety_message "High body temperature can increase anxiety. "))
+        (bind ?anxiety_message (str-cat ?anxiety_message "Maintain a comfortable thermal environment and hydrate well. "))
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 body_temperature))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "High body temperature can increase heat stress. "))
+        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Monitor regularly, use cooling strategies (cold compresses, cool showers). "))
     )
     ; Green spaces
     (if (and (eq ?psychiatric_patients TRUE) (neq ?green_spaces nil) ?green_spaces) then
