@@ -55,20 +55,20 @@
     ; ANXIETY
     (if (and (eq ?parkinson TRUE) (neq ?ANXIETY nil) (neq ?ANXIETY low)) then
         (bind ?dyskinesia (+ ?dyskinesia 1))
-        (bind ?dyskinesia_message (str-cat ?dyskinesia_message "Anxiety contributes to dyskinesia. "))
+        ; (bind ?dyskinesia_message (str-cat ?dyskinesia_message "Anxiety contributes to dyskinesia. "))
         (bind ?fluctuation (+ ?fluctuation 1))
-        (bind ?fluctuation_message (str-cat ?fluctuation_message "Anxiety contributes to fluctuation. "))
+        ; (bind ?fluctuation_message (str-cat ?fluctuation_message "Anxiety contributes to fluctuation. "))
         (bind ?freezing (+ ?freezing 1))
-        (bind ?freezing_message (str-cat ?freezing_message "Anxiety increases freezing of gait. "))
+        ; (bind ?freezing_message (str-cat ?freezing_message "Anxiety increases freezing of gait. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Anxiety increases mental fatigue. "))
+        ; (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Anxiety increases mental fatigue. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Anxiety increases physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Anxiety increases physical fatigue. "))
     )
     ; FREEZING
     (if (and (eq ?parkinson TRUE) (neq ?FREEZING nil) (neq ?FREEZING low)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Freezing of gait increases anxiety. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Freezing of gait increases anxiety. "))
     )
     ; Crowding
     (if (and (or (eq ?parkinson TRUE) (eq ?older_adults TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?crowding nil) (>= ?crowding 2)) then
@@ -96,7 +96,7 @@
     ; Architectural barriers
     (if (and (eq ?parkinson TRUE) (neq ?architectural_barriers nil) ?architectural_barriers) then
         (bind ?freezing (+ ?freezing 1))
-        (bind ?freezing_message (str-cat ?freezing_message "Architectural barriers increase freezing of gait. "))
+        ; (bind ?freezing_message (str-cat ?freezing_message "Architectural barriers increase freezing of gait. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
         (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Choose barrier-free routes (ramps, elevators); plan entrances in advance (use optimalPath app!). "))
     )
@@ -140,7 +140,7 @@
     ; Lighting
     (if (and (or (eq ?parkinson TRUE) (eq ?young_pci_autism TRUE)) (neq ?lighting nil) ?lighting) then
         (bind ?freezing (+ ?freezing 1))
-        (bind ?freezing_message (str-cat ?freezing_message "Poor lighting increases freezing of gait. "))
+        ; (bind ?freezing_message (str-cat ?freezing_message "Poor lighting increases freezing of gait. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
         (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Prefer natural light; reduce glare and harsh artificial lighting. "))
         (bind ?sensory_dysregulation (+ ?sensory_dysregulation 1))
@@ -183,7 +183,7 @@
     ; Lack of ventilation
     (if (and (eq ?psychiatric_patients TRUE) (neq ?lack_of_ventilation nil) (> ?lack_of_ventilation 1000)) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Poor ventilation increases anxiety. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Poor ventilation increases anxiety. "))
     )
     ; Path slope
     (if (and (eq ?multiple_sclerosis TRUE) (neq ?path_slope nil) ?path_slope) then
@@ -198,11 +198,11 @@
     ; Rough path
     (if (and (eq ?older_adults TRUE) (neq ?rough_path nil) ?rough_path) then
         (bind ?anxiety (+ ?anxiety 1))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Rough paths increase anxiety. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Rough paths increase anxiety. "))
         (bind ?mental_fatigue (+ ?mental_fatigue 1))
-        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Rough paths increase mental fatigue. "))
+        ; (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message "Rough paths increase mental fatigue. "))
         (bind ?physical_fatigue (+ ?physical_fatigue 1))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Rough paths increase physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Rough paths increase physical fatigue. "))
     )
     ; Public events presence
     (if (and (eq ?older_adults TRUE) (neq ?public_events_presence nil) ?public_events_presence) then
@@ -244,7 +244,7 @@
     ; Bar/restaurant
     (if (and (eq ?psychiatric_patients TRUE) (neq ?bar_restaurant nil) ?bar_restaurant) then
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 bar_restaurant))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Might go to a bar/restaurant to relax and have a drink, which can help reduce physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Might go to a bar/restaurant to relax and have a drink, which can help reduce physical fatigue. "))
     )
     ; Water balance
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE)) (neq ?water_balance nil) (< ?water_balance 1)) then
@@ -254,28 +254,32 @@
     ; Water fountains
     (if (and (eq ?psychiatric_patients TRUE) (neq ?water_fountains nil) ?water_fountains) then
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 water_fountains))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Water fountains are available in the area, which can help reduce physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Water fountains are available in the area, which can help reduce physical fatigue. "))
     )
     ; Recent freezing episodes
     (if (and (eq ?parkinson TRUE) (neq ?recent_freezing_episodes nil) (>= ?recent_freezing_episodes 3)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 recent_freezing_episodes))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Recent freezing episodes can increase anxiety. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Recent freezing episodes can increase anxiety. "))
     )
     ; Heart rate
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?heart_rate nil) (>= ?heart_rate 100)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 heart_rate))
         (bind ?anxiety_message (str-cat ?anxiety_message "Use slow breathing to gently lower and stabilize your pulse. "))
+        (bind ?mental_fatigue_relevant (insert$ ?mental_fatigue_relevant 1 heart_rate))
+        (bind ?mental_fatigue_message (str-cat ?mental_fatigue_message " move to quieter streets or calm indoor areas. "))
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 heart_rate))
         (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Slow down or pause when HR rises; use paced breathing. "))
+        (bind ?sensory_dysregulation_relevant (insert$ ?sensory_dysregulation_relevant 1 heart_rate))
+        (bind ?sensory_dysregulation_message (str-cat ?sensory_dysregulation_message " eat regular, balanced meals; avoid sugar spikes and heavy lunches. "))
     )
     ; Heart rate differential
     (if (and (or (eq ?psychiatric_patients TRUE) (eq ?young_pci_autism TRUE) (eq ?parkinson TRUE) (eq ?multiple_sclerosis TRUE)) (neq ?heart_rate_differential nil) (>= ?heart_rate_differential 50)) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 heart_rate_differential))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Use slow breathing to gently lower and stabilize your pulse. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Use slow breathing to gently lower and stabilize your pulse. "))
         (bind ?excessive_heat_relevant (insert$ ?excessive_heat_relevant 1 heart_rate_differential))
-        (bind ?excessive_heat_message (str-cat ?excessive_heat_message "Engage in relaxing activities to help reduce heart rate differential and heat stress. "))
+        ; (bind ?excessive_heat_message (str-cat ?excessive_heat_message " monitor pulse, reduce exertion if elevated. "))
         (bind ?freezing_relevant (insert$ ?freezing_relevant 1 heart_rate_differential))
-        (bind ?freezing_message (str-cat ?freezing_message "Engage in relaxing activities to help reduce heart rate differential and freezing of gait. "))
+        ; (bind ?freezing_message (str-cat ?freezing_message "Engage in relaxing activities to help reduce heart rate differential and freezing of gait. "))
     )
     ; Respiratory rate
     (if (and (or (eq ?parkinson TRUE) (eq ?psychiatric_patients TRUE) (eq ?older_adults TRUE) (eq ?multiple_sclerosis TRUE) (eq ?young_pci_autism TRUE)) (neq ?respiratory_rate nil) (>= ?respiratory_rate 30)) then
@@ -306,17 +310,17 @@
     ; Sittings
     (if (and (eq ?psychiatric_patients TRUE) (neq ?sittings nil) ?sittings) then
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 sittings))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Sittings are available in the area, which can help reduce physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Sittings are available in the area, which can help reduce physical fatigue. "))
     )
     ; Self-perception
     (if (and (eq ?multiple_sclerosis TRUE) (neq ?self_perception nil) ?self_perception) then
         (bind ?anxiety_relevant (insert$ ?anxiety_relevant 1 self_perception))
-        (bind ?anxiety_message (str-cat ?anxiety_message "Positive self-perception can help reduce anxiety. "))
+        ; (bind ?anxiety_message (str-cat ?anxiety_message "Positive self-perception can help reduce anxiety. "))
     )
     ; Restroom availability
     (if (and (eq ?psychiatric_patients TRUE) (neq ?restroom_availability nil) ?restroom_availability) then
         (bind ?physical_fatigue_relevant (insert$ ?physical_fatigue_relevant 1 restroom_availability))
-        (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Restrooms are available in the area, which can help reduce physical fatigue. "))
+        ; (bind ?physical_fatigue_message (str-cat ?physical_fatigue_message "Restrooms are available in the area, which can help reduce physical fatigue. "))
     )
     ; Sweating
     (if (and (or (eq ?older_adults TRUE) (eq ?parkinson TRUE)) (neq ?sweating nil) (>= ?sweating 10)) then
