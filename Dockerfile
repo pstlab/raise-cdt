@@ -10,12 +10,13 @@ EXPOSE 8080
 
 # Set build arguments
 ARG CLIENT_DIR=/gui
+ARG PROJECT_ROOT=/
 
 # Clone and build RAISE-CDT
 RUN git clone --recursive https://github.com/pstlab/raise-cdt \
     && cd raise-cdt \
     && mkdir build && cd build \
-    && cmake -DMONGODB_AUTH=ON -DMQTT_AUTH=ON -DCLIENT_DIR=${CLIENT_DIR} -DCMAKE_BUILD_TYPE=Release .. \
+    && cmake -DMONGODB_AUTH=ON -DMQTT_AUTH=ON -DCLIENT_DIR=${CLIENT_DIR} -DPROJECT_ROOT=${PROJECT_ROOT} -DCMAKE_BUILD_TYPE=Release .. \
     && make -j$(nproc)
 
 # Build the GUI application
@@ -23,6 +24,7 @@ RUN npm --prefix /raise-cdt/gui install && npm --prefix /raise-cdt/gui run build
 
 # Move the built COCO files to the /app directory
 RUN mv /raise-cdt/build/raise-cdt /cdt \
+    && mv /raise-cdt/types /types \
     && mv /raise-cdt/rules /rules \
     && mkdir -p /gui && mv /raise-cdt/gui/dist /gui \
     && rm -rf /raise-cdt
