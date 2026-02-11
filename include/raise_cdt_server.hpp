@@ -12,6 +12,8 @@ namespace cdt
 
     std::unique_ptr<network::response> get_user(const network::request &req);
     std::unique_ptr<network::response> create_user(const network::request &req);
+    std::unique_ptr<network::response> update_user(const network::request &req);
+    std::unique_ptr<network::response> add_user_value(const network::request &req);
 
   private:
     raise_cdt &cdt;

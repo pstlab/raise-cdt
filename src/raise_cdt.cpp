@@ -30,6 +30,22 @@ namespace cdt
         return get_coco().get_item(id);
     }
 
+    void raise_cdt::update_user(std::string_view google_id, json::json &&data)
+    {
+        auto &db = get_coco().get_db().get_module<raise_cdt_db>();
+        std::string id = db.get_user(google_id);
+        auto &itm = get_coco().get_item(id);
+        get_coco().set_properties(itm, std::move(data));
+    }
+
+    void raise_cdt::add_user_value(std::string_view google_id, json::json &&data)
+    {
+        auto &db = get_coco().get_db().get_module<raise_cdt_db>();
+        std::string id = db.get_user(google_id);
+        auto &itm = get_coco().get_item(id);
+        get_coco().set_value(itm, std::move(data));
+    }
+
     void raise_cdt::created_user(std::string_view google_id, const coco::item &itm)
     {
         for (auto *listener : listeners)

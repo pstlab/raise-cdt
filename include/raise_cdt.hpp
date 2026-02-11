@@ -36,6 +36,24 @@ namespace cdt
      */
     coco::item &get_user(std::string_view google_id);
 
+    /**
+     * @brief Updates the user associated with the specified Google ID using the provided data.
+     *
+     * @param google_id The Google ID used to identify the user.
+     * @param data The JSON object containing the data to update for the user.
+     * @throws May throw an exception if the user is not found or the update fails.
+     */
+    void update_user(std::string_view google_id, json::json &&data);
+
+    /**
+     * @brief Adds data to the user associated with the specified Google ID.
+     *
+     * @param google_id The Google ID used to identify the user.
+     * @param data The JSON object containing the data to add for the user.
+     * @throws May throw an exception if the user is not found or adding data fails.
+     */
+    void add_user_value(std::string_view google_id, json::json &&data);
+
   private:
     void created_user(std::string_view google_id, const coco::item &itm);
 

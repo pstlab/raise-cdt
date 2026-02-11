@@ -47,6 +47,43 @@ namespace cdt
                                      {"409",
                                       {{"description", "User already exists."}}}}}}});
 
+        add_path("/raise-users/{google_id}", {"patch",
+                                              {{"summary", "Update User"},
+                                               {"description", "Updates an existing user with the specified Google ID."},
+                                               {"parameters", {{{"name", "google_id"}, {"in", "path"}, {"required", true}, {"schema", {{"type", "string"}}}, {"description", "The Google ID of the user to update."}}}},
+                                               {"requestBody",
+                                                {{"required", true},
+                                                 {"content", {{"application/json", {{"schema", {{"type", "object"}, {"properties", {{"data", {{"type", "object"}, {"description", "The data to update for the user."}}}}}, {"required", {"data"}}}}}}}}}},
+#ifdef BUILD_AUTH
+                                               {"security", std::vector<json::json>{{"bearerAuth", std::vector<json::json>{}}}},
+#endif
+                                               {"responses",
+                                                {{"200",
+                                                  {{"description", "User updated successfully."}}},
+                                                 {"400",
+                                                  {{"description", "Invalid request."}}},
+#ifdef BUILD_AUTH
+                                                 {"401", {{"$ref", "#/components/responses/UnauthorizedError"}}},
+#endif
+                                                 {"404",
+                                                  {{"description", "User not found."}}}}}}});
+
+        add_path("/raise-users/{google_id}/data", {"post",
+                                                   {{"summary", "Add User Data"},
+                                                    {"description", "Adds data to an existing user with the specified Google ID."},
+                                                    {"parameters", {{{"name", "google_id"}, {"in", "path"}, {"required", true}, {"schema", {{"type", "string"}}}, {"description", "The Google ID of the user to add data to."}}}},
+                                                    {"requestBody",
+                                                     {{"required", true},
+                                                      {"content", {{"application/json", {{"schema", {{"type", "object"}, {"properties", {{"data", {{"type", "object"}, {"description", "The data to add for the user."}}}}}, {"required", {"data"}}}}}}}}}},
+#ifdef BUILD_AUTH
+                                                    {"security", std::vector<json::json>{{"bearerAuth", std::vector<json::json>{}}}},
+#endif
+                                                    {"responses",
+                                                     {{"200",
+                                                       {{"description", "User data added successfully."}}},
+                                                      {"400",
+                                                       {{"description", "Invalid request."}}}}}}});
+
 #ifdef BUILD_AUTH
         auto &auth = static_cast<coco::auth_middleware &>(srv.get_middleware<coco::auth_middleware>());
         auth.add_authorized_path(network::Get, "^/raise-users/.*$", {0, 1});
@@ -84,6 +121,42 @@ namespace cdt
         catch (const std::exception &ex)
         {
             return std::make_unique<network::json_response>(json::json({{"message", ex.what()}}), network::status_code::conflict);
+        }
+    }
+
+    std::unique_ptr<network::response> raise_cdt_server::update_user(const network::request &req)
+    {
+        auto &body = static_cast<const network::json_request &>(req).get_body();
+        if (!body.is_object())
+            return std::make_unique<network::json_response>(json::json({{"message", "Invalid request"}}), network::status_code::bad_request);
+
+        std::string google_id = req.get_target().substr(13); // 13 is the length of "/raise-users/"
+        try
+        {
+            cdt.update_user(google_id, json::json(body));
+            return std::make_unique<network::json_response>(json::json({{"message", "User updated successfully"}}));
+        }
+        catch (const std::exception &ex)
+        {
+            return std::make_unique<network::json_response>(json::json({{"message", ex.what()}}), network::status_code::not_found);
+        }
+    }
+
+    std::unique_ptr<network::response> raise_cdt_server::add_user_value(const network::request &req)
+    {
+        auto &body = static_cast<const network::json_request &>(req).get_body();
+        if (!body.is_object())
+            return std::make_unique<network::json_response>(json::json({{"message", "Invalid request"}}), network::status_code::bad_request);
+
+        std::string google_id = req.get_target().substr(13, req.get_target().find("/data") - 13); // Extract Google ID from the path
+        try
+        {
+            cdt.add_user_value(google_id, json::json(body));
+            return std::make_unique<network::json_response>(json::json({{"message", "User data added successfully"}}));
+        }
+        catch (const std::exception &ex)
+        {
+            return std::make_unique<network::json_response>(json::json({{"message", ex.what()}}), network::status_code::not_found);
         }
     }
 } // namespace cdt
